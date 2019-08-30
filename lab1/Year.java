@@ -5,6 +5,7 @@ public class Year {
 
     /** Return true iff YEAR is a leap year.  */
     static boolean isLeapYear(int year) {
+        if ((year % 400 == 0) && (year % 100 != 0) || (year & 4 == 0))
         return true;    // TODO: YOUR CODE HERE
     }
 

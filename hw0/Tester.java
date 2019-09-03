@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import ucb.junit.textui;
 
 /** Tests for hw0. 
- *  @author Eduardo Huerta Mercado
+ *  @author Eduardo Andres Huerta Mercado
  */
 public class Tester {
 

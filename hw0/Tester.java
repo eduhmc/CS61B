@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import ucb.junit.textui;
 
 /** Tests for hw0. 
- *  @author YOUR NAMES HERE
+ *  @author Eduardo Huerta Mercado
  */
 public class Tester {
 
@@ -24,7 +24,7 @@ public class Tester {
     @Test
     public void maxTest() {
         // Change call to max to make this call yours.
-        assertEquals(14, hw0.MaxOfArray(new int[] { 0, -5, 2, 14, 10 }));
+        assertEquals(14, hw0.max(new int[] { 0, -5, 2, 14, 10 }));
         // REPLACE THIS WITH MORE TESTS.
     }
 

@@ -1,4 +1,4 @@
-class Max{
+class max{
 	public static int max(int[] a){
 		int temp = a[0];
 		for (int i = 0; i < a.length; i++){

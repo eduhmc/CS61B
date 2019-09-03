@@ -1,4 +1,4 @@
-class ThreeSum{
+class threeSum{
     public static void main(String[] input) {
       int[] a=new int[input.length];
        for(int i=0; i<input.length; i++){

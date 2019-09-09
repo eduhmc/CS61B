@@ -138,7 +138,16 @@ public class IntList {
      *  elements of B.  May modify items of A. Don't use 'new'. */
 
     static IntList dcatenate(IntList A, IntList B) {
-        return null; // REPLACE WITH YOUR CODE */
+        if(A==null){
+            return B;
+        }
+        IntList C = A;
+        while(C.tail!=null) {
+            C = C.tail;
+//            System.out.println(C);
+        }
+        C.tail=B;
+        return A; // REPLACE WITH YOUR CODE */
 
     }
 
@@ -150,7 +159,15 @@ public class IntList {
       * This method should NOT modify the items in L. */
 
     static IntList subTail(IntList L, int start) {
-        return null; // REPLACE WITH YOUR CODE
+        if(L==null || start==0){return L;}
+        IntList A = L;
+        if(start>0){
+            A=subTail(A.tail,start-1);}
+        else{
+            A=A.tail;
+        }
+
+        return A; // REPLACE WITH YOUR CODE
     }
 
 
@@ -166,7 +183,12 @@ public class IntList {
      *  that start and len are always >= 0.
      */
     static IntList sublist(IntList L, int start, int len) {
-        return null;  // REPLACE WITH YOUR SOLUTION
+        if(len==0){return null;}
+
+        if(start>0){
+            return sublist(L.tail, start-1, len);
+        }
+        return new IntList(L.head, sublist(L.tail,0,len-1));  // REPLACE WITH YOUR SOLUTION
 
     }
 
@@ -178,7 +200,22 @@ public class IntList {
      *  As with sublist, you can assume the items requested
      *  exist, and that START and LEN are >= 0. */
     static IntList dsublist(IntList L, int start, int len) {
-        return null; // REPLACE WITH YOUR SOLUTION
+        if(start>0){
+            L=subTail(L,start);
+        }
+//        System.out.println(L);
+
+        if(len==0){return null;}
+        IntList B= L;
+        while(len>1) {
+            B = B.tail;
+            len-=1;
+//            System.out.println(C);
+        }
+        B.tail=null;
+
+//        System.out.println(L);
+        return L; // REPLACE WITH YOUR SOLUTION
 
     }
 

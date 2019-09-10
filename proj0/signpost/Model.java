@@ -49,7 +49,7 @@ import static signpost.Utils.*;
  *  with fixed sequence numbers appear at the corresponding position
  *  in that sequence.
  *
- *  @author
+ *  @author Eduardo Huerta-Mercado
  */
 class Model implements Iterable<Model.Sq> {
 
@@ -101,7 +101,9 @@ class Model implements Iterable<Model.Sq> {
         //        contains sequence number k.  Check that all numbers from
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
-
+        _board = 0;
+        _allSquares = 0;
+        _solnNumToPlace = 0;
         // FIXME: For each Sq object on the board, set its _successors and
         //        _predecessor lists to the lists of locations of all cells
         //        that it might connect to (i.e., all cells that are a queen

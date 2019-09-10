@@ -34,15 +34,15 @@ public class IntListTest {
     public void testDcatenate() {
         IntList A = IntList.list();
 //        System.out.println(A);
-        IntList B = IntList.list(1,2,4,6);
-        IntList x = IntList.list(1,2,4,6);
+        IntList B = IntList.list(1,2,3,5);
+        IntList x = IntList.list(1,2,3,5);
 
         A=IntList.dcatenate(A,B);
         assertEquals(x,A);
 
-        IntList C = IntList.list(4,5,6);
-        IntList D = IntList.list(1,2,4,6);
-        IntList y = IntList.list(4,5,6,1,2,4,6);
+        IntList C = IntList.list(1,3,5);
+        IntList D = IntList.list(2,4,6,8);
+        IntList y = IntList.list(1,3, 5,2,4,6,8);
         assertEquals(y,IntList.dcatenate(C,D));
     }
 

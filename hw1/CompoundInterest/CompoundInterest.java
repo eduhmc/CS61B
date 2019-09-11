@@ -48,7 +48,7 @@ public class CompoundInterest {
      *  16550. */
     static double totalSavings(double perYear, int targetYear, double rate) {
         double result;
-        result = perYear*Math.pow((1+rate*0.01),targetYear-THIS_YEAR);
+        result = futureValue(perYear, rate, targetYear);
         // System.out.println(targetYear);
         if(targetYear>THIS_YEAR){
             result += totalSavings(perYear,targetYear-1,rate);
@@ -62,16 +62,8 @@ public class CompoundInterest {
      *  INFLATIONRATE. */
     static double totalSavingsReal(double perYear, int targetYear, double rate,
                                double inflationRate) {
-        double result;
-        result = perYear*Math.pow((1+rate*0.01),targetYear-THIS_YEAR)*
-                Math.pow((1-inflationRate*0.01),targetYear-THIS_YEAR);
-        // System.out.println(targetYear);
-        if(targetYear>THIS_YEAR){
-            result += totalSavingsReal(perYear,targetYear-1,rate,inflationRate);
-            targetYear -=1;
-        }
-        return result;
-
+        return java.lang.Math.round(futureValue(totalSavings(perYear, targetYear, rate),
+                -inflationRate, targetYear)); //Then compensate for the inflation rate.
     }
 
     /** Prints out the future inflation-adjusted value of a dollar in

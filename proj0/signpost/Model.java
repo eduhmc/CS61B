@@ -75,6 +75,15 @@ class Model implements Iterable<Model.Sq> {
         _solution = new int[_width][_height];
         deepCopy(solution, _solution);
 
+        /* Imitialize _solNumToPlace */
+        _solnNumToPlace = new Place[_width * _height + 1];
+        for (int i = 0; i < _width; i++){
+            for (int j = 0; j < _height; j++){
+                _solnNumToPlace[solution[i][j]] = pl(i,j);
+            }
+        }
+
+
         // DUMMY SETUP
         // FIXME: Remove everything down "// END DUMMY SETUP".
         _board = new Sq[][] {
@@ -101,9 +110,29 @@ class Model implements Iterable<Model.Sq> {
         //        contains sequence number k.  Check that all numbers from
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
-        _board = 0;
-        _allSquares = 0;
-        _solnNumToPlace = 0;
+        _board = new Sq[_width][_height];
+        for (int i = 0; i<_width; i++){
+            for (int k = 0; k < _height; k++){
+                if (solution[i][k] == 1) {
+                    _board[i][k] = new Sq(i, k, solution[i][k], true, pl(i,k).dirOf(_solnNumToPlace[solution[i][k]+1]), 0);
+                }
+                else if (solution[i][k] == _width * _height){
+                    _board[i][k] = new Sq(i, k, solution[i][k], true, 0, 0);
+                }
+                else{
+                    _board[i][k] = new Sq(i, k, solution[i][k], false,pl(i,k).dirOf(_solnNumToPlace[solution[i][k]+1]), -1);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
         // FIXME: For each Sq object on the board, set its _successors and
         //        _predecessor lists to the lists of locations of all cells
         //        that it might connect to (i.e., all cells that are a queen

@@ -94,6 +94,22 @@ class Place {
         PlaceList[][][] M = new PlaceList[width][height][9];
         int lim = Math.max(width, height);
         // FIXME
+        for (int i = 0; i < width; i++){
+            for (int j = 0; j < height; j++){
+                M[i][j][0] = new PlaceList(); //May be wrong//
+                for (int dir = 1; dir <= 8; dir++){
+                    M[i][j][dir] = new PlaceList();
+                    int a = i + dx(dir);
+                    int b = j + dy(dir);
+                    while (a < width && b < height && a >= 0 && b >= 0){
+                        M[i][j][dir].add(pl(a,b)); /* may be wrong */
+                        a += dx(dir);
+                        b += dy(dir);
+                    }
+                }
+
+            }
+        }
         return M;
     }
 

@@ -46,7 +46,18 @@ public class IntDList {
      * @return The number of elements in this list.
      */
     public int size() {
-        return 0;   // Your code here
+        int counter = 1;
+        DNode walker = _front;
+        if (walker == null) {
+            return 0;
+        }
+        while (walker._next != null) {
+            walker = walker._next;
+            counter += 1;
+        }
+        return counter;
+
+          // Your code here
     }
 
     /**
@@ -60,7 +71,25 @@ public class IntDList {
      * @return The integer value at index i
      */
     public int get(int i) {
-        return 0;   // Your code here
+        //        DNode walker = new DNode(null, 5, null);
+        if (i < 0) {
+            DNode walker = _back;
+            while (i != -1) {
+                i += 1;
+                walker = walker._prev;
+            }
+            return walker._val;
+        }
+        else {
+            DNode walker = _front;
+            while (i != 0) {
+                i -= 1;
+                walker = walker._next;
+            }
+            return walker._val;
+        }
+
+          // Your code here
     }
 
     /**
@@ -68,6 +97,19 @@ public class IntDList {
      */
     public void insertFront(int d) {
         // Your code here
+        DNode newDNode = new DNode(null, d, null);
+        _front = newDNode;
+        if (_back == null) {
+            _back = newDNode;
+        }
+        else {
+            DNode traceCurrentBack = _back;
+            while (traceCurrentBack._prev != null) {
+                traceCurrentBack = traceCurrentBack._prev;
+            }
+            traceCurrentBack._prev = newDNode;
+            newDNode._next = traceCurrentBack;
+        }
     }
 
     /**
@@ -75,6 +117,19 @@ public class IntDList {
      */
     public void insertBack(int d) {
         // Your code here
+        DNode newDNode = new DNode(null, d, null);
+        _back = newDNode;
+        if (_front == null) {
+            _front = newDNode;
+        }
+        else {
+            DNode traceCurrentBack = _front;
+            while (traceCurrentBack._next != null) {
+                traceCurrentBack = traceCurrentBack._next;
+            }
+            traceCurrentBack._next = newDNode;
+            newDNode._prev = traceCurrentBack;
+        }
     }
 
     /**
@@ -83,7 +138,9 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteBack() {
-        return 0;   // Your code here
+        DNode toBeDeleted = _back;
+        _back = _back._prev;
+        return toBeDeleted._val; // Your code here
 
     }
 
@@ -96,7 +153,25 @@ public class IntDList {
      * System.out.println(a); //prints ab
      */
     public String toString() {
-        return null;   // Your code here
+
+        String theStr = "[";
+        DNode walker = _front;
+        Boolean firstItem = true;
+        while (walker._next != null) {
+            if (firstItem) {
+                theStr = theStr + walker._val;
+                walker = walker._next;
+                firstItem = false;
+            }
+            else {
+                theStr = theStr + ", " + walker._val;
+                walker = walker._next;
+            }
+        }
+        if (walker != null) {
+            theStr = theStr + ", " + walker._val;
+        }
+        return theStr + ']';   // Your code here
     }
 
     /**

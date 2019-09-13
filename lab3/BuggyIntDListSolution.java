@@ -17,8 +17,23 @@ public class BuggyIntDListSolution extends IntDList {
      * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        _back = new DNode(_back, d, null);
-        _back._prev._next = _back;
+        //_back = new DNode(_back, d, null);
+        //_back._prev._next = _back;
+        DNode newDNode = new DNode(null, d, null);
+        _back = newDNode;
+        if (_front == null) {
+            _front = newDNode;
+        }
+        else {
+            DNode traceCurrentBack = _front;
+            while (traceCurrentBack._next != null) {
+                traceCurrentBack = traceCurrentBack._next;
+            }
+            traceCurrentBack._next = newDNode;
+            newDNode._prev = traceCurrentBack;
+        }
+//        _back = new DNode(_back, d, null);
+//        _back._prev._next = _back;
     }
 
     /**

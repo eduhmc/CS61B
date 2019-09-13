@@ -43,7 +43,7 @@ public class BuggyIntDListSolution extends IntDList {
      * @return The name of the type of exception that is thrown.
      */
     public String getException() {
-        return "ERROR EXCEPTION HERE";
+        return "NullPointerException";
     }
 
     /**
@@ -53,7 +53,7 @@ public class BuggyIntDListSolution extends IntDList {
      * @return The name of the function in which the error occurs.
      */
     public String getErrorFunction() {
-        return "FUNCTION IN WHICH ERROR OCCURS HERE";
+        return "insertBack";
     }
 
     /**
@@ -63,6 +63,7 @@ public class BuggyIntDListSolution extends IntDList {
      * @return The line number at which the error occurs
      */
     public int getErrorLineNumber() {
-        return -1;
+
+        return 21;
     }
 }

@@ -139,9 +139,16 @@ public class IntDList {
      */
     public int deleteBack() {
         DNode toBeDeleted = _back;
-        _back = _back._prev;
-        return toBeDeleted._val; // Your code here
+        if (_back != null){
+            _back = _back._prev;
+            if (_back == null){
+                _front = null;
+            }else {
 
+                _back._next = null;
+            }
+        }
+        return toBeDeleted._val;
     }
 
     /**
@@ -157,7 +164,7 @@ public class IntDList {
         String theStr = "[";
         DNode walker = _front;
         Boolean firstItem = true;
-        while (walker._next != null) {
+        while (walker != null) {
             if (firstItem) {
                 theStr = theStr + walker._val;
                 walker = walker._next;

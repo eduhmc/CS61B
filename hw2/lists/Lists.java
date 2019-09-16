@@ -6,7 +6,7 @@ package lists;
 /** HW #2, Problem #1. */
 
 /** List problem.
- *  @author
+ *  @author Eduardo Huerta-Mercado
  */
 class Lists {
     /** Return the list of lists formed by breaking up L into "natural runs":
@@ -17,7 +17,30 @@ class Lists {
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
-        /* *Replace this body with the solution. */
-        return null;
+        if (L == null){
+            return null;
+        }
+        IntList current = L;
+        IntList sublist = L;
+        IntListList result = new IntListList();
+        while (current != null){
+            if (current.tail == null){
+                current = current.tail;
+                sublist.tail = null;
+                break;
+            }
+        else if (current.tail.head > current.head) {
+            current = current.tail;
+            sublist = sublist.tail;
+        } else {
+            current = current.tail;
+            sublist.tail = null;
+            break;
+        }
+    }
+
+    result = new IntListList(L, naturalRuns(current));
+        return result;
     }
 }
+

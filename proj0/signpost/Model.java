@@ -7,8 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Arrays;
 
-import static signpost.Place.pl;
-import static signpost.Place.PlaceList;
+import static signpost.Place.*;
 import static signpost.Utils.*;
 
 /** The state of a Signpost puzzle.  Each cell has coordinates (x, y),
@@ -127,17 +126,26 @@ class Model implements Iterable<Model.Sq> {
 
 
 
-
-
-
-
-
-
         // FIXME: For each Sq object on the board, set its _successors and
         //        _predecessor lists to the lists of locations of all cells
         //        that it might connect to (i.e., all cells that are a queen
         //        move away in the direction of its arrow, and of all cells
         //        that might connect to it.
+        for(int i = 0; i < _width; i++){
+            for (int j = 0; j < _height; j++){
+                _board[i][j]._predecessors = new PlaceList();
+                // if()
+                _board[i][j]._successors = allSuccessors(i, j, _board[i][j]._dir);
+                for (int p = 0; p < _width; p++){
+                    for (int z = 0; z < _height; z++) {
+                        if (allSuccessors(p, z, _board[p][z]._dir).contains(pl(i, j))) {
+                            _board[i][j]._predecessors.add(pl(p,z));
+
+                        }
+                    }
+                }
+            }
+        }
 
         _unconnected = last - 1;
     }
@@ -155,9 +163,25 @@ class Model implements Iterable<Model.Sq> {
         //        the Sq objects in MODEL other than their _successor,
         //        _predecessor, and _head fields (which can't necessarily be
         //        set until all the necessary Sq objects are first created.)
+        _board = new Sq[_width][_height];
+        _allSquares = new ArrayList<Sq>();
+
+        for (int x = 0; x < _width; x++){
+            for( int y = 0; y < _height; y++){
+                _board[x][y] = new Sq(model._board[x][y]);
+            }
+        }
 
         // FIXME: Fill in the _successor, _predecessor, and _head fields of the
         //        copied Sq objects.
+        for(int x = 0; x < _width; x++){
+            for(int y = 0; y < _height; y++){
+                _board[x][y]._successor = model._board[x][y]._successor;
+                _board[x][y]._predecessor = model._board[x][y]._predecessor;
+                _board[x][y]._head = model._board[x][y]._head;
+
+            }
+        }
     }
 
     /** Returns the width (number of columns of cells) of the board. */
@@ -210,12 +234,15 @@ class Model implements Iterable<Model.Sq> {
         _usedGroups.clear();
         // FIXME: Initialize _board to contain nulls and clear all objects from
         //        _allSquares.
+        _board = new Sq[_width][_height];
+        _allSquares.clear();
 
         // FIXME: Initialize _allSuccSquares so that _allSuccSquares[x][y][dir]
         //        is a list of all the Places on the board that are a queen
         //        move in direction DIR from (x, y) and _allSuccSquares[x][y][0]
         //        is a list of all Places that are one queen move from in
         //        direction from (x, y).
+        _allSuccessors = successorCells(width, height);
     }
 
     /** Remove all connections and non-fixed sequence numbers. */
@@ -268,13 +295,34 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        return false; // FIXME
+        boolean answer = false;
+        for(int x = 0; x < _width; x++){
+            for(int y = 0; y < _height; y++){
+                int result = _board[x][y].sequenceNum();
+                for(int p = 0; p < _width; p++){
+                    for(int z = 0; z<_height; z++){
+                        int next_result = _board[p][z].sequenceNum();
+                        if(result == next_result + 1){
+                            _board[x][y].connect(_board[p][z]);
+                            answer = true;
+                        }
+
+                    }
+                }
+            }
+        }
+        return answer; // FIXME
     }
 
     /** Sets the numbers in my squares to the solution from which I was
      *  last initialized by the constructor. */
     void solve() {
         // FIXME
+        for(int x = 0; x < _width; x++){
+            for(int y = 0; y < _height; y++){
+                _board[x][y]._sequenceNum = _solution[x][y];
+            }
+        }
         _unconnected = 0;
     }
 
@@ -283,6 +331,15 @@ class Model implements Iterable<Model.Sq> {
     private int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
         // FIXME
+        for(int a = 0; x < _width; a++){
+            for(int b = 0; x < _height; b++){
+                int seq1 = _solution[a][b];
+                if(seq1 == seq0 + 1){
+                    return dirOf(x, y, a, b);
+                }
+
+            }
+        }
         return 0;
     }
 

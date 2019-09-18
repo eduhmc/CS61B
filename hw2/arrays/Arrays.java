@@ -14,14 +14,26 @@ class Arrays {
      *  the elements of B. */
     static int[] catenate(int[] A, int[] B) {
         /* *Replace this body with the solution. */
-        return null;
+        if (A == null) {
+            return B;
+        }
+        if (B == null) {
+            return A;
+        }
+        int[] result = new int[A.length + B.length];
+        System.arraycopy(A, 0, result, 0, A.length);
+        System.arraycopy(B, 0, result, A.length , B.length);
+        return result;
     }
 
     /** Returns the array formed by removing LEN items from A,
      *  beginning with item #START. */
     static int[] remove(int[] A, int start, int len) {
         /* *Replace this body with the solution. */
-        return null;
+        int[] result = new int[A.length-len];
+        System.arraycopy(A, 0, result, 0, start );
+        System.arraycopy(A, start+len, result, start, A.length-(start+len));
+        return result;
     }
 
     /* E. */
@@ -32,6 +44,33 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
-        return null;
+        if (A == null) {
+            int[][] result = null;
+            return result;
+        }
+
+        int count = 1;
+        for(int i = 0; i < A.length-1; i++){
+            if (A[i] > A[i + 1]){
+                count += 1;
+            }
+        }
+
+        int[][] result = new int[count][];
+
+        int j=0, start =0;
+        for (int i = 0; i < A.length; i++) {
+            if (i < A.length -1 && A[i] >=  A[i + 1]) {
+                result[j] = new int[i + 1 - start];
+                System.arraycopy(A, start, result[j], 0, i + 1 - start);
+                start = i + 1;
+                j = j + 1;
+            } else if (i == A.length - 1) {
+                result[j] = new int[i + 1 - start];
+                System.arraycopy(A, start, result[j], 0, i + 1 - start);
+            }
+        }
+
+        return result;
     }
 }

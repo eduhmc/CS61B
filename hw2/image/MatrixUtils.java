@@ -101,8 +101,8 @@ public class MatrixUtils {
         if (orientation == Orientation.VERTICAL) {
             return accumulateVertical(m);
         } else if (orientation == Orientation.HORIZONTAL) {
-            m = transpose(m);
-            return transpose(accumulateVertical(m));
+            m = transpuesta(m);
+            return transpuesta(accumulateVertical(m));
         } else {
             return null;
         }
@@ -113,7 +113,7 @@ public class MatrixUtils {
      * @param m
      * @return transpose of m
      */
-    private static double[][] transpose(double[][] m) {
+    private static double[][] transpuesta(double[][] m) {
         int height = m.length;
         int width = m[0].length;
 
@@ -156,33 +156,33 @@ public class MatrixUtils {
      */
 
     public static int[] findVerticalSeam(double[][] m) {
-        int height = m.length;
-        int[] Vertseam = new int[height];
+        int altura = m.length;
+        int[] Verticalseam = new int[altura];
 
-        for (int i = height-1; i >= 0; i--) {
-            if (i == height -1) {
-                Vertseam[i] = findSmall(m[i],0,m[i].length-1);
+        for (int i = altura-1; i >= 0; i--) {
+            if (i == altura -1) {
+                Verticalseam[i] = findSmall(m[i],0,m[i].length-1);
             } else {
-                int lo = Math.max(Vertseam[i+1]-1,0);
-                int hi = Math.min(Vertseam[i+1]+1, m[i].length-1);
-                Vertseam[i] = findSmall(m[i], lo, hi);
+                int lo = Math.max(Verticalseam[i+1]-1,0);
+                int hi = Math.min(Verticalseam[i+1]+1, m[i].length-1);
+                Verticalseam[i] = findSmall(m[i], lo, hi);
             }
         }
-        return Vertseam;
+        return Verticalseam;
     }
 
     private static int findSmall(double[] arr, int lo, int hi) {
-        int index = lo;
-        double minvalue = arr[lo];
+        int j = lo;
+        double minval = arr[lo];
         for (int i = lo; i < hi+1 ; i++) {
-            if (arr[i] < minvalue){
-                index = i;
-                minvalue = arr[i];
+            if (arr[i] < minval){
+                j = i;
+                minval = arr[i];
             } else {
                 continue;
             }
         }
-        return index;
+        return j;
     }
 
     /** Returns the SEAM of M with the given ORIENTATION.
@@ -193,7 +193,7 @@ public class MatrixUtils {
     public static int[] findSeam(double[][] m, Orientation orientation) {
 
         if (orientation == Orientation.HORIZONTAL) {
-            return findVerticalSeam(transpose(m));
+            return findVerticalSeam(transpuesta(m));
         } else {
             return findVerticalSeam(m);
         }

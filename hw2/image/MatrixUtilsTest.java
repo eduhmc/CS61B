@@ -36,7 +36,7 @@ public class MatrixUtilsTest {
 
     @Test
     public void testaccumulate() {
-        double[][] A = new double[][] {
+        double[][] m1 = new double[][] {
                 {1000000,   1000000,   1000000,   1000000},
                 {1000000,     75990,     30003,   1000000},
                 {1000000,     30002,    103046,   1000000},
@@ -45,7 +45,7 @@ public class MatrixUtilsTest {
                 {1000000,   1000000,   1000000,   1000000}
         };
 
-        double[][] B = new double[][] {
+        double[][] m2 = new double[][] {
                 {1000000,   1000000,   1000000,   1000000},
                 {2000000,  1075990,   1030003,   2000000},
                 {2075990,  1060005,   1133049,   2030003},
@@ -54,7 +54,7 @@ public class MatrixUtilsTest {
                 {2162923,   2124919,   2124919,   2124919}
         };
 
-        double[][] D = new double[][] {
+        double[][] m3 = new double[][] {
                 {1000000,   2000000,   2075990,   2060005},
                 {1000000,   1075990,   1060005,   2060005},
                 {1000000,  1030002,   1132561,   2060005},
@@ -63,16 +63,16 @@ public class MatrixUtilsTest {
                 {1000000,   2000000,   2073403,   2064914}
         };
 
-        double[][] C = MatrixUtils.accumulate(A, MatrixUtils.Orientation.VERTICAL);
-        assertArrayEquals(B, C);
+        double[][] X = MatrixUtils.accumulate(m1, MatrixUtils.Orientation.VERTICAL);
+        assertArrayEquals(m2, X);
 
-        double[][] E = MatrixUtils.accumulate(A, MatrixUtils.Orientation.HORIZONTAL);
-        assertArrayEquals(D, E);
+        double[][] Y = MatrixUtils.accumulate(m1, MatrixUtils.Orientation.HORIZONTAL);
+        assertArrayEquals(m3, Y);
     }
 
     @Test
     public void testfindVerticalSeam() {
-        double[][] B = new double[][] {
+        double[][] M = new double[][] {
                 {1000000,   1000000,   1000000,   1000000},
                 {2000000,  1075990,   1030003,   2000000},
                 {2075990,  1060005,   1133049,   2030003},
@@ -80,12 +80,13 @@ public class MatrixUtilsTest {
                 {2089520,   1162923,   1124919,   2098278},
                 {2162923,   2124919,   2124919,   2124919}
         };
-        int[] b = {1, 2, 1, 1, 2, 1};
-        int[] c = MatrixUtils.findVerticalSeam(B);
-        assertArrayEquals(b, c);
+        int[] X = {1, 2, 1, 1, 2, 1};
+        int[] Y = MatrixUtils.findVerticalSeam(M);
+        assertArrayEquals(X, Y);
     }
 
     public static void main(String[] args) {
+
         System.exit(ucb.junit.textui.runClasses(MatrixUtilsTest.class));
     }
 }

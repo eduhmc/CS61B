@@ -6,7 +6,7 @@ package arrays;
 /** HW #2 */
 
 /** Array utilities.
- *  @author
+ *  @author Eduardo Huerta Mercado
  */
 class Arrays {
     /* C. */

@@ -38,18 +38,15 @@ public class ArraysTest {
 
     @Test
     public void testnaturalRuns() {
-        int[] test = {1, 3, 7, 5, 4, 6, 9, 10, 10, 11};
-
-        int[][] expected = {{1, 3, 7}, {5}, {4, 6, 9, 10}, {10, 11}};
-        int[][] result = Arrays.naturalRuns(test);
-        boolean isTrue = Utils.equals(expected, result);
-
-        assertEquals(isTrue, true);
-        int[] test2 = {};
-        int[] expected2 = {};
-        boolean isTrue2 = Utils.equals(expected, result);
-        assertEquals(isTrue2, true);
+        int[] A = {1, 2, 6, 5, 4, 6, 10, 11};
+        int[][] B = {{1, 2, 6}, {5}, {4, 6, 10, 11}};
+        int[] C = {1, 2, 3};
+        int[][] D = {C};
+        assertArrayEquals(B, Arrays.naturalRuns(A));
+        assertArrayEquals(D, Arrays.naturalRuns(C));
     }
+
+
 
 
 

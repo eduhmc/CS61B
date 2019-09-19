@@ -20,20 +20,20 @@ class Arrays {
         if (B == null) {
             return A;
         }
-        int[] result = new int[A.length + B.length];
-        System.arraycopy(A, 0, result, 0, A.length);
-        System.arraycopy(B, 0, result, A.length , B.length);
-        return result;
+        int[] resultado = new int[A.length + B.length];
+        System.arraycopy(A, 0, resultado, 0, A.length);
+        System.arraycopy(B, 0, resultado, A.length , B.length);
+        return resultado;
     }
 
     /** Returns the array formed by removing LEN items from A,
      *  beginning with item #START. */
     static int[] remove(int[] A, int start, int len) {
         /* *Replace this body with the solution. */
-        int[] result = new int[A.length-len];
-        System.arraycopy(A, 0, result, 0, start );
-        System.arraycopy(A, start+len, result, start, A.length-(start+len));
-        return result;
+        int[] resultado = new int[A.length-len];
+        System.arraycopy(A, 0, resultado, 0, start );
+        System.arraycopy(A, start+len, resultado, start, A.length-(start+len));
+        return resultado;
     }
 
     /* E. */
@@ -49,25 +49,25 @@ class Arrays {
             return result;
         }
 
-        int count = 1;
+        int contador = 1;
         for(int i = 0; i < A.length-1; i++){
             if (A[i] > A[i + 1]){
-                count += 1;
+                contador += 1;
             }
         }
 
-        int[][] result = new int[count][];
+        int[][] result = new int[contador][];
 
-        int j=0, start =0;
+        int w=0, comienzo =0;
         for (int i = 0; i < A.length; i++) {
             if (i < A.length -1 && A[i] >=  A[i + 1]) {
-                result[j] = new int[i + 1 - start];
-                System.arraycopy(A, start, result[j], 0, i + 1 - start);
-                start = i + 1;
-                j = j + 1;
+                result[w] = new int[i + 1 - comienzo];
+                System.arraycopy(A, comienzo, result[w], 0, i + 1 - comienzo);
+                comienzo = i + 1;
+                w += 1;
             } else if (i == A.length - 1) {
-                result[j] = new int[i + 1 - start];
-                System.arraycopy(A, start, result[j], 0, i + 1 - start);
+                result[w] = new int[i + 1 - comienzo];
+                System.arraycopy(A, comienzo, result[w], 0, i + 1 - comienzo);
             }
         }
 

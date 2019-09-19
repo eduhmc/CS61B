@@ -20,27 +20,27 @@ class Lists {
         if (L == null){
             return null;
         }
-        IntList current = L;
-        IntList sublist = L;
-        IntListList result = new IntListList();
-        while (current != null){
-            if (current.tail == null){
-                current = current.tail;
-                sublist.tail = null;
+        IntList ahora = L;
+        IntList doble_lista = L;
+        IntListList solucion = new IntListList();
+        while (ahora != null){
+            if (ahora.tail == null){
+                ahora = ahora.tail;
+                doble_lista.tail = null;
                 break;
             }
-        else if (current.tail.head > current.head) {
-            current = current.tail;
-            sublist = sublist.tail;
+        else if (ahora.tail.head > ahora.head) {
+            ahora = ahora.tail;
+            doble_lista = doble_lista.tail;
         } else {
-            current = current.tail;
-            sublist.tail = null;
+            ahora = ahora.tail;
+            doble_lista.tail = null;
             break;
         }
     }
 
-    result = new IntListList(L, naturalRuns(current));
-        return result;
+    solucion = new IntListList(L, naturalRuns(ahora));
+        return solucion;
     }
 }
 

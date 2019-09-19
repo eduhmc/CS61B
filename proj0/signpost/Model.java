@@ -595,7 +595,21 @@ class Model implements Iterable<Model.Sq> {
          */
         boolean connectable(Sq s1) {
             // FIXME
-            return true;
+            if (_successors.contains(s1) && _successor == null && s1.predecessor()== null){
+                if (_sequenceNum != 0 && s1.sequenceNum() != 0){
+                    if(_sequenceNum == s1._sequenceNum){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (_sequenceNum == 0 && s1.sequenceNum()== 0){
+                    if (s1.head() == _head){
+                        return false;
+                    }else{
+                        return false
+                    }
+                }
+            }return false;
         }
 
         /** Connect me to S1, if we are connectable; otherwise do nothing.

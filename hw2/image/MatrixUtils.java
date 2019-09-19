@@ -55,7 +55,23 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulateVertical(double[][] m) {
-        return null; //your code here
+        double[][] sol = new double[m.length][m[0].length];
+        for (int row = 0; row < m.length; row++){
+            for (int column = 0; column < m[0].length; column++){
+                if (row == 0) {
+                    sol[row][column] = m[row][column];
+                }else if (column == 0) {
+                sol[row][column] = Math.min(sol[row-1][column], sol[row-1][column+1])+m[row][column];
+            } else if (column == m[0].length-1) {
+                sol[row][column] = Math.min(sol[row-1][column-1], sol[row-1][column])+m[row][column];
+            } else {
+                sol[row][column] = Math.min(Math.min(sol[row-1][column-1], sol[row-1][column+1]), sol[row-1][column]) + m[row][column];
+                }
+            }
+        }
+
+
+        return sol; //your code here
     }
 
     /** Non-destructively accumulates a matrix M along the specified
@@ -82,7 +98,32 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if (orientation == Orientation.VERTICAL) {
+            return accumulateVertical(m);
+        } else if (orientation == Orientation.HORIZONTAL) {
+            m = transpose(m);
+            return transpose(accumulateVertical(m));
+        } else {
+            return null;
+        }
+
+    }
+    /**
+     *
+     * @param m
+     * @return transpose of m
+     */
+    private static double[][] transpose(double[][] m) {
+        int height = m.length;
+        int width = m[0].length;
+
+        double[][] mt = new double[width][height];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                mt[j][i] = m[i][j];
+            }
+        }
+        return  mt;
     }
 
     /** Finds the vertical seam VERTSEAM of the given matrix M.
@@ -115,7 +156,33 @@ public class MatrixUtils {
      */
 
     public static int[] findVerticalSeam(double[][] m) {
-        return null; //your code here
+        int height = m.length;
+        int[] Vertseam = new int[height];
+
+        for (int i = height-1; i >= 0; i--) {
+            if (i == height -1) {
+                Vertseam[i] = findSmall(m[i],0,m[i].length-1);
+            } else {
+                int lo = Math.max(Vertseam[i+1]-1,0);
+                int hi = Math.min(Vertseam[i+1]+1, m[i].length-1);
+                Vertseam[i] = findSmall(m[i], lo, hi);
+            }
+        }
+        return Vertseam;
+    }
+
+    private static int findSmall(double[] arr, int lo, int hi) {
+        int index = lo;
+        double minvalue = arr[lo];
+        for (int i = lo; i < hi+1 ; i++) {
+            if (arr[i] < minvalue){
+                index = i;
+                minvalue = arr[i];
+            } else {
+                continue;
+            }
+        }
+        return index;
     }
 
     /** Returns the SEAM of M with the given ORIENTATION.
@@ -124,7 +191,12 @@ public class MatrixUtils {
      */
 
     public static int[] findSeam(double[][] m, Orientation orientation) {
-        return null; //your code here
+
+        if (orientation == Orientation.HORIZONTAL) {
+            return findVerticalSeam(transpose(m));
+        } else {
+            return findVerticalSeam(m);
+        }
     }
 
     /** does nothing. ARGS not used. use for whatever purposes you'd like */

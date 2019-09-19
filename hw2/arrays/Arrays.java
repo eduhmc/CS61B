@@ -44,33 +44,28 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
-        if (A == null) {
-            int[][] result = null;
-            return result;
-        }
-
-        int contador = 1;
-        for(int i = 0; i < A.length-1; i++){
-            if (A[i] > A[i + 1]){
-                contador += 1;
+        int count = 1;
+        for (int i = 0; i < A.length - 1; i++) {
+            if(A[i] >= A[i + 1]) {
+                count++;
             }
         }
-
-        int[][] result = new int[contador][];
-
-        int w=0, comienzo =0;
-        for (int i = 0; i < A.length; i++) {
-            if (i < A.length -1 && A[i] >=  A[i + 1]) {
-                result[w] = new int[i + 1 - comienzo];
-                System.arraycopy(A, comienzo, result[w], 0, i + 1 - comienzo);
-                comienzo = i + 1;
-                w += 1;
-            } else if (i == A.length - 1) {
-                result[w] = new int[i + 1 - comienzo];
-                System.arraycopy(A, comienzo, result[w], 0, i + 1 - comienzo);
+        int[][] result = new int[count][];
+        int index = 0;
+        int k = 0;
+        int len = 1;
+        for (int i = 0; i < A.length - 1; i++) {
+            if (A[i] >= A[i+1]) {
+                result[index] = Utils.subarray(A, k, len);
+                len = 1;
+                k = i+1;
+                index++;
+            }
+            else {
+                len ++;
             }
         }
-
+        result[index] = Utils.subarray(A, k, len);
         return result;
     }
 }

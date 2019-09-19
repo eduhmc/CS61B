@@ -85,21 +85,7 @@ class Model implements Iterable<Model.Sq> {
 
         // DUMMY SETUP
         // FIXME: Remove everything down "// END DUMMY SETUP".
-        _board = new Sq[][] {
-            { new Sq(0, 0, 0, false, 2, -1), new Sq(0, 1, 0, false, 2, -1),
-              new Sq(0, 2, 0, false, 4, -1), new Sq(0, 3, 1, true, 2, 0) },
-            { new Sq(1, 0, 0, false, 2, -1), new Sq(1, 1, 0, false, 2, -1),
-              new Sq(1, 2, 0, false, 6, -1), new Sq(1, 3, 0, false, 2, -1) },
-            { new Sq(2, 0, 0, false, 6, -1), new Sq(2, 1, 0, false, 2, -1),
-              new Sq(2, 2, 0, false, 6, -1), new Sq(2, 3, 0, false, 2, -1) },
-            { new Sq(3, 0, 16, true, 0, 0), new Sq(3, 1, 0, false, 5, -1),
-              new Sq(3, 2, 0, false, 6, -1), new Sq(3, 3, 0, false, 4, -1) }
-        };
-        for (Sq[] col: _board) {
-            for (Sq sq : col) {
-                _allSquares.add(sq);
-            }
-        }
+
         // END DUMMY SETUP
 
         // FIXME: Initialize _board so that _board[x][y] contains the Sq object
@@ -111,15 +97,13 @@ class Model implements Iterable<Model.Sq> {
         //        badArgs utility).
         _board = new Sq[_width][_height];
         for (int i = 0; i<_width; i++){
-            for (int k = 0; k < _height; k++){
-                if (solution[i][k] == 1) {
-                    _board[i][k] = new Sq(i, k, solution[i][k], true, pl(i,k).dirOf(_solnNumToPlace[solution[i][k]+1]), 0);
-                }
-                else if (solution[i][k] == _width * _height){
-                    _board[i][k] = new Sq(i, k, solution[i][k], true, 0, 0);
-                }
-                else{
-                    _board[i][k] = new Sq(i, k, solution[i][k], false,pl(i,k).dirOf(_solnNumToPlace[solution[i][k]+1]), -1);
+            for (int p = 0; p < _height; p++){
+                if (solution[i][p] == 1) {
+                    _board[i][p] = new Sq(i, p, solution[i][p], true, pl(i,p).dirOf(_solnNumToPlace[solution[i][p]+1]), 0);
+                } else if (solution[i][p] == _width * _height){
+                    _board[i][p] = new Sq(i, p, solution[i][p], true, 0, 0);
+                } else{
+                    _board[i][p] = new Sq(i, p, solution[i][p], false,pl(i,p).dirOf(_solnNumToPlace[solution[i][p]+1]), -1);
                 }
             }
         }
@@ -137,9 +121,9 @@ class Model implements Iterable<Model.Sq> {
                 // if()
                 _board[i][j]._successors = allSuccessors(i, j, _board[i][j]._dir);
                 for (int p = 0; p < _width; p++){
-                    for (int z = 0; z < _height; z++) {
-                        if (allSuccessors(p, z, _board[p][z]._dir).contains(pl(i, j))) {
-                            _board[i][j]._predecessors.add(pl(p,z));
+                    for (int w = 0; w < _height; w++) {
+                        if (allSuccessors(p, w, _board[p][w]._dir).contains(pl(i, j))) {
+                            _board[i][j]._predecessors.add(pl(p,w));
 
                         }
                     }
@@ -166,9 +150,9 @@ class Model implements Iterable<Model.Sq> {
         _board = new Sq[_width][_height];
         _allSquares = new ArrayList<Sq>();
 
-        for (int x = 0; x < _width; x++){
-            for( int y = 0; y < _height; y++){
-                _board[x][y] = new Sq(model._board[x][y]);
+        for (int i = 0; i < _width; i++){
+            for( int j = 0; j < _height; j++){
+                _board[i][j] = new Sq(model._board[i][j]);
             }
         }
 
@@ -295,23 +279,23 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        boolean answer = false;
-        for(int x = 0; x < _width; x++){
-            for(int y = 0; y < _height; y++){
-                int result = _board[x][y].sequenceNum();
+        boolean solution  = false;
+        for(int a = 0; a < _width; a++){
+            for(int b = 0; b < _height; b++){
+                int result = _board[a][b].sequenceNum();
                 for(int p = 0; p < _width; p++){
                     for(int z = 0; z<_height; z++){
                         int next_result = _board[p][z].sequenceNum();
                         if(result == next_result + 1){
-                            _board[x][y].connect(_board[p][z]);
-                            answer = true;
+                            _board[a][b].connect(_board[p][z]);
+                            solution = true;
                         }
 
                     }
                 }
             }
         }
-        return answer; // FIXME
+        return solution; // FIXME
     }
 
     /** Sets the numbers in my squares to the solution from which I was
@@ -329,12 +313,12 @@ class Model implements Iterable<Model.Sq> {
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
     private int arrowDirection(int x, int y) {
-        int seq0 = _solution[x][y];
+        int sol0 = _solution[x][y];
         // FIXME
         for(int a = 0; x < _width; a++){
             for(int b = 0; x < _height; b++){
-                int seq1 = _solution[a][b];
-                if(seq1 == seq0 + 1){
+                int sol = _solution[a][b];
+                if(sol == sol0 + 1){
                     return dirOf(x, y, a, b);
                 }
 
@@ -606,7 +590,7 @@ class Model implements Iterable<Model.Sq> {
                     if (s1.head() == _head){
                         return false;
                     }else{
-                        return false
+                        return false;
                     }
                 }
             }return false;

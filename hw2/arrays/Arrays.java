@@ -42,30 +42,51 @@ class Arrays {
      *  For example, if A is {1, 3, 7, 5, 4, 6, 9, 10}, then
      *  returns the three-element array
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
+    static int numSubs(int[] A) {
+        int num = 0;
+        int curr = 0;
+        int next = 1;
+        while (next < A.length) {
+            while (next < A.length && A[curr] < A[next]) {
+                curr += 1;
+                next += 1;
+            }
+            curr += 1;
+            next += 1;
+            num += 1;
+        }
+        return num;
+    }
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
-        int count = 1;
-        for (int i = 0; i < A.length - 1; i++) {
-            if(A[i] >= A[i + 1]) {
-                count++;
+        int len = numSubs(A);
+        int[][] ret = new int[len][];
+        int first = 0;
+        int next = 1;
+        int holdLength = 0;
+        int retPos = 0;
+        int pointer = 0;
+        while (retPos < len) {
+            while (next < A.length && A[first] < A[next]) {
+                holdLength += 1;
+                first += 1;
+                next += 1;
             }
+            first += 1;
+            next += 1;
+            holdLength += 1;
+            int[] holder = new int[holdLength];
+            int holdPointer = 0;
+            while (holdPointer < holdLength) {
+                holder[holdPointer] = A[pointer];
+                pointer += 1;
+                holdPointer += 1;
+            }
+            ret[retPos] = holder;
+            retPos += 1;
+            holdLength = 0;
         }
-        int[][] result = new int[count][];
-        int index = 0;
-        int k = 0;
-        int len = 1;
-        for (int i = 0; i < A.length - 1; i++) {
-            if (A[i] >= A[i+1]) {
-                result[index] = Utils.subarray(A, k, len);
-                len = 1;
-                k = i+1;
-                index++;
-            }
-            else {
-                len ++;
-            }
-        }
-        result[index] = Utils.subarray(A, k, len);
-        return result;
+        return ret;
     }
+
 }

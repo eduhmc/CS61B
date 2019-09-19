@@ -45,6 +45,10 @@ public class ArraysTest {
         boolean isTrue = Utils.equals(expected, result);
 
         assertEquals(isTrue, true);
+        int[] test2 = {};
+        int[] expected2 = {};
+        boolean isTrue2 = Utils.equals(expected, result);
+        assertEquals(isTrue2, true);
     }
 
 

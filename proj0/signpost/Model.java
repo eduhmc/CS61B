@@ -82,12 +82,6 @@ class Model implements Iterable<Model.Sq> {
             }
         }
 
-
-        // DUMMY SETUP
-        // FIXME: Remove everything down "// END DUMMY SETUP".
-
-        // END DUMMY SETUP
-
         // FIXME: Initialize _board so that _board[x][y] contains the Sq object
         //        representing the contents at cell (x, y), _allSquares
         //        contains the list of all Sq objects on the board, and
@@ -96,6 +90,7 @@ class Model implements Iterable<Model.Sq> {
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
         _board = new Sq[_width][_height];
+        // _solnNumToPlace = PlaceList[last +1];
         for (int i = 0; i<_width; i++){
             for (int p = 0; p < _height; p++){
                 if (solution[i][p] == 1) {
@@ -103,7 +98,7 @@ class Model implements Iterable<Model.Sq> {
                 } else if (solution[i][p] == _width * _height){
                     _board[i][p] = new Sq(i, p, solution[i][p], true, 0, 0);
                 } else{
-                    _board[i][p] = new Sq(i, p, solution[i][p], false,pl(i,p).dirOf(_solnNumToPlace[solution[i][p]+1]), -1);
+                    _board[i][p] = new Sq(i, p,0, false,pl(i,p).dirOf(_solnNumToPlace[solution[i][p]+1]), -1);
                 }
             }
         }
@@ -295,7 +290,8 @@ class Model implements Iterable<Model.Sq> {
                 }
             }
         }
-        return solution; // FIXME
+        return solution;
+        // FIXME
     }
 
     /** Sets the numbers in my squares to the solution from which I was

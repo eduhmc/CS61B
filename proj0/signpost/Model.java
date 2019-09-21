@@ -277,12 +277,15 @@ class Model implements Iterable<Model.Sq> {
         boolean solution  = false;
         for(int a = 0; a < _width; a++){
             for(int b = 0; b < _height; b++){
-                int result = _board[a][b].sequenceNum();
+                Sq var = _board[a][b];
+                int result = var.sequenceNum();
+                // int result = _board[a][b].sequenceNum();
                 for(int p = 0; p < _width; p++){
                     for(int z = 0; z<_height; z++){
-                        int next_result = _board[p][z].sequenceNum();
-                        if(result == next_result + 1){
-                            _board[a][b].connect(_board[p][z]);
+                        Sq var1 = _board[p][z];
+                        int next_result = var1.sequenceNum();
+                        if(result == next_result - 1){
+                            var.connect(var1);
                             solution = true;
                         }
 
@@ -575,7 +578,7 @@ class Model implements Iterable<Model.Sq> {
          */
         boolean connectable(Sq s1) {
             // FIXME
-            if (_successors.contains(s1) && _successor == null && s1.predecessor()== null){
+            if (_successors.contains(s1.pl) && _successor == null && s1.predecessor()== null){
                 if (_sequenceNum != 0 && s1.sequenceNum() != 0){
                     if(_sequenceNum == s1._sequenceNum){
                         return true;

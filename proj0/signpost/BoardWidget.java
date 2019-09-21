@@ -16,7 +16,7 @@ import static signpost.Place.pl;
 import signpost.Model.Sq;
 
 /** A widget that displays a Signpost puzzle.
- *  @author
+ *  @author Eduardo Huerta Mercado
  */
 class BoardWidget extends Pad {
 

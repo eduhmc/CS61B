@@ -96,17 +96,29 @@ class Place {
         // FIXME
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
-                M[i][j][0] = new PlaceList(); //May be wrong//
-                for (int dir = 1; dir <= 8; dir++){
-                    M[i][j][dir] = new PlaceList();
-                    int a = i + dx(dir);
-                    int b = j + dy(dir);
-                    while (a < width && b < height && a >= 0 && b >= 0){
-                        M[i][j][dir].add(pl(a,b)); /* may be wrong */
-                        a += dx(dir);
-                        b += dy(dir);
+                PlaceList total_moves = new PlaceList();
+                //M[i][j][0] = new PlaceList(); //May be wrong//
+                for (int k = 1; k <= 8; k++){
+                    //M[i][j][dir] = new PlaceList();
+                    PlaceList moves = new PlaceList();
+                    for (int testx = 0; testx < width; testx++){
+                        for (int testy = 0; testy < width; testy++){
+                            if (dirOf(i, j, testx, testy) == k){
+                                Place new_place = new Place(testx, testy);
+                                moves.add(new_place);
+                                total_moves.add(new_place);
+                            }
+                        }
+                    //int a = i + dx(dir);
+                    //int b = j + dy(dir);
+                    //while (a < width && b < height && a >= 0 && b >= 0){
+                        //M[i][j][dir].add(pl(a,b)); /* may be wrong */
+                        //a += dx(dir);
+                        //b += dy(dir);
                     }
+                    M[i][j][k] = moves;
                 }
+                M[i][j][0] = total_moves;
 
             }
         }

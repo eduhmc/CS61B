@@ -138,6 +138,22 @@ class PuzzleGenerator implements PuzzleSource {
                 //        squares.  If sq is numbered and can be connected to
                 //        a numbered square, then set nFound to 1 and found
                 //        to that numbered square.
+                for (Place p: sq.successors()) {
+                    Sq a = model.get(p.x, p.y);
+                    if(sq.connectable(a)){
+                        nFound = nFound + 1;
+                        found = a;
+                    }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
+                        if (sq.connectable(a)){
+                            nFound = 1;
+                            found = a;
+                            break;
+                        }
+                    }
+                }
+
+
+
                 if (nFound == 0) {
                     return 0;
                 } else if (nFound == 1) {
@@ -147,6 +163,8 @@ class PuzzleGenerator implements PuzzleSource {
             }
         }
         return result;
+
+
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
@@ -169,6 +187,20 @@ class PuzzleGenerator implements PuzzleSource {
                 //        numbered and one of these connectable predecessors
                 //        is numbered, then set nFound to 1 and found
                 //        to that numbered predecessor.
+                for (Place p: sq.predecessors()) {
+                    Sq a = model.get(p.x, p.y);
+                    if(sq.connectable(a)){
+                        nFound = nFound + 1;
+                        found = a;
+                    }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
+                        if (sq.connectable(a)){
+                            nFound = 1;
+                            found = a;
+                            break;
+                        }
+                    }
+                }
+
                 if (nFound == 0) {
                     return 0;
                 } else if (nFound == 1) {

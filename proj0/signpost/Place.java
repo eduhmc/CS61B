@@ -8,7 +8,7 @@ import static java.lang.Math.max;
 /** An (X, Y) position on a Signpost puzzle board.  We require that
  *  X, Y >= 0.  Each Place object is unique; no other has the same x and y
  *  values.  As a result, "==" may be used for comparisons.
- *  @author eduardohuertamercado
+ *  @author Eduardo Huerta Mercado
  */
 class Place {
 
@@ -40,7 +40,7 @@ class Place {
             Place[][] newPlaces = new Place[s + 1][s + 1];
             for (int i = 0; i < _places.length; i += 1) {
                 System.arraycopy(_places[i], 0, newPlaces[i], 0,
-                                 _places.length);
+                        _places.length);
             }
             _places = newPlaces;
         }
@@ -92,26 +92,24 @@ class Place {
      *  the lists of queen moves in directions 1-8). */
     static PlaceList[][][] successorCells(int width, int height) {
         PlaceList[][][] M = new PlaceList[width][height][9];
-        int lim = Math.max(width, height);
+        int so = Math.max(width, height);
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                PlaceList totalmoves = new PlaceList();
-                for (int k = 1; k <= 8; k++) {
-                    PlaceList moves = new PlaceList();
-                    for (int testx = 0; testx < width; testx++) {
-                        for (int testy = 0; testy < width; testy++) {
-                            if (dirOf(i, j, testx, testy) == k) {
-                                Place newplace = new Place(testx, testy);
-                                moves.add(newplace);
-                                totalmoves.add(newplace);
-                            }
-                        }
+            for (int k = 0; k < height; k++) {
+                M[i][k][0] = new PlaceList();
+                for (int point = 1; point <= 8; point++) {
+                    M[i][k][point] = new PlaceList();
+                    int a = i + dx(point);
+                    int b = k + dy(point);
+                    while (a < width && b < height && a >= 0 && b >= 0) {
+                        M[i][k][point].add(pl(a, b));
+                        M[i][k][0].add(pl(a, b));
+                        a += dx(point);
+                        b += dy(point);
                     }
-                    M[i][j][k] = moves;
                 }
-                M[i][j][0] = totalmoves;
             }
         }
+
         return M;
     }
 

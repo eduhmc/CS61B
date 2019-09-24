@@ -577,29 +577,44 @@ class Model implements Iterable<Model.Sq> {
                 return false;
             }
             int sgroup = s1.group();
-            _unconnected -= 1; this._successor = s1; s1._predecessor = this;
-            if (this._sequenceNum != 0 && s1.sequenceNum() == 0) {
-                Sq add = this; releaseGroup(s1._head._group);
-                while (add._successor != null) {
-                    add._successor._sequenceNum = add._sequenceNum + 1;
-                    add = add._successor;
+            _unconnected -= 1;
+            this._successor = s1;
+            s1._predecessor = this;
+
+
+            if (this._sequenceNum != 0) {
+                if (s1._sequenceNum == 0) {
+                    releaseGroup(s1._head._group);
                 }
-            } else if (s1._sequenceNum != 0 && this.sequenceNum() == 0) {
-                Sq prev = s1; releaseGroup(this._head._group);
-                while (prev._predecessor != null) {
-                    prev._predecessor._sequenceNum = prev._sequenceNum - 1;
-                    prev = prev._predecessor;
+                Sq a = this;
+                while (a._successor != null) {
+                    a._successor._sequenceNum = a._sequenceNum + 1;
+                    a = a._successor;
                 }
-                releaseGroup(this._head._group);
             }
-            Sq z = this;
-            while (z._successor != null) {
-                z._successor._head = this._head; z = z._successor;
+            if (s1._sequenceNum != 0) {
+                if (this._sequenceNum == 0) {
+                    releaseGroup(this._head._group);
+                }
+                Sq b = this;
+                while (b._predecessor != null) {
+                    s1._predecessor._sequenceNum = s1._sequenceNum - 1;
+                    b = b._predecessor;
+                }
             }
+
+            Sq c = this;
+            while (c._successor != null) {
+                c._successor._head = this._head;
+                c = c._successor;
+            }
+
             if (this._sequenceNum == 0 && s1._sequenceNum == 0) {
-                _head._group = joinGroups(this._group, sgroup);
+                this._head._group = joinGroups(this._head._group,
+                        s1._head._group);
             }
             return true;
+
         }
         /** Disconnect me from my current successor, if any. */
         void disconnect() {
@@ -740,5 +755,4 @@ class Model implements Iterable<Model.Sq> {
     private HashSet<Integer> _usedGroups = new HashSet<>();
 
 }
-
 

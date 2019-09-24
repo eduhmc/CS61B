@@ -283,12 +283,12 @@ class Model implements Iterable<Model.Sq> {
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
     private int arrowDirection(int x, int y) {
-        int seq0 = _solution[x][y];
-        for (int a = 0; x < _width; a++) {
-            for (int b = 0; b < _height; b++) {
-                int seq1 = _solution[a][b];
-                if (seq1 == seq0 + 1) {
-                    return dirOf(x, y, a, b);
+        int sol = _solution[x][y];
+        for (int i = 0; x < _width; i++) {
+            for (int j = 0; j < _height; j++) {
+                int seq1 = _solution[i][j];
+                if (seq1 == sol + 1) {
+                    return dirOf(x, y, i, j);
                 }
             }
         }
@@ -550,24 +550,24 @@ class Model implements Iterable<Model.Sq> {
          *    of the same connected sequence.
          */
         boolean connectable(Sq s1) {
-            int checker = 0;
+            int contador = 0;
             if (this.direction() != pl.dirOf(s1.pl)) {
-                checker = 1;
+                contador = 1;
             }
             if (s1.predecessor() != null || this.successor() != null) {
-                checker = 1;
+                contador = 1;
             }
             if (s1.sequenceNum() != 0 && this.sequenceNum() != 0) {
                 if (this.sequenceNum() != s1.sequenceNum() - 1) {
-                    checker = 1;
+                    contador = 1;
                 }
             }
             if (s1.sequenceNum() == 0 && this.sequenceNum() == 0) {
                 if (s1.head() == this.head()) {
-                    checker = 1;
+                    contador = 1;
                 }
             }
-            return checker == 0;
+            return contador == 0;
         }
         /** Connect me to S1, if we are connectable; otherwise do nothing.
          *  Returns true iff we were connectable.  Assumes S1 is in the proper

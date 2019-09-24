@@ -92,19 +92,18 @@ class Place {
      *  the lists of queen moves in directions 1-8). */
     static PlaceList[][][] successorCells(int width, int height) {
         PlaceList[][][] M = new PlaceList[width][height][9];
-        int so = Math.max(width, height);
         for (int i = 0; i < width; i++) {
             for (int k = 0; k < height; k++) {
                 M[i][k][0] = new PlaceList();
                 for (int point = 1; point <= 8; point++) {
                     M[i][k][point] = new PlaceList();
-                    int a = i + dx(point);
-                    int b = k + dy(point);
-                    while (a < width && b < height && a >= 0 && b >= 0) {
-                        M[i][k][point].add(pl(a, b));
-                        M[i][k][0].add(pl(a, b));
-                        a += dx(point);
-                        b += dy(point);
+                    int h = i + dx(point);
+                    int g = k + dy(point);
+                    while (h < width && g < height && h >= 0 && g >= 0) {
+                        M[i][k][point].add(pl(h, g));
+                        M[i][k][0].add(pl(h, g));
+                        h += dx(point);
+                        g += dy(point);
                     }
                 }
             }

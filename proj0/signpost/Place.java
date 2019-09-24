@@ -93,13 +93,10 @@ class Place {
     static PlaceList[][][] successorCells(int width, int height) {
         PlaceList[][][] M = new PlaceList[width][height][9];
         int lim = Math.max(width, height);
-        // FIXME
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
                 PlaceList total_moves = new PlaceList();
-                //M[i][j][0] = new PlaceList(); //May be wrong//
                 for (int k = 1; k <= 8; k++){
-                    //M[i][j][dir] = new PlaceList();
                     PlaceList moves = new PlaceList();
                     for (int testx = 0; testx < width; testx++){
                         for (int testy = 0; testy < width; testy++){
@@ -109,17 +106,10 @@ class Place {
                                 total_moves.add(new_place);
                             }
                         }
-                    //int a = i + dx(dir);
-                    //int b = j + dy(dir);
-                    //while (a < width && b < height && a >= 0 && b >= 0){
-                        //M[i][j][dir].add(pl(a,b)); /* may be wrong */
-                        //a += dx(dir);
-                        //b += dy(dir);
                     }
                     M[i][j][k] = moves;
                 }
                 M[i][j][0] = total_moves;
-
             }
         }
         return M;

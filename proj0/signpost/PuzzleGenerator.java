@@ -8,7 +8,7 @@ import static signpost.Place.PlaceList;
 import static signpost.Utils.*;
 
 /** A creator of random Signpost puzzles.
- *  @author
+ *  @author Eduardo Huerta Mercado
  */
 class PuzzleGenerator implements PuzzleSource {
 
@@ -22,7 +22,6 @@ class PuzzleGenerator implements PuzzleSource {
     public Model getPuzzle(int width, int height, boolean allowFreeEnds) {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
-        // FIXME: Remove the "//" on the following two lines.
         makeSolutionUnique(model);
         model.autoconnect();
         return model;
@@ -52,14 +51,6 @@ class PuzzleGenerator implements PuzzleSource {
         }
         _vals[x0][y0] = 1;
         _vals[x1][y1] = last;
-        // FIXME: Remove the following return statement and uncomment the
-        //        next three lines.
-        //return new int[][] {
-        //   { 14, 9, 8, 1 },
-        //    { 15, 10, 7, 2 },
-        //    { 13, 11, 6, 3 },
-        //    { 16, 12, 5, 4 }
-        //};
         boolean ok = findSolutionPathFrom(x0, y0);
         assert ok;
         return _vals;
@@ -132,28 +123,19 @@ class PuzzleGenerator implements PuzzleSource {
             int nFound;
             nFound = 0;
             if (sq.successor() == null && sq.direction() != 0) {
-                // FIXME: Set nFound to the number of squares in the
-                //        direction sq.direction() from sq that can
-                //        be connected to it and set found to one of those
-                //        squares.  If sq is numbered and can be connected to
-                //        a numbered square, then set nFound to 1 and found
-                //        to that numbered square.
                 for (Place p: sq.successors()) {
                     Sq a = model.get(p.x, p.y);
                     if(sq.connectable(a)){
                         nFound = nFound + 1;
                         found = a;
                     }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
-                        if (sq.connectable(a)){
+                        if (a.connectable(sq)){
                             nFound = 1;
                             found = a;
                             break;
                         }
                     }
                 }
-
-
-
                 if (nFound == 0) {
                     return 0;
                 } else if (nFound == 1) {
@@ -181,26 +163,19 @@ class PuzzleGenerator implements PuzzleSource {
             found = null;
             nFound = 0;
             if (sq.predecessor() == null && sq.sequenceNum() != 1) {
-                // FIXME: Set nFound to the number of squares that are
-                //        possible predecessors of sq and connectable to it,
-                //        and set found to one of those squares.  If sq is
-                //        numbered and one of these connectable predecessors
-                //        is numbered, then set nFound to 1 and found
-                //        to that numbered predecessor.
                 for (Place p: sq.predecessors()) {
                     Sq a = model.get(p.x, p.y);
                     if(sq.connectable(a)){
                         nFound = nFound + 1;
                         found = a;
                     }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
-                        if (sq.connectable(a)){
+                        if (a.connectable(sq)){
                             nFound = 1;
                             found = a;
                             break;
                         }
                     }
                 }
-
                 if (nFound == 0) {
                     return 0;
                 } else if (nFound == 1) {

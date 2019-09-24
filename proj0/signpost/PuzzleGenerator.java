@@ -125,11 +125,12 @@ class PuzzleGenerator implements PuzzleSource {
             if (sq.successor() == null && sq.direction() != 0) {
                 for (Place p: sq.successors()) {
                     Sq a = model.get(p.x, p.y);
-                    if(sq.connectable(a)){
+                    if (sq.connectable(a)) {
                         nFound = nFound + 1;
                         found = a;
-                    }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
-                        if (a.connectable(sq)){
+                    }
+                    if (sq.sequenceNum() != 0 && a.sequenceNum() != 0) {
+                        if (a.connectable(sq)) {
                             nFound = 1;
                             found = a;
                             break;
@@ -165,11 +166,12 @@ class PuzzleGenerator implements PuzzleSource {
             if (sq.predecessor() == null && sq.sequenceNum() != 1) {
                 for (Place p: sq.predecessors()) {
                     Sq a = model.get(p.x, p.y);
-                    if(sq.connectable(a)){
+                    if (sq.connectable(a)) {
                         nFound = nFound + 1;
                         found = a;
-                    }if (sq.sequenceNum() != 0 && a.sequenceNum() != 0){
-                        if (a.connectable(sq)){
+                    }
+                    if (sq.sequenceNum() != 0 && a.sequenceNum() != 0) {
+                        if (a.connectable(sq)) {
                             nFound = 1;
                             found = a;
                             break;

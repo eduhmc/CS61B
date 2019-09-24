@@ -93,23 +93,23 @@ class Place {
     static PlaceList[][][] successorCells(int width, int height) {
         PlaceList[][][] M = new PlaceList[width][height][9];
         int lim = Math.max(width, height);
-        for (int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++){
-                PlaceList total_moves = new PlaceList();
-                for (int k = 1; k <= 8; k++){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                PlaceList totalmoves = new PlaceList();
+                for (int k = 1; k <= 8; k++) {
                     PlaceList moves = new PlaceList();
-                    for (int testx = 0; testx < width; testx++){
-                        for (int testy = 0; testy < width; testy++){
-                            if (dirOf(i, j, testx, testy) == k){
-                                Place new_place = new Place(testx, testy);
-                                moves.add(new_place);
-                                total_moves.add(new_place);
+                    for (int testx = 0; testx < width; testx++) {
+                        for (int testy = 0; testy < width; testy++) {
+                            if (dirOf(i, j, testx, testy) == k) {
+                                Place newplace = new Place(testx, testy);
+                                moves.add(newplace);
+                                totalmoves.add(newplace);
                             }
                         }
                     }
                     M[i][j][k] = moves;
                 }
-                M[i][j][0] = total_moves;
+                M[i][j][0] = totalmoves;
             }
         }
         return M;

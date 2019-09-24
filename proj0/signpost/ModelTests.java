@@ -147,18 +147,6 @@ public class ModelTests {
         model.autoconnect();
         assertTrue("Trivial puzzle should be solved at birth.", model.solved());
     }
-
-    @Test
-    public void successorCellsTest() {
-        Model model = new Model(tr(SOLN1));
-        for (int x = 0; x < model.width(); x++) {
-            for (int y = model.height()-1; y >=0; y--) {
-                System.out.println("Square: "+model.get(x,y).x+", "+model.get(x,y).y + "\t sequence number: " +model.get(x,y).sequenceNum() + "\t" +
-                        "direction: " +model.get(x,y).direction() + "\t successors: " +model.get(x,y).successors() + "\t predecessors: " +model.get(x,y).predecessors());
-            }
-        }
-    }
-
     /* The following array data is written to look on the page like
      * the arrangement of data on the screen, with the first row
      * corresponding to the top row of the puzzle board, etc.  They are

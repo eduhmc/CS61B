@@ -3,12 +3,32 @@ class WeirdListClient {
 
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
-        return null; // TODO: REPLACE THIS LINE
+        return L.map(x -> x + n); // lambda expression lolol
+    }
+    public class SumFunc implements IntUnaryFunction {
+        private int _sum;
+        public SumFunc() {
+            _sum = 0;
+        }
+        public int get_sum() {
+            return _sum;
+        }
+
+        @Override
+        public int apply(int x) {
+            _sum += x;
+            return _sum;
+        }
+        //return null; // TODO: REPLACE THIS LINE
     }
 
     /** Return the sum of all the elements in L. */
     static int sum(WeirdList L) {
-        return 0; // TODO: REPLACE THIS LINE
+        WeirdListClient outer = new WeirdListClient();
+        SumFunc sumF = outer.new SumFunc();
+        L.map(sumF);
+        return sumF.get_sum();
+        //return 0; // TODO: REPLACE THIS LINE
     }
 
     /* IMPORTANT: YOU ARE NOT ALLOWED TO USE RECURSION IN ADD AND SUM

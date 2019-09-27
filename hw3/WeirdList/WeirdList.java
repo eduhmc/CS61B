@@ -1,7 +1,7 @@
 import org.apache.commons.collections.iterators.EmptyListIterator;
 
 /** A WeirdList holds a sequence of integers.
- * @author your name here
+ * @author Eduardo Huerta-Mercado
  */
 public class WeirdList {
     /** The empty sequence of integers. */
@@ -27,13 +27,15 @@ public class WeirdList {
      *  5, 4, and 2, this returns " 5 4 2". */
     @Override
     public String toString() {
-        return ""; // TODO: REPLACE THIS LINE
+        return " " + _head + _tail.toString();
+        //return ""; // TODO: REPLACE THIS LINE
     }
 
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
      *  sequence, and return a WeirdList of the resulting values. */
     public WeirdList map(IntUnaryFunction func) {
-        return null;  // TODO: REPLACE THIS LINE
+        return new WeirdList(func.apply(_head), _tail.map(func));
+        //return null;  // TODO: REPLACE THIS LINE
     }
 
     /*

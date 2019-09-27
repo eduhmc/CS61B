@@ -3,7 +3,7 @@ import utils.Filter;
 
 /** A kind of Filter that lets through every other VALUE element of
  *  its input sequence, starting with the first.
- *  @author Your Name
+ *  @author Eduardo Huerta-Mercado
  */
 class AlternatingFilter<Value> extends Filter<Value> {
 
@@ -11,14 +11,18 @@ class AlternatingFilter<Value> extends Filter<Value> {
      *  value. */
     AlternatingFilter(Iterator<Value> input) {
         super(input); //FIXME?
+
         // FIXME: REPLACE THIS LINE WITH YOUR CODE
     }
 
     @Override
     protected boolean keep() {
-        return false;  // FIXME: REPLACE THIS LINE WITH YOUR CODE
+        other = !other;
+        return !other;
+        //return false;  // FIXME: REPLACE THIS LINE WITH YOUR CODE
     }
 
-    // FIXME: REPLACE THIS LINE WITH YOUR CODE
+    // FIXME: ADD ANY ADDITIONAL FIELDS REQUIRED HERE
+    private boolean other = true;
 
 }

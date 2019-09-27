@@ -1,18 +1,25 @@
+import org.apache.commons.collections.iterators.EmptyListIterator;
+
 /** A WeirdList holds a sequence of integers.
  * @author your name here
  */
 public class WeirdList {
     /** The empty sequence of integers. */
-    public static final WeirdList EMPTY =
-        null;  // TODO: REPLACE THIS LINE
-
+    public static final WeirdList EMPTY = new EmptyList();
+        //null;  // TODO: REPLACE THIS LINE
+        private int _head;
+        private WeirdList _tail;
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
-  public WeirdList(int head, WeirdList tail) { /* TODO: FILL IN */ }
+  public WeirdList(int head, WeirdList tail) {
+      _head = head;
+      _tail = tail;
+      /* TODO: FILL IN */ }
 
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
     public int length() {
-        return 0;  // TODO: REPLACE THIS LINE
+        return 1 + _tail.length();
+        //return 0;  // TODO: REPLACE THIS LINE
     }
 
     /** Return a string containing my contents as a sequence of numerals
@@ -59,8 +66,23 @@ public class WeirdList {
      * }
      * You are NOT required to do this, just an extra thing you can
      * do if you want to avoid making a separate .java file. */
-
+    public static class EmptyList extends WeirdList {
+        public EmptyList() {
+            super(0, null);
+        }
+        public int length() {
+            return 0;
+        }
+        public WeirdList map(IntUnaryFunction func) {
+            return new EmptyList();
+        }
+        public String toString() {
+            return "";
+        }
+    }
 }
+
+
 
 /*
  * Hint: The first non-trivial thing you'll probably do to WeirdList

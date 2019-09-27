@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /** Exercises for Lab 5.
- *  @author Your Name
+ *  @author Eduardo Huerta Mercado
  */
 public class FilterClient {
 
@@ -64,6 +64,7 @@ public class FilterClient {
     static class Even implements Predicate<Integer> {
         @Override
         public boolean test(Integer x) {
+
             return false; // FIXME: REPLACE THIS LINE WITH YOUR CODE
         }
     }

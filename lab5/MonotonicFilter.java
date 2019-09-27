@@ -5,7 +5,7 @@ import utils.Filter;
  *  that are larger than all the preceding values to go through the
  *  Filter.  So, if its input delivers (1, 2, 3, 3, 2, 1, 5), then it
  *  will produce (1, 2, 3, 5).
- *  @author You
+ *  @author Eduardo Huerta-Mercado
  */
 class MonotonicFilter<Value extends Comparable<Value>> extends Filter<Value> {
 
@@ -18,9 +18,24 @@ class MonotonicFilter<Value extends Comparable<Value>> extends Filter<Value> {
 
     @Override
     protected boolean keep() {
-        return false;  // FIXME: REPLACE THIS LINE WITH YOUR CODE
+        Value future = candidateNext();
+        if (!start) {
+            start = true;
+            current = future;
+            return true;
+        } else {
+            if (future.compareTo(current) > 0) {
+                current = future;
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
-    
-    // FIXME: ADD ANY ADDITIONAL FIELDS REQUIRED HERE
 
+    /* Current stores current value; */
+    private Value current;
+
+    /* record if has started the filter or not*/
+    private boolean start = false;
 }

@@ -3,7 +3,7 @@ import utils.Filter;
 
 /** A kind of Filter that lets all the VALUE elements of its input sequence
  *  through.
- *  @author You
+ *  @author Eduardo Huerta-Mercado
  */
 class TrivialFilter<Value> extends Filter<Value> {
 
@@ -15,6 +15,7 @@ class TrivialFilter<Value> extends Filter<Value> {
 
     @Override
     protected boolean keep() {
-        return false;    // FIXME: REPLACE THIS LINE WITH YOUR CODE
+
+        return true;    // FIXME: REPLACE THIS LINE WITH YOUR CODE
     }
 }

@@ -7,18 +7,19 @@ public class WeirdList {
     /** The empty sequence of integers. */
     public static final WeirdList EMPTY = new EmptyList();
         //null;  // TODO: REPLACE THIS LINE
-        private int _head;
-        private WeirdList _tail;
+        private WeirdList cola;
+        private int cabeza;
+
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
   public WeirdList(int head, WeirdList tail) {
-      _head = head;
-      _tail = tail;
+      cabeza = head;
+      cola = tail;
       /* TODO: FILL IN */ }
 
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
     public int length() {
-        return 1 + _tail.length();
+        return 1 + cola.length();
         //return 0;  // TODO: REPLACE THIS LINE
     }
 
@@ -27,14 +28,14 @@ public class WeirdList {
      *  5, 4, and 2, this returns " 5 4 2". */
     @Override
     public String toString() {
-        return " " + _head + _tail.toString();
+        return " " + cabeza + cola.toString();
         //return ""; // TODO: REPLACE THIS LINE
     }
 
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
      *  sequence, and return a WeirdList of the resulting values. */
     public WeirdList map(IntUnaryFunction func) {
-        return new WeirdList(func.apply(_head), _tail.map(func));
+        return new WeirdList(func.apply(cabeza), cola.map(func));
         //return null;  // TODO: REPLACE THIS LINE
     }
 

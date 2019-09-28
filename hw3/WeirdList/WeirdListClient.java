@@ -3,7 +3,7 @@ class WeirdListClient {
 
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
-        return L.map(x -> x + n); // lambda expression lolol
+        return L.map(x -> x + n);
     }
     public class SumFunc implements IntUnaryFunction {
         private int _sum;

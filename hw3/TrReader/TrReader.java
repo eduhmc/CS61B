@@ -3,7 +3,7 @@ import java.io.IOException;
 
 /** Translating Reader: a stream that is a translation of an
  *  existing reader.
- *  @author your name here
+ *  @author Eduardo Huerta
  */
 public class TrReader extends Reader {
     /**

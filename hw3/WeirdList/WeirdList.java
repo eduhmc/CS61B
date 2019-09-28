@@ -1,4 +1,4 @@
-import org.apache.commons.collections.iterators.EmptyListIterator;
+//import org.apache.commons.collections.iterators.EmptyListIterator;
 
 /** A WeirdList holds a sequence of integers.
  * @author Eduardo Huerta-Mercado

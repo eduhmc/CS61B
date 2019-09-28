@@ -35,7 +35,6 @@ class MonotonicFilter<Value extends Comparable<Value>> extends Filter<Value> {
 
     /* Current stores current value; */
     private Value current;
-
     /* record if has started the filter or not*/
     private boolean start = false;
 }

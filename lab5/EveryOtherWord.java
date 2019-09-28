@@ -22,11 +22,11 @@ public class EveryOtherWord {
       */
 
     public static Iterable<String> everyOtherWord(List<String> L) {
-        Set<String> new_set = new HashSet<>();
-        for(int i = 0; i < L.size(); i+= 2 ){
-            new_set.add(L.get(i));
+        Set<String> setNuevo = new HashSet<>();
+        for(int x = 0; x < L.size(); x += 2 ){
+            setNuevo.add(L.get(x));
         }
-        return new_set;
+        return setNuevo;
         //return null; // FIXME: REPLACE THIS LINE WITH YOUR CODE
     }
 

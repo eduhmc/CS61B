@@ -64,7 +64,6 @@ public class FilterClient {
     static class Even implements Predicate<Integer> {
         @Override
         public boolean test(Integer x) {
-
             return false; // FIXME: REPLACE THIS LINE WITH YOUR CODE
         }
     }

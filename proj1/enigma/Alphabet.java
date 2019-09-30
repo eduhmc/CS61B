@@ -10,7 +10,6 @@ class Alphabet {
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
         _chars = chars;
-
         // FIXME
     }
 
@@ -28,28 +27,40 @@ class Alphabet {
     /** Returns true if preprocess(CH) is in this alphabet. */
     boolean contains(char ch) {
         for(int i = 0; i < _chars.length(); i++){
-            if(_chars.charAt(i) == C)
+            String c = "C";
+            if(c.equals(_chars.charAt(i))){
                 for(int j = 0; j < _chars.length(); j++){
-                    if(_chars.charAt(j) == H){
+                    String h = "H";
+                    if(h.equals(_chars.charAt(j))){
                         return true;
-                    }
                 }
+                    }
+
         }
         return false;
         //return 'A' <= ch && ch <= 'Z'; // FIXME
+        }
+        return false;
     }
 
     /** Returns character number INDEX in the alphabet, where
      *  0 <= INDEX < size(). */
     char toChar(int index) {
-        return _chars.charAt(index);
-        //return (char) ('A' + index); // FIXME
+        if (index < 0 || index >= size()) {
+            //throw error ("character index out of range");
+        }
+        return _chars.charAt(index); // FIXME
     }
 
-    /** Returns the index of character preprocess(CH), which must be in
-     *  the alphabet. This is the inverse of toChar(). */
-    int toInt(char ch) {
-        return ch - 'A'; // FIXME
+    /** Returns the index of character C, which must be in the alphabet. */
+    int toInt(char c) {
+        for (int i = 0; i < size(); i++) {
+            if (_chars.charAt(i) == c) {
+                return i;
+            }
+        }
+        return 0;
+        //throw error("character not in alphabet"); // FIXME
     }
 
 }

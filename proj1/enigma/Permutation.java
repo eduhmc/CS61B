@@ -59,8 +59,6 @@ class Permutation {
             }
         }
         return _alphabet.toInt(pstring);
-
-
         //return 0;  // FIXME
     }
 
@@ -73,7 +71,8 @@ class Permutation {
             if (_ciclos.get(i).indexOf(cstring) != -1){
                 index2 = _ciclos.get(i).indexOf(cstring);
                 str2 = _ciclos.get(i);
-                return _alphabet.toInt(str2.charAt((index2 - 1) % str2.length()));
+                //return _alphabet.toInt(str2.charAt(wrap(index2 - 1)));
+                return _alphabet.toInt(str2.charAt(wrap_cycle((index2 - 1), str2.length())));
             }
         }
         return _alphabet.toInt(cstring);
@@ -138,11 +137,18 @@ class Permutation {
         }
         return final_array;
     }
+    final int wrap_cycle(int p, int cycle_size) {
+        int r = p % cycle_size;
+        if (r < 0) {
+            r += cycle_size;
+        }
+        return r;
+    }
 
 
     public static void main(String[] args) {
         ArrayList<String> a = StringToArray("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
-        System.out.println();
+        System.out.println(a);
     }
 
 

@@ -71,16 +71,20 @@ public class WeirdList {
      * do if you want to avoid making a separate .java file. */
     public static class EmptyList extends WeirdList {
         public EmptyList() {
+
             super(0, null);
         }
         public int length() {
+
             return 0;
         }
         public WeirdList map(IntUnaryFunction func) {
+
             return new EmptyList();
         }
         public String toString() {
-            return "";
+
+             return "";
         }
     }
 }

@@ -31,6 +31,7 @@ public class ReadInts {
         Scanner s = new Scanner(input);
         while (s.hasNext()) {
             int nextInt = s.nextInt();
+            L.add(nextInt);
             // FIXME
         }
         return L;
@@ -45,6 +46,16 @@ public class ReadInts {
      *  on Scanners. */
     public static List<Integer> smartReadInts(String input) {
         // FIXME
-        return null;
+        // return null;
+        ArrayList<Integer> L = new ArrayList<>();
+        Scanner s = new Scanner(input);
+        while (s.hasNext()) {
+            if (s.hasNextInt()){
+                L.add(s.nextInt());
+            } else {
+            s.next();
+        }
+        }
+        return L;
     }
 }

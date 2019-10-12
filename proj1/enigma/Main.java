@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static enigma.EnigmaException.*;
 
 /** Enigma simulator.
- *  @author
+ *  @author Eduardo Huerta-Mercado
  */
 public final class Main {
 
@@ -78,6 +78,37 @@ public final class Main {
      *  results to _output. */
     private void process() {
         // FIXME
+        _machine = readConfig();
+        if (!_input.hasNextLine()) {
+            throw new EnigmaException("Invalid Input.");
+        }
+        String line = _input.nextLine();
+        if (!line.contains("*")) {
+            throw new EnigmaException("Invalid Configuration.");
+        }
+        while (_input.hasNextLine()) {
+            String setting = line;
+            String rtn;
+            setUp(_machine, setting);
+            if (!_input.hasNextLine()) {
+                throw new EnigmaException("Invalid Input.");
+            }
+            line = _input.nextLine().toUpperCase();
+            while (!line.contains("*")) {
+                String lineConv = line.replaceAll(" ", "");
+                if (line.equals("")) {
+                    _output.println();
+                } else {
+                    rtn = _machine.convert(lineConv);
+                    printMessageLine(rtn);
+                }
+                if (!_input.hasNextLine()) {
+                    line = "*";
+                } else {
+                    line = (_input.nextLine()).toUpperCase();
+                }
+            }
+        }
     }
 
     /** Return an Enigma machine configured from the contents of configuration
@@ -124,4 +155,34 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
+
+    /** The Machine we are working on (additional field). */
+    private Machine _machine;
+
+    /** Number of Rotors (additional field). */
+    private int _numRotors;
+
+    /** Number of Pawls (additional field). */
+    private int _numPawls;
+
+    /** Collections of all reflectors. */
+    private ArrayList<String> _reflectors = new ArrayList<String>();
+
+    /** Collection of all moving rotors. */
+    private ArrayList<String> _moving = new ArrayList<String>();
+
+    /** Collection of all fixed rotors. */
+    private ArrayList<String> _fixed = new ArrayList<String>();
+
+    /** Length of configuration file. */
+    private int _lenConfig;
+
+    /** Temporary name. */
+    private String _tempName;
+
+    /** _rotorName. */
+    private String _rotorName;
+
+    /** rotorType. */
+    private String _rotorTypeNotch;
 }

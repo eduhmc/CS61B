@@ -39,6 +39,13 @@ class Permutation {
         }
         return r;
     }
+    int wrap_cycle(int p, int cycle_size) {
+        int r = p % cycle_size;
+        if (r < 0) {
+            r += cycle_size;
+        }
+        return r;
+    }
 
     /** Returns the size of the alphabet I permute. */
     int size() {
@@ -137,13 +144,7 @@ class Permutation {
         }
         return final_array;
     }
-    final int wrap_cycle(int p, int cycle_size) {
-        int r = p % cycle_size;
-        if (r < 0) {
-            r += cycle_size;
-        }
-        return r;
-    }
+
 
 
     public static void main(String[] args) {

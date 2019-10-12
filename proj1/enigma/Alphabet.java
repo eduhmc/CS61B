@@ -60,7 +60,7 @@ class Alphabet {
             }
         }
         return 0;
-        //throw error("character not in alphabet"); // FIXME
+        //throw  new error("character not in alphabet"); // FIXME
     }
 
 }

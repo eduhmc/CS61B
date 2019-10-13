@@ -219,9 +219,9 @@ public class GraphSorters extends JPanel {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                int ntrials = 0;
-                int by = 0;
-                int nrepeats = 0;
+                int ntrials = 1;
+                int by = 1;
+                int nrepeats = 25;
                 if(args.length == 0 ) {
                     ntrials = 50;
                     by = 100;

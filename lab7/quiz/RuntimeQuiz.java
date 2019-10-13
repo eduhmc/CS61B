@@ -19,8 +19,8 @@ public class RuntimeQuiz {
      * big omega, big O, and big theta runtimes in terms on N where N is 
      * the length of the input array.
      */
-    public static Runtime f1_omega_runtime;
-    public static Runtime f1_o_runtime ;
+    public static Runtime f1_omega_runtime = Runtime.LINEAR;
+    public static Runtime f1_o_runtime = Runtime.LINEAR ;
     public static Runtime f1_theta_runtime = Runtime.LINEAR;
     public void f1(int[] array) {
         for (int i = 0; i < array.length; i++) {
@@ -30,8 +30,8 @@ public class RuntimeQuiz {
         }
     }
 
-    public static Runtime f2_omega_runtime;
-    public static Runtime f2_o_runtime;
+    public static Runtime f2_omega_runtime = Runtime.QUADRATIC;
+    public static Runtime f2_o_runtime = Runtime.QUADRATIC;
     public static Runtime f2_theta_runtime = Runtime.QUADRATIC;
     public int f2(int n) {
         if (n <= 1) return n;
@@ -39,8 +39,8 @@ public class RuntimeQuiz {
         return n + n * f2(n - 1) + n * n * f2(1);
     }
 
-    public static Runtime f3_omega_runtime;
-    public static Runtime f3_o_runtime;
+    public static Runtime f3_omega_runtime = Runtime.LINEAR;
+    public static Runtime f3_o_runtime = Runtime.LINEAR;
     public static Runtime f3_theta_runtime = Runtime.LINEAR;
     /* When f3 is first called, start will be 0 and end will be the length of the array - 1 */
     public int f3(char[] array, int start, int end) {
@@ -49,8 +49,8 @@ public class RuntimeQuiz {
         return f3(array, start, mid) + f3(array, mid + 1, end);
     }
 
-    public static Runtime f4_omega_runtime;
-    public static Runtime f4_o_runtime;
+    public static Runtime f4_omega_runtime = Runtime.LINEARITHMIC;
+    public static Runtime f4_o_runtime = Runtime.LINEARITHMIC;
     public static Runtime f4_theta_runtime = Runtime.LINEARITHMIC;
     /* When f4 is first called, start will be 0 and end will be the length of the array - 1 */
     public int f4(char[] array, int start, int end) {
@@ -63,8 +63,8 @@ public class RuntimeQuiz {
         return counter + f4(array, start, mid) + f4(array, mid + 1, end);
     }
 
-    public static Runtime f5_omega_runtime;
-    public static Runtime f5_o_runtime;
+    public static Runtime f5_omega_runtime = Runtime.LOG_N;
+    public static Runtime f5_o_runtime = Runtime.LOG_N;
     public static Runtime f5_theta_runtime = Runtime.LOG_N;
     public void f5(int n) {
         int[] array = {1, 2, 3};
@@ -74,7 +74,7 @@ public class RuntimeQuiz {
         }
     }
 
-    public static Runtime f6_omega_runtime;
+    public static Runtime f6_omega_runtime = Runtime.LOG_N;
     public static Runtime f6_o_runtime = Runtime.LINEAR;
     public static Runtime f6_theta_runtime;
     public void f6(int[] array) {

@@ -76,7 +76,7 @@ public class RuntimeQuiz {
 
     public static Runtime f6_omega_runtime = Runtime.CONSTANT;
     public static Runtime f6_o_runtime = Runtime.LINEAR;
-    public static Runtime f6_theta_runtime = Runtime.LINEAR;
+    public static Runtime f6_theta_runtime = Runtime.LOG_N;
     public void f6(int[] array) {
         for (int i = 1; i < array.length; i++) {
             if (array[i] == array[i-1]) {

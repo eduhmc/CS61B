@@ -2,6 +2,7 @@ package enigma;
 
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.HashSet;
 
 import static enigma.EnigmaException.*;
 
@@ -84,7 +85,32 @@ class Machine {
      *  the machine. */
     int convert(int c) {
 
-        return 0; // FIXME
+        //return 0; // FIXME
+        if (_plugboard != null) {
+            c = _plugboard.permute(c);
+        }
+        HashSet<Integer> check = new HashSet<>();
+        for (int i = _rotors.length - 1; i > 0; i -= 1) {
+            if (_rotors[i - 1].rotates() && (_rotors[i].atNotch())) {
+                check.add(i);
+                check.add(i - 1);
+            }
+        }
+        check.add(_rotors.length - 1);
+        for (int r : check) {
+            _rotors[r].advance();
+        }
+        for (int x = _rotors.length - 1; x >= 0; x -= 1) {
+            c = _rotors[x].convertForward(c);
+        }
+        for (int k = 1; k < _numRotors; k += 1) {
+            c = _rotors[k].convertBackward(c);
+        }
+        if (_plugboard != null) {
+            c = _plugboard.permute(c);
+        }
+        return c;
+
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of

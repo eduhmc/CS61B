@@ -17,7 +17,7 @@ class Permutation {
      *  Whitespace is ignored. */
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
-        _ciclos = StringToArray(cycles);
+        _ciclos = stringtoarray(cycles);
     }
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
@@ -32,10 +32,14 @@ class Permutation {
         }
         return r;
     }
-    int wrap_cycle(int p, int cycle_size) {
-        int r = p % cycle_size;
+    /** Return the value of P modulo the size of size.
+     * @param size describing size
+     * @return int 
+     */
+    int wrap2(int p, int size) {
+        int r = p % size;
         if (r < 0) {
-            r += cycle_size;
+            r += size;
         }
         return r;
     }
@@ -50,8 +54,8 @@ class Permutation {
     int permute(int p) {
         int preal = wrap(p); char pstring = _alphabet.toChar(preal);
         String str = ""; int index = 0;
-        for (int i = 0; i < _ciclos.size(); i++){
-            if (_ciclos.get(i).indexOf(pstring) != -1){
+        for (int i = 0; i < _ciclos.size(); i++) {
+            if (_ciclos.get(i).indexOf(pstring) != -1) {
                 index = _ciclos.get(i).indexOf(pstring);
                 str = _ciclos.get(i);
                 return _alphabet.toInt(str.charAt((index + 1) % str.length()));
@@ -65,12 +69,11 @@ class Permutation {
     int invert(int c) {
         int creal = wrap(c); char cstring = _alphabet.toChar(creal);
         String str2 = ""; int index2 = 0;
-        for (int i = 0; i < _ciclos.size(); i++){
-            if (_ciclos.get(i).indexOf(cstring) != -1){
+        for (int i = 0; i < _ciclos.size(); i++) {
+            if (_ciclos.get(i).indexOf(cstring) != -1) {
                 index2 = _ciclos.get(i).indexOf(cstring);
                 str2 = _ciclos.get(i);
-                //return _alphabet.toInt(str2.charAt(wrap(index2 - 1)));
-                return _alphabet.toInt(str2.charAt(wrap_cycle((index2 - 1), str2.length())));
+                return _alphabet.toInt(str2.charAt(wrap2((index2 - 1), str2.length())));
             }
         }
         return _alphabet.toInt(cstring);
@@ -109,31 +112,22 @@ class Permutation {
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
-
+    /** ArrayList of the cycles. */
     private ArrayList<String> _ciclos;
-
-    static ArrayList<String> StringToArray(String cycles){
-        ArrayList<String> final_array = new ArrayList<>();
-        int start_location = 0;
-        for (int i = 0; i < cycles.length(); i++){
-            char open_paren = '(';
-            char close_paren = ')';
-            if (cycles.charAt(i) == open_paren){
-                start_location = i + 1;
+    /** ArrayList of the cycles. */
+    static ArrayList<String> stringtoarray(String cycles) {
+        ArrayList<String> finalarray = new ArrayList<>();
+        int startlocation = 0;
+        for (int i = 0; i < cycles.length(); i++) {
+            char openparen = '(';
+            char closeparen = ')';
+            if (cycles.charAt(i) == openparen) {
+                startlocation = i + 1;
             }
-            if (cycles.charAt(i) == close_paren){
-                final_array.add(cycles.substring(start_location, i));
+            if (cycles.charAt(i) == closeparen) {
+                finalarray.add(cycles.substring(startlocation, i));
             }
         }
-        return final_array;
+        return finalarray;
     }
-
-
-
-    public static void main(String[] args) {
-        ArrayList<String> a = StringToArray("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
-        System.out.println(a);
-    }
-
-
 }

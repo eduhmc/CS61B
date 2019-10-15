@@ -26,21 +26,7 @@ class Alphabet {
 
     /** Returns true if preprocess(CH) is in this alphabet. */
     boolean contains(char ch) {
-        for(int i = 0; i < _chars.length(); i++){
-            String c = "C";
-            if(c.equals(_chars.charAt(i))){
-                for(int j = 0; j < _chars.length(); j++){
-                    String h = "H";
-                    if(h.equals(_chars.charAt(j))){
-                        return true;
-                }
-                    }
-
-        }
-        return false;
-        //return 'A' <= ch && ch <= 'Z'; // FIXME
-        }
-        return false;
+        return _chars.indexOf(ch) != -1;
     }
 
     /** Returns character number INDEX in the alphabet, where

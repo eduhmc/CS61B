@@ -18,19 +18,12 @@ class Permutation {
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
         _ciclos = StringToArray(cycles);
-
-        // FIXME
     }
-
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
     private void addCycle(String cycle) {
         boolean x = true;
-
-        // FIXME
         }
-
-
     /** Return the value of P modulo the size of this permutation. */
     final int wrap(int p) {
         int r = p % size();
@@ -50,7 +43,6 @@ class Permutation {
     /** Returns the size of the alphabet I permute. */
     int size() {
         return _alphabet.size();
-        //return 0; // FIXME
     }
 
     /** Return the result of applying this permutation to P modulo the
@@ -66,7 +58,6 @@ class Permutation {
             }
         }
         return _alphabet.toInt(pstring);
-        //return 0;  // FIXME
     }
 
     /** Return the result of applying the inverse of this permutation
@@ -83,8 +74,6 @@ class Permutation {
             }
         }
         return _alphabet.toInt(cstring);
-
-        //return 0;  // FIXME
     }
 
     /** Return the result of applying this permutation to the index of P
@@ -93,8 +82,6 @@ class Permutation {
         int inchar = _alphabet.toInt(p);
         int sol = permute(inchar);
         return _alphabet.toChar(sol);
-
-        // return 0;  // FIXME
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
@@ -102,8 +89,6 @@ class Permutation {
         int inchar2 = _alphabet.toInt(c);
         int sol2 = invert(inchar2);
         return _alphabet.toChar(sol2);
-
-        //return 0;  // FIXME
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -120,13 +105,11 @@ class Permutation {
             contador = contador + _ciclos.get(i).length();
         }
         return contador == _alphabet.size();
-        //return true;  // FIXME
     }
 
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
     private ArrayList<String> _ciclos;
 
     static ArrayList<String> StringToArray(String cycles){

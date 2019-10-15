@@ -42,32 +42,54 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        Object[] tempAry = _allRotors.toArray();
-        if (_rotors.length != numRotors()) {
-            throw new EnigmaException("Invalid ROTORS");
-        }
-        for (int i = 0; i < rotors.length; i += 1) {
-            for (int j = 0; j < tempAry.length; j += 1) {
-                if ((rotors[i]).equals(((Rotor) tempAry[j]).name())) {
-                    _rotors[i] = (Rotor) tempAry[j];
+        //Object[] tempAry = _allRotors.toArray();
+        //if (_rotors.length != numRotors()) {
+        //    throw new EnigmaException("Invalid ROTORS");
+        //}
+        //for (int i = 0; i < rotors.length; i += 1) {
+        //    for (int j = 0; j < tempAry.length; j += 1) {
+        //        if ((rotors[i]).equals(((Rotor) tempAry[j]).name())) {
+        //            _rotors[i] = (Rotor) tempAry[j];
+        //        }
+        //    }
+        //}
+        // FIXME
+        for (int i = 0; i < rotors.length; i++){
+            for(Rotor r: _allRotors){
+                if (("Rotor " + r.name()).equals(rotors[i])){
+                    _rotors[i] = r;
+                    _rotors[i].set(0);
+
+
                 }
+
             }
         }
-        // FIXME
     }
 
     /** Set my rotors according to SETTING, which must be a string of
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        if (setting.length() != numRotors() - 1) {
-            throw new EnigmaException("Invalid Setting");
+        //if (setting.length() != numRotors() - 1) {
+        //    throw new EnigmaException("Invalid Setting");
+        //}
+        //for (int i = 1; i < numRotors(); i += 1) {
+        //   if (!_alphabet.contains(setting.charAt(i - 1))) {
+        //        //System.out.println(setting);
+        //        //System.out.println(setting.charAt(i-1));
+        //        throw new EnigmaException("Initial positions not specified");
+        //    }
+        //    _rotors[i].set(setting.charAt(i - 1));
+        //}
+        int myRotorIndex = _rotors.length -1;
+
+        for (Rotor i : _rotors) {
+            System.out.println(i);
         }
-        for (int i = 1; i < numRotors(); i += 1) {
-            if (!_alphabet.contains(setting.charAt(i - 1))) {
-                throw new EnigmaException("Initial positions not specified");
-            }
-            _rotors[i].set(setting.charAt(i - 1));
+        for (int i = setting.length() -1; i >= setting.length() - numPawls(); i -= 1 ){
+            _rotors[myRotorIndex].set(setting.charAt(i));
+            myRotorIndex -=1;
         }
 
         // FIXME
@@ -145,4 +167,16 @@ class Machine {
     private Rotor[] _rotors;
     /** PLUGBOARD of the class. */
     private Permutation _plugboard;
+
+    String settings() {
+        String settingString = "";
+        for (Rotor r: _rotors) {
+//            System.out.println("Rotor name: " + r + " | " + "r.setting: " + r.setting());
+            settingString = settingString + _alphabet.toChar(r.setting());
+        }
+        return settingString;
+    }
+
+
 }
+

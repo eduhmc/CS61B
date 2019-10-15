@@ -72,4 +72,5 @@ public class PermutationTest {
         assertEquals(p.permute('J'), 'C');
     }
 
+
 }

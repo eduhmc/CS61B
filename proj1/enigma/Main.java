@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -78,34 +79,36 @@ public final class Main {
      *  results to _output. */
     private void process() {
         // FIXME
-        _machine = readConfig();
-        if (!_input.hasNextLine()) {
-            throw new EnigmaException("Invalid Input.");
-        }
-        String line = _input.nextLine();
-        if (!line.contains("*")) {
-            throw new EnigmaException("Invalid Configuration.");
-        }
-        while (_input.hasNextLine()) {
-            String setting = line;
-            String rtn;
-            setUp(_machine, setting);
-            if (!_input.hasNextLine()) {
-                throw new EnigmaException("Invalid Input.");
+        Machine currentMachine = readConfig();
+        String tempFirstString = _input.nextLine();
+        String compressedMessage = "";
+
+        while (_input.hasNext()) {
+            String settingLine = tempFirstString;
+            if (settingLine.charAt(0) != '*'){
+                System.out.println("D'ARVIT SOMETHING'S WRONG!!!");
             }
-            line = _input.nextLine().toUpperCase();
-            while (!line.contains("*")) {
-                String lineConv = line.replaceAll(" ", "");
-                if (line.equals("")) {
-                    _output.println();
-                } else {
-                    rtn = _machine.convert(lineConv);
-                    printMessageLine(rtn);
+            setUp(currentMachine, settingLine);
+            tempFirstString = _input.nextLine();
+
+            while (tempFirstString.charAt(0) != '*'){
+                String trTempFirstString = "";
+                Scanner tempFirstStringScanner = new Scanner(tempFirstString);
+                while ((tempFirstStringScanner.hasNext())){
+                    trTempFirstString = trTempFirstString + tempFirstStringScanner.next();
                 }
-                if (!_input.hasNextLine()) {
-                    line = "*";
-                } else {
-                    line = (_input.nextLine()).toUpperCase();
+                String returnString = currentMachine.convert(trTempFirstString);
+                for (int i = 1; i <= returnString.length(); i++){
+                    _output.append(returnString.charAt(i - 1));
+                    if ( i % 5 == 0){
+                        _output.append(' ');
+                    }
+                }
+                _output.append("\r\n");
+                if (_input.hasNext()){
+                    tempFirstString = _input.nextLine();
+                } else{
+                    break;
                 }
             }
         }
@@ -114,35 +117,20 @@ public final class Main {
     /** Return an Enigma machine configured from the contents of configuration
      *  file _config. */
     private Machine readConfig() {
-        //* try {
             // FIXME
-         //   _alphabet = new Alphabet();
-        //    return new Machine(_alphabet, 2, 1, null);
-        //} catch (NoSuchElementException excp) {
-        //    throw error("configuration file truncated");
-        // }
-        try {
-            String alphabet = _config.next();
-            if (alphabet.contains("(") || alphabet.contains(")") || alphabet.contains("*")) {
-                throw new EnigmaException("Wrong config format");
-            }
-            _alphabet = new Alphabet(alphabet);
 
-            if (!_config.hasNextInt()) {
-                throw new EnigmaException("Wrong config format");
+        try {
+            _alphabet = new Alphabet(_config.nextLine());
+            _numRotors = _config.nextInt();
+            _numPawls  = _config.nextInt();
+
+            LinkedList<Rotor> allRotors = new LinkedList<>();
+            tempFirstString = _config.next();
+            while (_config.hasNext()){
+                allRotors.add(readRotor());
             }
-            int numRotors = _config.nextInt();
-            if (!_config.hasNextInt()) {
-                throw new EnigmaException("Wrong config format");
-            }
-            int pawls = _config.nextInt();
-            temp = (_config.next()).toUpperCase();
-            while (_config.hasNext()) {
-                name = temp;
-                notches = (_config.next()).toUpperCase();
-                _allTheRotors.add(readRotor());
-            }
-            return new Machine(_alphabet, numRotors, pawls, _allTheRotors);
+            return new Machine(_alphabet, _numRotors, _numPawls, allRotors);
+
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
@@ -151,41 +139,35 @@ public final class Main {
 
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
-        //try {
-         //   return null; // FIXME
-        //} catch (NoSuchElementException excp) {
-        //    throw error("bad rotor description");
-        //}
+        // FIXME
+        String tempPermutations = "";
+        String rotorName = "";
+        String rotorNotches = "";
+
         try {
-            String cycles = "";
-            _tempName = (_config.next()).toUpperCase();
-            while (_tempName.contains("(") && _config.hasNext()) {
-                if (!_tempName.contains(")")) {
-                    throw new EnigmaException("Bad config.");
+            rotorName = tempFirstString;
+            tempFirstString = _config.next();
+            rotorNotches = tempFirstString;
+            tempFirstString = _config.next();
+
+            while (tempFirstString.charAt(0) == '('){
+                tempPermutations = tempPermutations + tempFirstString;
+                if (!_config.hasNext()){
+                    break;
                 }
-                cycles = cycles.concat(_tempName + " ");
-                _tempName = (_config.next()).toUpperCase();
+                tempFirstString = _config.next();
             }
-            if (!_config.hasNext()) {
-                cycles = cycles.concat(_tempName + " ");
+            if (rotorNotches.charAt(0) == 'M'){
+                return new MovingRotor(rotorName, new Permutation(tempPermutations, _alphabet), rotorNotches.substring(1));
+            } else if (rotorNotches.charAt(0) == 'N'){
+                return new FixedRotor(rotorName, new Permutation(tempPermutations, _alphabet));
+            } else if (rotorNotches.charAt(0) == 'R'){
+                return new Reflector(rotorName, new Permutation(tempPermutations, _alphabet));
+            }else{
+                System.out.println("mal mal mal");
             }
-            Permutation perm = new Permutation(cycles, _alphabet);
-            char rotorType = _rotorTypeNotch.charAt(0);
-            String notches;
-            if (rotorType == 'M') {
-                notches = _rotorTypeNotch.substring(1);
-                if (notches == null) {
-                    throw new EnigmaException("Invalid Notches for Moving");
-                } else {
-                    return new MovingRotor(_rotorName, perm, notches);
-                }
-            } else if (rotorType == 'R') {
-                return new Reflector(_rotorName, perm);
-            } else if (rotorType == 'N') {
-                return new FixedRotor(_rotorName, perm);
-            } else {
-                throw new EnigmaException("Invalid Rotor Type");
-            }
+            return null;
+
 
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
@@ -196,63 +178,36 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         // FIXME
-        String[] settingSplit = settings.split(" ");
-        if (settingSplit.length - 2 < _numRotors) {
-            throw new EnigmaException("Invalid rotor numbers.");
-        }
-        String[] rotors = new String[_numRotors];
-        System.arraycopy(settingSplit, 1, rotors, 0, _numRotors);
+        String[] insertedRotos = new String[_numRotors];
+        Scanner settingLineScanner = new Scanner(settings);
+        String plugboardString;
 
-        for (int i = 0; i < rotors.length - 2; i += 1) {
-            for (int j = i + 1; j < rotors.length - 1; j += 1) {
-                if (rotors[i].equals(rotors[j])) {
-                    throw new EnigmaException("Invalid Rotors: Repeated");
-                }
-            }
-        }
-        M.insertRotors(rotors);
-        Rotor[] rotRtn = M.rotors();
-        if (!rotRtn[0].reflecting()) {
-            throw new EnigmaException("Invalid reflector.");
-        }
-        int d = _numRotors - _numPawls;
-        for (int t = 1; t < d; t += 1) {
-            if (rotRtn[t].rotates()) {
-                throw new EnigmaException("Moving can on the right of fixed");
-            }
-        }
-        for (int m = d; m < _numRotors; m += 1) {
-            if (!rotRtn[m].rotates()) {
-                throw new EnigmaException("Invalid fixed rotors");
-            }
-        }
+        settingLineScanner.next();
 
-        String ogSetting = settingSplit[_numRotors + 1];
-        if (ogSetting.length() < _numRotors - 1) {
-            throw new EnigmaException("Invalid Settings");
+        for (int i = 0; i < _numRotors; i++){
+            String tempString = settingLineScanner.next();
+            insertedRotos[i] = "Rotor " + tempString;
         }
-        M.setRotors(ogSetting);
-        String plugboardCycle = "";
-        Permutation plugboardPerm;
-        if (settingSplit.length > _numRotors + 2) {
-            for (int i = _numRotors + 2; i < settingSplit.length; i += 1) {
-                plugboardCycle = plugboardCycle + settingSplit[i];
-            }
-            plugboardPerm = new Permutation(plugboardCycle, _alphabet);
-            M.setPlugboard(plugboardPerm);
-        }
+        String rotorSettings = settingLineScanner.next();
+        plugboardString = settingLineScanner.nextLine();
+
+        M.insertRotors(insertedRotos);
+        M.setPlugboard(new Permutation(plugboardString, _alphabet));
+        M.setRotors(rotorSettings);
+
     }
 
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         // FIXME
-        for (int i = 0; i < msg.length(); i += 1) {
-            if (i % 6 == 0) {
-                msg = msg.substring(0, i) + " " + msg.substring(i);
+        for (int i = 1; i < msg.length(); i += 1) {
+            System.out.println(msg.charAt(i - 1));
+            if (i % 5 == 0) {
+                System.out.println(" ");
             }
         }
-        _output.println(msg.trim());
+        System.out.println("");;
     }
 
     /** Alphabet used in this machine. */
@@ -268,7 +223,7 @@ public final class Main {
     private PrintStream _output;
 
     /** The Machine we are working on (additional field). */
-    private Machine _machine;
+    private Machine _myMachine;
 
     /** Number of Rotors (additional field). */
     private int _numRotors;
@@ -276,35 +231,13 @@ public final class Main {
     /** Number of Pawls (additional field). */
     private int _numPawls;
 
-    /** Collections of all reflectors. */
-    private ArrayList<String> _reflectors = new ArrayList<String>();
+    /** current string */
+    String tempFirstString;
 
-    /** Collection of all moving rotors. */
-    private ArrayList<String> _moving = new ArrayList<String>();
 
-    /** Collection of all fixed rotors. */
-    private ArrayList<String> _fixed = new ArrayList<String>();
 
-    /** Length of configuration file. */
-    private int _lenConfig;
 
-    /** Temporary name. */
-    private String _tempName;
 
-    /** _rotorName. */
-    private String _rotorName;
 
-    /** rotorType. */
-    private String _rotorTypeNotch;
-    private String perm;
 
-    /** Name of current rotor. */
-    private String name;
-
-    /** Temporary string that is set to NEXT token of _config. */
-    private String temp;
-
-    /** Type and notches of current rotor. */
-    private String notches;
-    private ArrayList<Rotor> _allTheRotors = new ArrayList<>();
 }

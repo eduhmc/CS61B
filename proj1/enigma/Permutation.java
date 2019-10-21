@@ -33,9 +33,9 @@ class Permutation {
         return r;
     }
     /** Return the value of P modulo the size of size.
-     * @param size describing sizes
-     * @param p describing place
-     * @return integer
+     * @param size describing sizes.
+     * @param p describing place.
+     * @return integer.
      */
     int wrap2(int p, int size) {
         int r = p % size;
@@ -116,7 +116,10 @@ class Permutation {
     private Alphabet _alphabet;
     /** ArrayList of the cycles. */
     private ArrayList<String> _ciclos;
-    /** ArrayList of the cycles. */
+    /** Return the value of P modulo the size of size.
+     * @param cycles describing given string.
+     * @return Arraylist.
+     */
     static ArrayList<String> stringtoarray(String cycles) {
         ArrayList<String> finalarray = new ArrayList<>();
         int startlocation = 0;

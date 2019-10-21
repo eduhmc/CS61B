@@ -52,8 +52,8 @@ public class PermutationTest {
     }
     @Test
     public void testInvertChar() {
-        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new Alphabet());
-        /* TODO: Add additional assert statements here! */
+        Permutation p = new Permutation(
+                "(PNH) (ABDFIKLZYXW) (JC)", new Alphabet());
         assertEquals(p.invert('B'), 'A');
         assertEquals(p.permute('P'), 'N');
         assertEquals(p.invert('G'), 'G');
@@ -63,8 +63,8 @@ public class PermutationTest {
 
     @Test
     public void tesPermuteChar() {
-        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new Alphabet());
-        /* TODO: Add additional assert statements here! */
+        Permutation p = new Permutation(
+                "(PNH) (ABDFIKLZYXW) (JC)", new Alphabet());
         assertEquals(p.permute('A'), 'B');
         assertEquals(p.permute('W'), 'A');
         assertEquals(p.permute('G'), 'G');

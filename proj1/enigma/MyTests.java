@@ -1,14 +1,9 @@
 package enigma;
-import net.sf.saxon.style.XSLOutput;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-
 import static enigma.TestUtils.*;
 
 public class MyTests {
@@ -20,9 +15,6 @@ public class MyTests {
                 new Permutation(rotors.get(name), UPPER),
                 notches);
     }
-
-
-
     public static void main(String[] args) {
         new MyTests().testMachine();
     }
@@ -114,17 +106,13 @@ public class MyTests {
         allRotors.add(reflectorC);
 
         Machine myMachine = new Machine(currentAlphabet, 5, 3, allRotors);
-        String[] insertedRotors = new String[] {reflectorB.toString(), fixedRotorBeta.toString(),
-                movingRotorIII.toString(), movingRotorIV.toString(), movingRotorI.toString()};
+        String[] insertedRotors = new String[] {reflectorB.toString(),
+                fixedRotorBeta.toString(),
+                movingRotorIII.toString(), movingRotorIV.toString(),
+                movingRotorI.toString()};
         myMachine.insertRotors(insertedRotors);
-
         myMachine.setRotors("AXLE");
         myMachine.setPlugboard(new Permutation("(YF) (ZH)", currentAlphabet));
-
-
-
-
-        /** the following couple of lines of code are according to the example provided by the spec. */
         String recordedString = "";
         String tempChar = myMachine.convert("Y");
         System.out.println(tempChar);
@@ -133,23 +121,25 @@ public class MyTests {
         for (int i = 0; i < 11; i += 1) {
             myMachine.convert("A");
         }
-        System.out.println(myMachine.Rotorsettings());
+        System.out.println(myMachine.rotorSettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.Rotorsettings());
+        System.out.println(myMachine.rotorSettings());
 
-        for (int i= 0; i < 597; i += 1){myMachine.convert("A");}
-        System.out.println(myMachine.Rotorsettings());
+        for (int i = 0; i < 597; i += 1) {
+            myMachine.convert("A");
+        }
+        System.out.println(myMachine.rotorSettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.Rotorsettings());
+        System.out.println(myMachine.rotorSettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.Rotorsettings());
+        System.out.println(myMachine.rotorSettings());
     }
 
 
-    /** These are the rotors :D */
+    /** Rotors */
     static Alphabet currentAlphabet = new Alphabet();
     static MovingRotor movingRotorI = new MovingRotor("I",
             new Permutation("(AELTPHQXRU) (BKNW) (CMOY) "

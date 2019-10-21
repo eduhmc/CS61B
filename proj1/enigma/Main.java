@@ -79,41 +79,39 @@ public final class Main {
      *  results to _output. */
     private void process() {
         // FIXME
-        Machine currentMachine = readConfig();
-        String tempFirstString = _input.nextLine();
-        String compressedMessage = "";
+        Machine temp = readConfig();
+        String charTemp = _input.nextLine();
+        //String compressedMessage = "";
 
         while (_input.hasNext()) {
-            String settingLine = tempFirstString;
-            if (settingLine.charAt(0) != '*'){
-                System.out.println("D'ARVIT SOMETHING'S WRONG!!!");
-            }
-            setUp(currentMachine, settingLine);
-            tempFirstString = _input.nextLine();
+            String settingLine = charTemp;
+            //if (settingLine.charAt(0) != '*'){
+            //    System.out.println("incorrect");
+            //}
+            setUp(temp, settingLine);
+            charTemp = _input.nextLine();
 
-            while (tempFirstString.charAt(0) != '*'){
-                String trTempFirstString = "";
-                Scanner tempFirstStringScanner = new Scanner(tempFirstString);
-                while ((tempFirstStringScanner.hasNext())){
-                    trTempFirstString = trTempFirstString + tempFirstStringScanner.next();
+            while (charTemp.charAt(0) != '*'){
+                String charTemp2 = "";
+                Scanner charTempScanner = new Scanner(charTemp);
+                while ((charTempScanner.hasNext())){
+                    charTemp2 = charTemp2 + charTempScanner.next();
                 }
-                String returnString = currentMachine.convert(trTempFirstString);
-                for (int i = 1; i <= returnString.length(); i++){
-                    _output.append(returnString.charAt(i - 1));
+                String report = temp.convert(charTemp2);
+                for (int i = 1; i <= report.length(); i++){
+                    _output.append(report.charAt(i - 1));
                     if ( i % 5 == 0){
                         _output.append(' ');
                     }
                 }
                 _output.append("\r\n");
                 if (_input.hasNext()){
-                    tempFirstString = _input.nextLine();
+                    charTemp = _input.nextLine();
                 } else{
                     break;
                 }
             }
         }
-
-
     }
 
     /** Return an Enigma machine configured from the contents of configuration
@@ -126,15 +124,15 @@ public final class Main {
             _numRotors = _config.nextInt();
             _numPawls  = _config.nextInt();
 
-            LinkedList<Rotor> allRotors = new LinkedList<>();
-            tempFirstString = _config.next();
+            LinkedList<Rotor> NewallRotors = new LinkedList<>();
+            charTemp = _config.next();
             while (_config.hasNext()){
-                allRotors.add(readRotor());
+                NewallRotors.add(readRotor());
             }
-            return new Machine(_alphabet, _numRotors, _numPawls, allRotors);
+            return new Machine(_alphabet, _numRotors, _numPawls, NewallRotors);
 
-        } catch (NoSuchElementException excp) {
-            throw error("configuration file truncated");
+        } catch (NoSuchElementException exception) {
+            throw error("wrong");
         }
 
     }
@@ -147,17 +145,17 @@ public final class Main {
         String rotorNotches = "";
 
         try {
-            rotorName = tempFirstString;
-            tempFirstString = _config.next();
-            rotorNotches = tempFirstString;
-            tempFirstString = _config.next();
+            rotorName = charTemp;
+            charTemp = _config.next();
+            rotorNotches = charTemp;
+            charTemp = _config.next();
 
-            while (tempFirstString.charAt(0) == '('){
-                tempPermutations = tempPermutations + tempFirstString;
+            while (charTemp.charAt(0) == '('){
+                tempPermutations = tempPermutations + charTemp;
                 if (!_config.hasNext()){
                     break;
                 }
-                tempFirstString = _config.next();
+                charTemp = _config.next();
             }
             if (rotorNotches.charAt(0) == 'M'){
                 return new MovingRotor(rotorName, new Permutation(tempPermutations, _alphabet), rotorNotches.substring(1));
@@ -166,13 +164,13 @@ public final class Main {
             } else if (rotorNotches.charAt(0) == 'R'){
                 return new Reflector(rotorName, new Permutation(tempPermutations, _alphabet));
             }else{
-                System.out.println("mal mal mal");
+                System.out.println("incorrect");
             }
             return null;
 
 
         } catch (NoSuchElementException excp) {
-            throw error("bad rotor description");
+            throw error("incorrect rotor");
         }
     }
 
@@ -203,8 +201,8 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         // FIXME
-        for (int i = 1; i < msg.length(); i += 1) {
-            System.out.println(msg.charAt(i - 1));
+        for (int i = 1; i < msg.length(); i++) {
+            //System.out.println(msg.charAt(i - 1));
             if (i % 5 == 0) {
                 System.out.println(" ");
             }
@@ -223,10 +221,6 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
-
-    /** The Machine we are working on (additional field). */
-    private Machine _myMachine;
-
     /** Number of Rotors (additional field). */
     private int _numRotors;
 
@@ -234,12 +228,5 @@ public final class Main {
     private int _numPawls;
 
     /** current string */
-    String tempFirstString;
-
-
-
-
-
-
-
+    String charTemp;
 }

@@ -6,7 +6,7 @@ package enigma;
  */
 class Alphabet {
     /** My characters. */
-    String _chars;
+    private String _chars;
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {

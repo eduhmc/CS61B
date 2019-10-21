@@ -5,12 +5,12 @@ package enigma;
  *  @author Eduardo Huerta Mercado
  */
 class Alphabet {
+    /** My characters. */
     String _chars;
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
         _chars = chars;
-        // FIXME
     }
 
     /** A default alphabet of all upper-case characters. */
@@ -21,7 +21,6 @@ class Alphabet {
     /** Returns the size of the alphabet. */
     int size() {
         return _chars.length();
-        //return 26; // FIXME
     }
 
     /** Returns true if preprocess(CH) is in this alphabet. */
@@ -35,7 +34,7 @@ class Alphabet {
         if (index < 0 || index >= size()) {
             //throw error ("character index out of range");
         }
-        return _chars.charAt(index); // FIXME
+        return _chars.charAt(index);
     }
 
     /** Returns the index of character C, which must be in the alphabet. */
@@ -46,7 +45,7 @@ class Alphabet {
             }
         }
         return 0;
-        //throw  new error("character not in alphabet"); // FIXME
+       // throw error("character not in alphabet");
     }
 
 }

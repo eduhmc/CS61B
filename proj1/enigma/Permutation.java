@@ -23,7 +23,7 @@ class Permutation {
      *  c0c1...cm. */
     private void addCycle(String cycle) {
         boolean x = true;
-        }
+    }
     /** Return the value of P modulo the size of this permutation. */
     final int wrap(int p) {
         int r = p % size();
@@ -33,8 +33,9 @@ class Permutation {
         return r;
     }
     /** Return the value of P modulo the size of size.
-     * @param size describing size
-     * @return int 
+     * @param size describing sizes
+     * @param p describing place
+     * @return integer
      */
     int wrap2(int p, int size) {
         int r = p % size;
@@ -73,7 +74,8 @@ class Permutation {
             if (_ciclos.get(i).indexOf(cstring) != -1) {
                 index2 = _ciclos.get(i).indexOf(cstring);
                 str2 = _ciclos.get(i);
-                return _alphabet.toInt(str2.charAt(wrap2((index2 - 1), str2.length())));
+                return _alphabet.toInt(str2.charAt(wrap2((index2 - 1),
+                        str2.length())));
             }
         }
         return _alphabet.toInt(cstring);

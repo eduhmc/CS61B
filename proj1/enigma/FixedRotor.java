@@ -13,10 +13,6 @@ class FixedRotor extends Rotor {
 
         super(name, perm);
     }
-
-    // FIXME ?
     @Override
-    void advance(){}
-
-
+    void advance() { }
 }

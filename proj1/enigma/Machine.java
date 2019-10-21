@@ -54,6 +54,8 @@ class Machine {
         //    }
         //}
         // FIXME
+        // CHANGE
+
         for (int i = 0; i < rotors.length; i++){
             for(Rotor r: _allRotors){
                 if (("Rotor " + r.name()).equals(rotors[i])){
@@ -84,9 +86,10 @@ class Machine {
         //}
         int myRotorIndex = _rotors.length -1;
 
-        for (Rotor i : _rotors) {
-            System.out.println(i);
-        }
+        // for (Rotor i : _rotors) {
+        //    System.out.println(i);
+        // }
+        // System.out.println(setting);
         for (int i = setting.length() -1; i >= setting.length() - numPawls(); i -= 1 ){
             _rotors[myRotorIndex].set(setting.charAt(i));
             myRotorIndex -=1;
@@ -106,7 +109,6 @@ class Machine {
 
      *  the machine. */
     int convert(int c) {
-
         //return 0; // FIXME
         if (_plugboard != null) {
             c = _plugboard.permute(c);

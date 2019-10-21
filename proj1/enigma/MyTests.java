@@ -24,7 +24,7 @@ public class MyTests {
 
 
     public static void main(String[] args) {
-        testMachine();
+        new MyTests().testMachine();
     }
 
     @Test
@@ -97,7 +97,7 @@ public class MyTests {
     }
 
     @Test
-    public static void testMachine() {
+    public void testMachine() {
         LinkedList<Rotor> allRotors = new LinkedList<>();
 
         allRotors.add(movingRotorI);
@@ -117,20 +117,12 @@ public class MyTests {
         String[] insertedRotors = new String[] {reflectorB.toString(), fixedRotorBeta.toString(),
                 movingRotorIII.toString(), movingRotorIV.toString(), movingRotorI.toString()};
         myMachine.insertRotors(insertedRotors);
-//        System.out.print("inserted Rotors: ");
-//        for (int i = 0; i < insertedRotors.length; i += 1) {
-//            System.out.print(insertedRotors[i]);
-//        }
-//        System.out.println("");
+
         myMachine.setRotors("AXLE");
         myMachine.setPlugboard(new Permutation("(YF) (ZH)", currentAlphabet));
 
-        //System.out.println(currentAlphabet.toChar(myMachine.convert(0)));
-//        System.out.println(currentAlphabet.toChar(myMachine.convert(2)));
-//        System.out.println(currentAlphabet.toChar(myMachine.convert(0)));
-//        System.out.println(currentAlphabet.toChar(myMachine.convert(2)));
-//        System.out.println(currentAlphabet.toChar(myMachine.convert(12)));
-//        System.out.println(currentAlphabet.toChar(myMachine.convert(0)));
+
+
 
         /** the following couple of lines of code are according to the example provided by the spec. */
         String recordedString = "";

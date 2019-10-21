@@ -12,7 +12,6 @@ class Rotor {
         _name = name;
         _permutation = perm;
         _setting = 0;
-        // FIXME
     }
 
     /** Return my name. */
@@ -54,37 +53,33 @@ class Rotor {
     /** Return my current setting. */
     int setting() {
 
-        return _setting; // FIXME
+        return _setting;
     }
 
     /** Set setting() to POSN.  */
     void set(int posn) {
-        _setting = mod_setting(posn, alphabet().size());
-        // FIXME
+        _setting = modsetting(posn, alphabet().size());
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
         _setting = alphabet().toInt(cposn);
-        // FIXME
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
         int conversion = _permutation.permute(p + _setting % size());
-        return mod_setting(conversion - _setting, size());
+        return modsetting(conversion - _setting, size());
 
-        //return 0;  // FIXME
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
         int conversion = _permutation.invert(e + _setting % size());
-        return mod_setting(conversion - _setting, size());
+        return modsetting(conversion - _setting, size());
 
-        //return 0;  // FIXME
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
@@ -108,13 +103,17 @@ class Rotor {
 
     /** The permutation implemented by this rotor in its 0 position. */
     private Permutation _permutation;
-
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    /** My setting. */
     private int _setting;
-    int mod_setting(int p, int cycle_size) {
-        int r = p % cycle_size;
+    /** Return the value of P modulo the size of size.
+     * @param p describing place
+     * @param cyclesize describing sizes
+     * @return the size of cycle
+     */
+    int modsetting(int p, int cyclesize) {
+        int r = p % cyclesize;
         if (r < 0) {
-            r += cycle_size;
+            r += cyclesize;
         }
         return r;
     }

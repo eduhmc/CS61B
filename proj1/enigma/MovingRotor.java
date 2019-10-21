@@ -16,7 +16,6 @@ class MovingRotor extends Rotor {
         super(name, perm);
         _notches = notches;
         _perm = perm;
-        // FIXME
     }
     @Override
     boolean rotates() {
@@ -24,24 +23,20 @@ class MovingRotor extends Rotor {
         return true;
     }
 
-    // FIXME?
 
     @Override
     void advance() {
         super.set(_perm.wrap(super.setting() + 1));
-        // FIXME
     }
     @Override
     boolean atNotch() {
-        for (int i = 0; i < _notches.length(); i ++) {
+        for (int i = 0; i < _notches.length(); i++) {
             if (this.setting() == alphabet().toInt(_notches.charAt(i))) {
                 return true;
             }
         }
         return false;
     }
-
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
     /** Notches. */
     private String _notches;
     /** Permutation. */

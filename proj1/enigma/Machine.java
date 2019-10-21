@@ -42,29 +42,14 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        //Object[] tempAry = _allRotors.toArray();
-        //if (_rotors.length != numRotors()) {
-        //    throw new EnigmaException("Invalid ROTORS");
-        //}
-        //for (int i = 0; i < rotors.length; i += 1) {
-        //    for (int j = 0; j < tempAry.length; j += 1) {
-        //        if ((rotors[i]).equals(((Rotor) tempAry[j]).name())) {
-        //            _rotors[i] = (Rotor) tempAry[j];
-        //        }
-        //    }
-        //}
         // FIXME
         // CHANGE
-
         for (int i = 0; i < rotors.length; i++){
             for(Rotor r: _allRotors){
                 if (("Rotor " + r.name()).equals(rotors[i])){
                     _rotors[i] = r;
-                    _rotors[i].set(0);
-
-
+                   _rotors[i].set(0);
                 }
-
             }
         }
     }
@@ -73,27 +58,21 @@ class Machine {
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        //if (setting.length() != numRotors() - 1) {
-        //    throw new EnigmaException("Invalid Setting");
-        //}
-        //for (int i = 1; i < numRotors(); i += 1) {
-        //   if (!_alphabet.contains(setting.charAt(i - 1))) {
-        //        //System.out.println(setting);
-        //        //System.out.println(setting.charAt(i-1));
-        //        throw new EnigmaException("Initial positions not specified");
-        //    }
-        //    _rotors[i].set(setting.charAt(i - 1));
-        //}
-        int myRotorIndex = _rotors.length -1;
-
-        // for (Rotor i : _rotors) {
-        //    System.out.println(i);
-        // }
-        // System.out.println(setting);
-        for (int i = setting.length() -1; i >= setting.length() - numPawls(); i -= 1 ){
-            _rotors[myRotorIndex].set(setting.charAt(i));
-            myRotorIndex -=1;
+        if (setting.length() != numRotors() - 1) {
+            throw new EnigmaException("This setting is not valid");
         }
+        for (int i = 1; i < numRotors(); i += 1) {
+           if (!_alphabet.contains(setting.charAt(i - 1))) {
+                throw new EnigmaException("The initial positiopn was not specified");
+            }
+            _rotors[i].set(setting.charAt(i - 1));
+        }
+
+        //int myRotorIndex = _rotors.length -1;
+        //for (int i = setting.length() -1; i >= setting.length() - numPawls(); i -= 1 ){
+        //    _rotors[myRotorIndex].set(setting.charAt(i));
+        //    myRotorIndex -=1;
+        //}
 
         // FIXME
     }
@@ -104,31 +83,30 @@ class Machine {
         // FIXME
     }
 
-    /** Returns the result of converting the input character C (as an
+    /** Returns the finalstring of converting the input character C (as an
      *  index in the range 0..alphabet size - 1), after first advancing
 
      *  the machine. */
     int convert(int c) {
-        //return 0; // FIXME
         if (_plugboard != null) {
             c = _plugboard.permute(c);
         }
-        HashSet<Integer> check = new HashSet<>();
+        HashSet<Integer> prueba = new HashSet<>();
         for (int i = _rotors.length - 1; i > 0; i -= 1) {
             if (_rotors[i - 1].rotates() && (_rotors[i].atNotch())) {
-                check.add(i);
-                check.add(i - 1);
+                prueba.add(i);
+                prueba.add(i - 1);
             }
         }
-        check.add(_rotors.length - 1);
-        for (int r : check) {
-            _rotors[r].advance();
+        prueba.add(_rotors.length - 1);
+        for (int x : prueba) {
+            _rotors[x].advance();
         }
-        for (int x = _rotors.length - 1; x >= 0; x -= 1) {
-            c = _rotors[x].convertForward(c);
+        for (int j = _rotors.length - 1; j >= 0; j--) {
+            c = _rotors[j].convertForward(c);
         }
-        for (int k = 1; k < _numRotors; k += 1) {
-            c = _rotors[k].convertBackward(c);
+        for (int y = 1; y < _numRotors; y ++) {
+            c = _rotors[y].convertBackward(c);
         }
         if (_plugboard != null) {
             c = _plugboard.permute(c);
@@ -140,13 +118,13 @@ class Machine {
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly. */
     String convert(String msg) {
-        String result = "";
-        for (int i = 0; i < msg.length(); i++) {
-            int temp = _alphabet.toInt(msg.charAt(i));
-            char converted = _alphabet.toChar(convert(temp));
-            result += converted;
+        String finalstring = "";
+        for (int i = 0; i < msg.length(); i += 1) {
+            int antes = _alphabet.toInt(msg.charAt(i));
+            char despues = _alphabet.toChar(convert(antes));
+            finalstring = finalstring + despues ;
         }
-        return result;
+        return finalstring;
         //return ""; // FIXME
     }
 
@@ -170,15 +148,12 @@ class Machine {
     /** PLUGBOARD of the class. */
     private Permutation _plugboard;
 
-    String settings() {
-        String settingString = "";
-        for (Rotor r: _rotors) {
-//            System.out.println("Rotor name: " + r + " | " + "r.setting: " + r.setting());
-            settingString = settingString + _alphabet.toChar(r.setting());
+    String Rotorsettings() {
+        String newSetting = "";
+        for (Rotor i: _rotors) {
+            newSetting = newSetting + _alphabet.toChar(i.setting());
         }
-        return settingString;
+        return newSetting;
     }
-
-
 }
 

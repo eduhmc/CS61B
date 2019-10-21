@@ -32,7 +32,7 @@ class Alphabet {
      *  0 <= INDEX < size(). */
     char toChar(int index) {
         if (index < 0 || index >= size()) {
-            //throw error ("character index out of range");
+            throw new EnigmaException("Character index out of range");
         }
         return _chars.charAt(index);
     }
@@ -44,8 +44,8 @@ class Alphabet {
                 return i;
             }
         }
-        return 0;
-       // throw error("character not in alphabet");
+        throw new EnigmaException("Character not in alphabet");
+
     }
 
 }

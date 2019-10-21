@@ -133,19 +133,19 @@ public class MyTests {
         for (int i = 0; i < 11; i += 1) {
             myMachine.convert("A");
         }
-        System.out.println(myMachine.settings());
+        System.out.println(myMachine.Rotorsettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.settings());
+        System.out.println(myMachine.Rotorsettings());
 
         for (int i= 0; i < 597; i += 1){myMachine.convert("A");}
-        System.out.println(myMachine.settings());
+        System.out.println(myMachine.Rotorsettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.settings());
+        System.out.println(myMachine.Rotorsettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.settings());
+        System.out.println(myMachine.Rotorsettings());
     }
 
 

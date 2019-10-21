@@ -15,7 +15,7 @@ class MovingRotor extends Rotor {
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
         _notches = notches;
-        _perm = perm;
+        _permutation = perm;
     }
     @Override
     boolean rotates() {
@@ -26,7 +26,7 @@ class MovingRotor extends Rotor {
 
     @Override
     void advance() {
-        super.set(_perm.wrap(super.setting() + 1));
+        super.set(_permutation.wrap(super.setting() + 1));
     }
     @Override
     boolean atNotch() {
@@ -37,9 +37,8 @@ class MovingRotor extends Rotor {
         }
         return false;
     }
+    /** Permutation. */
+    private Permutation _permutation;
     /** Notches. */
     private String _notches;
-    /** Permutation. */
-    private Permutation _perm;
-
 }

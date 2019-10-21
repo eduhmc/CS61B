@@ -46,7 +46,6 @@ class Rotor {
 
     /** Return true iff I reflect. */
     boolean reflecting() {
-
         return false;
     }
 
@@ -100,7 +99,6 @@ class Rotor {
 
     /** My name. */
     private final String _name;
-
     /** The permutation implemented by this rotor in its 0 position. */
     private Permutation _permutation;
     /** My setting. */

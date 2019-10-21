@@ -39,7 +39,6 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-
         for (int i = 0; i < rotors.length; i++) {
             for (Rotor r: _allRotors) {
                 if (("Rotor " + r.name()).equals(rotors[i])) {
@@ -54,15 +53,9 @@ class Machine {
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        if (setting.length() != numRotors() - 1) {
-            throw new EnigmaException("This setting is not valid");
-        }
-        for (int i = 1; i < numRotors(); i += 1) {
-            if (!_alphabet.contains(setting.charAt(i - 1))) {
-                throw new EnigmaException(
-                        "The initial position was not specified");
-            }
-            _rotors[i].set(setting.charAt(i - 1));
+
+        for (int i = setting.length() - 1; i >= 0; i -= 1) {
+            _rotors[i + 1].set(setting.charAt(i));
         }
     }
 

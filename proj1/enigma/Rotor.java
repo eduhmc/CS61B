@@ -16,7 +16,6 @@ class Rotor {
 
     /** Return my name. */
     String name() {
-
         return _name;
     }
 

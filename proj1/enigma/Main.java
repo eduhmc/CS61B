@@ -224,7 +224,6 @@ public final class Main {
                 _output.print(" ");
             }
         }
-        //System.out.println("");
     }
 
     /** Alphabet. */

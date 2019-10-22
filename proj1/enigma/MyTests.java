@@ -16,6 +16,7 @@ public class MyTests {
                 notches);
     }
     public static void main(String[] args) {
+        new MyTests().testPermutations();
         new MyTests().testMachine();
     }
 
@@ -57,35 +58,6 @@ public class MyTests {
 
         assertEquals("Invert Z", 12, myPermutation.invert(12));
         assertEquals("Invert Z (char)", 'Z', myPermutation.invert('Z'));
-    }
-
-    @Test
-    public void checkFixedRotor() {
-        Alphabet newAlphabet = new Alphabet();
-
-        Permutation newPermutation = new Permutation("(AELTPHQXRU) (BKNW) "
-                + "(CMOY) (DFG) (IV) (JZ) (S)", newAlphabet);
-        FixedRotor myRotor = new FixedRotor("I",
-                new Permutation("(AELTPHQXRU) (BKNW) "
-                        + "(CMOY) (DFG) (IV) (JZ) (S)", newAlphabet));
-
-        assertEquals("Mistakes were made: A",
-                4, myRotor.convertForward(0));
-        assertEquals("Mistakes were made: A",
-                20, myRotor.convertBackward(0));
-        assertEquals("The S thing was wrong: fornwards",
-                18, myRotor.convertForward(18));
-        assertEquals("The S thing was wrong: backwards",
-                18, myRotor.convertBackward(18));
-        myRotor.advance();
-        assertEquals("Mistakes were made A forwards",
-                4, myRotor.convertForward(0));
-        assertEquals("Mistakes were made A backwards",
-                20, myRotor.convertBackward(0));
-        assertEquals("Mistakes were made W forwards",
-                1, myRotor.convertForward(22));
-        assertEquals("Mistakes were made W backwards",
-                13, myRotor.convertBackward(22));
     }
 
     @Test
@@ -176,4 +148,33 @@ public class MyTests {
     static Reflector reflectorC = new Reflector("C",
             new Permutation("(AR) (BD) (CO) (EJ) (FN) (GT) "
                     + "(HK) (IV) (LM) (PW) (QZ) (SX) (UY)", currentAlphabet));
+
+    @Test
+    public void checkFixedRotor() {
+        Alphabet newAlphabet = new Alphabet();
+
+        Permutation newPermutation = new Permutation("(AELTPHQXRU) (BKNW) "
+                + "(CMOY) (DFG) (IV) (JZ) (S)", newAlphabet);
+        FixedRotor myRotor = new FixedRotor("I",
+                new Permutation("(AELTPHQXRU) (BKNW) "
+                        + "(CMOY) (DFG) (IV) (JZ) (S)", newAlphabet));
+
+        assertEquals("Error: A",
+                4, myRotor.convertForward(0));
+        assertEquals("Mistakes were made: A",
+                20, myRotor.convertBackward(0));
+        assertEquals("The S thing was wrong: forwards",
+                18, myRotor.convertForward(18));
+        assertEquals("The S thing was wrong: backwards",
+                18, myRotor.convertBackward(18));
+        myRotor.advance();
+        assertEquals("Error A going Forwards",
+                4, myRotor.convertForward(0));
+        assertEquals("Error A going Backwards",
+                20, myRotor.convertBackward(0));
+        assertEquals("Error W permuting forward",
+                1, myRotor.convertForward(22));
+        assertEquals("Error W permuting backwards",
+                13, myRotor.convertBackward(22));
+    }
 }

@@ -88,7 +88,6 @@ public final class Main {
             if (creating.charAt(0) != '*') {
                 System.out.println("Incorrect");
             }
-
             setUp(ahora, creating);
 
             if (newplug.charAt(0) == '(') {
@@ -97,13 +96,11 @@ public final class Main {
                 temporal = newplug;
             }
             while (temporal.charAt(0) != '*') {
-
                 String justForNow = "";
-                Scanner temporalScanner = new Scanner(temporal);
-
-                while (temporalScanner.hasNext()) {
+                Scanner scan = new Scanner(temporal);
+                while (scan.hasNext()) {
                     justForNow = justForNow
-                            + temporalScanner.next();
+                            + scan.next();
                 }
                 String report = ahora.convert(justForNow);
                 for (int i = 1; i <= report.length(); i += 1) {
@@ -134,13 +131,13 @@ public final class Main {
             numRotors = _config.nextInt();
             numPawls = _config.nextInt();
 
-            LinkedList<Rotor> allRotors = new LinkedList<>();
+            LinkedList<Rotor> lknlist = new LinkedList<>();
             temporal = _config.next();
 
             while (_config.hasNext()) {
-                allRotors.add(readRotor());
+                lknlist.add(readRotor());
             }
-            return new Machine(_alphabet, numRotors, numPawls, allRotors);
+            return new Machine(_alphabet, numRotors, numPawls, lknlist);
         } catch (NoSuchElementException excp) {
             throw error("conf file wrong");
         }
@@ -150,10 +147,8 @@ public final class Main {
     private Rotor readRotor() {
         String permutacionActual = ""; String nombre = ""; String newNotch = "";
         try {
-            nombre = temporal;
-            temporal = _config.next();
-            newNotch = temporal;
-            temporal = _config.next();
+            nombre = temporal; temporal = _config.next();
+            newNotch = temporal; temporal = _config.next();
 
             while (temporal.charAt(0) == '(') {
                 permutacionActual = permutacionActual + temporal;
@@ -187,29 +182,26 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         String[] insertedRotors = new String[numRotors];
         Scanner creatingScanner = new Scanner(settings);
-        String plugboardString;
+        String reportstr;
         creatingScanner.next();
 
         for (int i = 0; i < numRotors; i += 1) {
             String tempString = creatingScanner.next();
             insertedRotors[i] = "Rotor " + tempString;
         }
-
         String rotorSettings = creatingScanner.next();
-
-
         newplug = _input.nextLine();
         if (creatingScanner.hasNext()) {
-
-            plugboardString = creatingScanner.nextLine();
+            reportstr = creatingScanner.nextLine();
+            if(!reportstr.equals("")
+                && reportstr.charAt(1) != 0){
+                throw new EnigmaException("Wrong settings");
+            }
         } else {
-
-            plugboardString = "";
+            reportstr = "";
         }
-
-
         M.insertRotors(insertedRotors);
-        M.setPlugboard(new Permutation(plugboardString, _alphabet));
+        M.setPlugboard(new Permutation(reportstr, _alphabet));
         M.setRotors(rotorSettings);
     }
 

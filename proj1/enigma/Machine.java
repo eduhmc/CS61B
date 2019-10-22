@@ -101,13 +101,16 @@ class Machine {
     String convert(String msg) {
         String finalstring = "";
         for (int i = 0; i < msg.length(); i += 1) {
+            if(!_alphabet.contains(msg.charAt(i))){
+                throw new EnigmaException("Wrong character");
+            }
             int antes = _alphabet.toInt(msg.charAt(i));
             char despues = _alphabet.toChar(convert(antes));
-            finalstring = finalstring + despues;
+            finalstring += despues;
         }
         return finalstring;
     }
-    /** Return the Rotor setting of this class. */
+    /** Return rotor setting in order to get the char. */
     String rotorSettings() {
         String newSetting = "";
         for (Rotor i: _rotors) {

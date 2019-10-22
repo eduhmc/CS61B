@@ -148,8 +148,10 @@ public final class Main {
     private Rotor readRotor() {
         String permutacionActual = ""; String nombre = ""; String newNotch = "";
         try {
-            nombre = temporal; temporal = _config.next();
-            newNotch = temporal; temporal = _config.next();
+            nombre = temporal;
+            temporal = _config.next();
+            newNotch = temporal;
+            temporal = _config.next();
 
             while (temporal.charAt(0) == '(') {
                 permutacionActual = permutacionActual + temporal;
@@ -188,9 +190,16 @@ public final class Main {
             String tempString = creatingScanner.next();
             insertedRotors[i] = "Rotor " + tempString;
         }
-        String rstngs = creatingScanner.next();
-        if (!_alphabet.contains(rstngs.charAt(0))) {
-            throw new EnigmaException("wrong setting.");
+        boolean checker = false;
+        String rstngs = "";
+        if (creatingScanner.hasNext()) {
+            rstngs = creatingScanner.next();
+            checker = true;
+
+            if (!_alphabet.contains(rstngs.charAt(0))) {
+                throw new EnigmaException("Rotor settings "
+                        + "are not appropriate.");
+            }
         }
         newplug = _input.nextLine();
 
@@ -205,7 +214,9 @@ public final class Main {
         }
         M.insertRotors(insertedRotors);
         M.setPlugboard(new Permutation(reportstr, _alphabet));
-        M.setRotors(rstngs);
+        if (checker) {
+            M.setRotors(rstngs);
+        }
     }
 
     /** Print MSG in groups of five (except that the last group may

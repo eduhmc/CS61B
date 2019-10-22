@@ -39,12 +39,19 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
+        boolean checker;
         for (int i = 0; i < rotors.length; i++) {
-            for (Rotor r: _allRotors) {
+            checker = false;
+            for (Rotor r : _allRotors) {
+                checker = false;
                 if (("Rotor " + r.name()).equals(rotors[i])) {
                     _rotors[i] = r;
                     _rotors[i].set(0);
+                    checker = true;
                 }
+            }
+            if (!checker) {
+                throw new EnigmaException("Incorrect");
             }
         }
     }
@@ -56,6 +63,9 @@ class Machine {
 
         for (int i = setting.length() - 1; i >= 0; i -= 1) {
             _rotors[i + 1].set(setting.charAt(i));
+        }
+        if (!(_rotors[0] instanceof Reflector)) {
+            throw new EnigmaException("first rotor must be a reflector");
         }
     }
 

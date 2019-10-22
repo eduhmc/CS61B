@@ -191,7 +191,7 @@ public final class Main {
         if (creatingScanner.hasNext()) {
             reportstr = creatingScanner.nextLine();
             if (!reportstr.equals("")
-                && reportstr.charAt(1) != 0) {
+                && reportstr.charAt(1) != '(') {
                 throw new EnigmaException("Wrong settings");
             }
         } else {

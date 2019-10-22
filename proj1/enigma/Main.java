@@ -81,11 +81,10 @@ public final class Main {
         if (temporal.charAt(0) != '*') {
             throw new EnigmaException("First line not setup.");
         }
-
         while (_input.hasNext()) {
             String creating = temporal;
             if (creating.charAt(0) != '*') {
-                throw new EnigmaException("Incorrec222t");
+                throw new EnigmaException("Incorrect place");
             }
             setUp(ahora, creating);
             if (newplug.isEmpty()) {
@@ -101,8 +100,7 @@ public final class Main {
                 String justForNow = "";
                 Scanner scan = new Scanner(temporal);
                 while (scan.hasNext()) {
-                    justForNow = justForNow
-                            + scan.next();
+                    justForNow = justForNow + scan.next();
                 }
                 String report = ahora.convert(justForNow);
                 for (int i = 1; i <= report.length(); i += 1) {
@@ -172,7 +170,7 @@ public final class Main {
                 return new Reflector(nombre,
                         new Permutation(permutacionActual, _alphabet));
             } else {
-                throw new EnigmaException("Incorrect333");
+                throw new EnigmaException("Incorrect index");
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description" + temporal);
@@ -193,8 +191,7 @@ public final class Main {
         boolean checker = false;
         String rstngs = "";
         if (creatingScanner.hasNext()) {
-            rstngs = creatingScanner.next();
-            checker = true;
+            rstngs = creatingScanner.next(); checker = true;
 
             if (!_alphabet.contains(rstngs.charAt(0))) {
                 throw new EnigmaException("Rotor settings "
@@ -202,7 +199,6 @@ public final class Main {
             }
         }
         newplug = _input.nextLine();
-
         if (creatingScanner.hasNext()) {
             reportstr = creatingScanner.nextLine();
             if (!reportstr.equals("")

@@ -45,8 +45,7 @@ class Machine {
             for (Rotor r : _allRotors) {
                 if (("Rotor " + r.name()).equals(rotors[i])) {
                     _rotors[i] = r;
-                    _rotors[i].set(0);
-                    checker = true;
+                    _rotors[i].set(0); checker = true;
                 }
             }
             if (!checker) {

@@ -107,7 +107,7 @@ public final class Main {
                 String report = ahora.convert(justForNow);
                 for (int i = 1; i <= report.length(); i += 1) {
                     _output.append(report.charAt(i - 1));
-                    if ((i % 5 == 0) && !(i == report.length())){
+                    if ((i % 5 == 0) && !(i == report.length())) {
                         _output.append(' ');
                     }
                 }

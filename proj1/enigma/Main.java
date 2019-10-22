@@ -188,8 +188,12 @@ public final class Main {
             String tempString = creatingScanner.next();
             insertedRotors[i] = "Rotor " + tempString;
         }
-        String rotorSettings = creatingScanner.next();
+        String rstngs = creatingScanner.next();
+        if (!_alphabet.contains(rstngs.charAt(0))) {
+            throw new EnigmaException("wrong setting.");
+        }
         newplug = _input.nextLine();
+
         if (creatingScanner.hasNext()) {
             reportstr = creatingScanner.nextLine();
             if (!reportstr.equals("")
@@ -201,7 +205,7 @@ public final class Main {
         }
         M.insertRotors(insertedRotors);
         M.setPlugboard(new Permutation(reportstr, _alphabet));
-        M.setRotors(rotorSettings);
+        M.setRotors(rstngs);
     }
 
     /** Print MSG in groups of five (except that the last group may

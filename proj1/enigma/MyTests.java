@@ -17,8 +17,11 @@ public class MyTests {
     }
     public static void main(String[] args) {
         new MyTests().testPermutations();
-        new MyTests().testMachine();
+        new MyTests().testMachine();;
+        new MyTests().testInverse();
     }
+
+
 
     @Test
     public void testPermutations() {
@@ -26,7 +29,6 @@ public class MyTests {
         Permutation myPermutation =
                 new Permutation("(ANDHISMEW) (JO) (C)", permutationAlphabet);
         assertEquals("wrong size", 13, myPermutation.size());
-        System.out.println("JOHNCEADISMWZ".indexOf('Z'));
         assertEquals("Permute A", 3, myPermutation.permute(6));
         assertEquals("Permute A (char)", 'N', myPermutation.permute('A'));
 
@@ -36,17 +38,30 @@ public class MyTests {
         assertEquals("Permute C", 3, myPermutation.permute(6));
         assertEquals("Permute C (char)", 'N', myPermutation.permute('A'));
 
-        assertEquals("Permute Z", 12, myPermutation.permute(12));
-        assertEquals("Permute Z (char)", 'Z', myPermutation.permute('Z'));
+        Permutation p = new Permutation(
+                "(EDU) (ARFOHAXTMCW) (JO)", new Alphabet());
+        assertEquals(p.permute('A'), 'R');
+        assertEquals(p.permute('E'), 'D');
+        assertEquals(p.permute('U'), 'E');
+        assertEquals(p.permute('X'), 'T');
+        assertEquals(p.permute('W'), 'A');
+
+        Permutation pnew = new Permutation(
+                "(ZYX) (MNOPLQ) (J)", new Alphabet());
+        assertEquals(pnew.permute('J'), 'J');
+        assertEquals(pnew.permute('Z'), 'Y');
+        assertEquals(pnew.permute('X'), 'Z');
+        assertEquals(pnew.permute('A'), 'A');
+        assertEquals(pnew.permute('O'), 'P');
     }
+
 
     @Test
     public void testInverse() {
         Alphabet inverseAlphabet = new Alphabet("JOHNCEADISMWZ");
         Permutation myPermutation =
                 new Permutation("(ANDHISMEW) (JO) (C)", inverseAlphabet);
-        assertEquals("wrong size", 13, myPermutation.size());
-        System.out.println("JOHNCEADISMWZ".indexOf('Z'));
+        assertEquals("incorrect size", 13, myPermutation.size());
         assertEquals("Invert A", 11, myPermutation.invert(6));
         assertEquals("Invert A (char)", 'W', myPermutation.invert('A'));
 
@@ -56,9 +71,24 @@ public class MyTests {
         assertEquals("Invert C", 4, myPermutation.invert(4));
         assertEquals("Invert C (char)", 'C', myPermutation.invert('C'));
 
-        assertEquals("Invert Z", 12, myPermutation.invert(12));
-        assertEquals("Invert Z (char)", 'Z', myPermutation.invert('Z'));
+
+        Permutation p = new Permutation(
+                "(EFG) (ABCFIKLZYXW) (PC)", new Alphabet());
+        assertEquals(p.invert('B'), 'A');
+        assertEquals(p.permute('E'), 'F');
+        assertEquals(p.invert('I'), 'F');
+        assertEquals(p.invert('A'), 'W');
+        assertEquals(p.invert('P'), 'C');
+
+        Permutation newp = new Permutation(
+                "(ABC) (DEFGHI) (KL) (O)", new Alphabet());
+        assertEquals(newp.invert('B'), 'A');
+        assertEquals(newp.invert('F'), 'E');
+        assertEquals(newp.invert('O'), 'O');
+        assertEquals(newp.invert('X'), 'X');
+        assertEquals(newp.invert('G'), 'F');
     }
+
 
     @Test
     public void testMachine() {
@@ -85,29 +115,21 @@ public class MyTests {
         myMachine.insertRotors(insertedRotors);
         myMachine.setRotors("AXLE");
         myMachine.setPlugboard(new Permutation("(YF) (ZH)", currentAlphabet));
-        String recordedString = "";
         String tempChar = myMachine.convert("Y");
-        System.out.println(tempChar);
-        recordedString += tempChar;
+
 
         for (int i = 0; i < 11; i += 1) {
             myMachine.convert("A");
         }
-        System.out.println(myMachine.rotorSettings());
 
         myMachine.convert("A");
-        System.out.println(myMachine.rotorSettings());
+
 
         for (int i = 0; i < 597; i += 1) {
             myMachine.convert("A");
         }
-        System.out.println(myMachine.rotorSettings());
-
         myMachine.convert("A");
-        System.out.println(myMachine.rotorSettings());
-
         myMachine.convert("A");
-        System.out.println(myMachine.rotorSettings());
     }
 
 

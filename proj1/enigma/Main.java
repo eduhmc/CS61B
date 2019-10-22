@@ -218,13 +218,14 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        for (int i = 1; i <= msg.length(); i += 1) {
-            _output.print(msg.charAt(i - 1));
-            if (i % 5 == 0) {
-                _output.print(" ");
+        for (int i = 0; i < msg.length(); i += 1) {
+            if (i % 6 == 0) {
+                msg = msg.substring(0, i) + " " + msg.substring(i);
             }
         }
+        _output.println(msg.trim());
     }
+
 
     /** Alphabet. */
     private Alphabet _alphabet;

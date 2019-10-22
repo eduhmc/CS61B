@@ -43,7 +43,6 @@ class Machine {
         for (int i = 0; i < rotors.length; i++) {
             checker = false;
             for (Rotor r : _allRotors) {
-                checker = false;
                 if (("Rotor " + r.name()).equals(rotors[i])) {
                     _rotors[i] = r;
                     _rotors[i].set(0);

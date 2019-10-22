@@ -85,7 +85,7 @@ public final class Main {
         while (_input.hasNext()) {
             String creating = temporal;
             if (creating.charAt(0) != '*') {
-                throw new EnigmaException("Incorrect");
+                throw new EnigmaException("Incorrec222t");
             }
             setUp(ahora, creating);
             if (newplug.isEmpty()) {
@@ -172,7 +172,7 @@ public final class Main {
                 return new Reflector(nombre,
                         new Permutation(permutacionActual, _alphabet));
             } else {
-                throw new EnigmaException("Incorrect");
+                throw new EnigmaException("Incorrect333");
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description" + temporal);

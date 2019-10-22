@@ -17,7 +17,7 @@ public class MyTests {
     }
     public static void main(String[] args) {
         new MyTests().testPermutations();
-        new MyTests().testMachine();;
+        new MyTests().testMachine();
         new MyTests().testInverse();
     }
 

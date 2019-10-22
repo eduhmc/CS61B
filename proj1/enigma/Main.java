@@ -128,8 +128,7 @@ public final class Main {
     private Machine readConfig() {
         try {
             _alphabet = new Alphabet(_config.nextLine());
-            numRotors = _config.nextInt();
-            numPawls = _config.nextInt();
+            rotorsNumber = _config.nextInt(); pawlsnumber = _config.nextInt();
 
             LinkedList<Rotor> lknlist = new LinkedList<>();
             temporal = _config.next();
@@ -137,7 +136,7 @@ public final class Main {
             while (_config.hasNext()) {
                 lknlist.add(readRotor());
             }
-            return new Machine(_alphabet, numRotors, numPawls, lknlist);
+            return new Machine(_alphabet, rotorsNumber, pawlsnumber, lknlist);
         } catch (NoSuchElementException excp) {
             throw error("conf file wrong");
         }
@@ -169,9 +168,8 @@ public final class Main {
                 return new Reflector(nombre,
                         new Permutation(permutacionActual, _alphabet));
             } else {
-                System.out.println("Incorrect");
+                throw new EnigmaException("Incorrect");
             }
-            return null;
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description" + temporal);
         }
@@ -180,12 +178,11 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        String[] insertedRotors = new String[numRotors];
+        String[] insertedRotors = new String[rotorsNumber];
         Scanner creatingScanner = new Scanner(settings);
-        String reportstr;
-        creatingScanner.next();
+        String reportstr; creatingScanner.next();
 
-        for (int i = 0; i < numRotors; i += 1) {
+        for (int i = 0; i < rotorsNumber; i += 1) {
             String tempString = creatingScanner.next();
             insertedRotors[i] = "Rotor " + tempString;
         }
@@ -193,8 +190,8 @@ public final class Main {
         newplug = _input.nextLine();
         if (creatingScanner.hasNext()) {
             reportstr = creatingScanner.nextLine();
-            if(!reportstr.equals("")
-                && reportstr.charAt(1) != 0){
+            if (!reportstr.equals("")
+                && reportstr.charAt(1) != 0) {
                 throw new EnigmaException("Wrong settings");
             }
         } else {
@@ -217,31 +214,27 @@ public final class Main {
         System.out.println("");
     }
 
-    /** Alphabet used in this machine. */
+    /** Alphabet. */
     private Alphabet _alphabet;
 
-    /** Source of input messages. */
-    private Scanner _input;
-
-    /** Source of machine configuration. */
-    private Scanner _config;
-
-    /** File for encoded/decoded messages. */
-    private PrintStream _output;
-
-    /** My new Enigma machine. */
-    private Machine _myMachine;
-
     /** Number of rotors.*/
-    private int numRotors;
+    private int rotorsNumber;
 
     /** Number of pawls.*/
-    private int numPawls;
+    private int pawlsnumber;
 
-    /** The current string of _config.next().*/
+    /** This are the input messages. */
+    private Scanner _input;
+
+    /** This is the machine configuration. */
+    private Scanner _config;
+
+    /** Gives the output of the encode and decode messages. */
+    private PrintStream _output;
+
+    /** Temporary String.*/
     private String temporal;
 
-    /** The next line of the code, different depending on whether there
-     * is a plugboard after the settings.*/
+    /** New Line of plugboard.*/
     private String newplug;
 }

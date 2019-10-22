@@ -101,7 +101,7 @@ class Machine {
     String convert(String msg) {
         String finalstring = "";
         for (int i = 0; i < msg.length(); i += 1) {
-            if(!_alphabet.contains(msg.charAt(i))){
+            if (!_alphabet.contains(msg.charAt(i))) {
                 throw new EnigmaException("Wrong character");
             }
             int antes = _alphabet.toInt(msg.charAt(i));

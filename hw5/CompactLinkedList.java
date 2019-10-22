@@ -2,9 +2,10 @@
 
 import java.util.AbstractSequentialList;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 /** A list of objects of type T with a fixed maximum list size.
- *  @author
+ *  @author Eduardo huerta
  */
 public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
@@ -70,7 +71,15 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T next() {
-            return null; // REPLACE WITH SOLUTION
+
+            if (!hasNext()) {
+                    throw new NoSuchElementException();
+            }
+            int n = _prev;
+            _prev = _next;
+            _next = _link[_next] ^ n;
+            _nextIndex += 1;
+            return _data[_prev];
         }
 
         @Override
@@ -85,7 +94,15 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T previous() {
-            return null; // REPLACE WITH SOLUTION
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            int n = _next;
+            _next = _prev;
+            _prev = _link[_prev] ^ n;
+            _nextIndex -= 1;
+            return _data[_next];
+
         }
 
         @Override
@@ -107,7 +124,24 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
             // FILL IN
+            int n = _size;
+            _data[_size] = obj;
+            _link[_size] = _next ^ _prev;
+            _size += 1;
+            _nextIndex += 1;
+            if (_prev == -1) {
+                _first = n;
+            } else {
+                _link[_prev] = _link[_prev] ^ _next ^ n;
+            }
+            if (_next == -1) {
+                _last = n;
+            } else {
+                _link[_next] = _link[_next] ^ _prev ^ n;
+            }
+            _prev = n;
         }
+
 
 
         @Override

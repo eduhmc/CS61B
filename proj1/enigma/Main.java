@@ -77,48 +77,47 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        Machine currentMachine = readConfig();
-        tempFirstString = _input.nextLine();
-        if (tempFirstString.charAt(0) != '*') {
+        Machine ahora = readConfig();
+        temporal = _input.nextLine();
+        if (temporal.charAt(0) != '*') {
             throw new EnigmaException("First line not setup.");
         }
-        String compressedMessage = "";
 
         while (_input.hasNext()) {
-            String settingLine = tempFirstString;
-            if (settingLine.charAt(0) != '*') {
+            String creating = temporal;
+            if (creating.charAt(0) != '*') {
                 System.out.println("Incorrect");
             }
 
-            setUp(currentMachine, settingLine);
+            setUp(ahora, creating);
 
-            if (plugboardOrLine.charAt(0) == '(') {
-                tempFirstString = _input.nextLine();
+            if (newplug.charAt(0) == '(') {
+                temporal = _input.nextLine();
             } else {
-                tempFirstString = plugboardOrLine;
+                temporal = newplug;
             }
-            while (tempFirstString.charAt(0) != '*') {
+            while (temporal.charAt(0) != '*') {
 
-                String trTempFirstString = "";
-                Scanner tempFirstStringScanner = new Scanner(tempFirstString);
+                String justForNow = "";
+                Scanner temporalScanner = new Scanner(temporal);
 
-                while (tempFirstStringScanner.hasNext()) {
-                    trTempFirstString = trTempFirstString
-                            + tempFirstStringScanner.next();
+                while (temporalScanner.hasNext()) {
+                    justForNow = justForNow
+                            + temporalScanner.next();
                 }
-                String returnString = currentMachine.convert(trTempFirstString);
-                for (int i = 1; i <= returnString.length(); i += 1) {
-                    _output.append(returnString.charAt(i - 1));
+                String report = ahora.convert(justForNow);
+                for (int i = 1; i <= report.length(); i += 1) {
+                    _output.append(report.charAt(i - 1));
                     if (i % 5 == 0) {
                         _output.append(' ');
                     }
                 }
                 _output.append("\r\n");
                 if (_input.hasNext()) {
-                    tempFirstString = _input.nextLine();
-                    while (tempFirstString.isEmpty()) {
+                    temporal = _input.nextLine();
+                    while (temporal.isEmpty()) {
                         _output.append("\r\n");
-                        tempFirstString = _input.nextLine();
+                        temporal = _input.nextLine();
                     }
                 } else {
                     break;
@@ -136,7 +135,7 @@ public final class Main {
             numPawls = _config.nextInt();
 
             LinkedList<Rotor> allRotors = new LinkedList<>();
-            tempFirstString = _config.next();
+            temporal = _config.next();
 
             while (_config.hasNext()) {
                 allRotors.add(readRotor());
@@ -149,39 +148,37 @@ public final class Main {
 
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
-        String tempPermutations = "";
-        String rotorName = "";
-        String rotorNotches = "";
+        String permutacionActual = ""; String nombre = ""; String newNotch = "";
         try {
-            rotorName = tempFirstString;
-            tempFirstString = _config.next();
-            rotorNotches = tempFirstString;
-            tempFirstString = _config.next();
+            nombre = temporal;
+            temporal = _config.next();
+            newNotch = temporal;
+            temporal = _config.next();
 
-            while (tempFirstString.charAt(0) == '(') {
-                tempPermutations = tempPermutations + tempFirstString;
+            while (temporal.charAt(0) == '(') {
+                permutacionActual = permutacionActual + temporal;
                 if (!_config.hasNext()) {
                     break;
                 }
-                tempFirstString = _config.next();
+                temporal = _config.next();
             }
 
-            if (rotorNotches.charAt(0) == 'M') {
-                return new MovingRotor(rotorName,
-                        new Permutation(tempPermutations, _alphabet),
-                        rotorNotches.substring(1));
-            } else if (rotorNotches.charAt(0) == 'N') {
-                return new FixedRotor(rotorName,
-                        new Permutation(tempPermutations, _alphabet));
-            } else if (rotorNotches.charAt(0) == 'R') {
-                return new Reflector(rotorName,
-                        new Permutation(tempPermutations, _alphabet));
+            if (newNotch.charAt(0) == 'M') {
+                return new MovingRotor(nombre,
+                        new Permutation(permutacionActual, _alphabet),
+                        newNotch.substring(1));
+            } else if (newNotch.charAt(0) == 'N') {
+                return new FixedRotor(nombre,
+                        new Permutation(permutacionActual, _alphabet));
+            } else if (newNotch.charAt(0) == 'R') {
+                return new Reflector(nombre,
+                        new Permutation(permutacionActual, _alphabet));
             } else {
-                System.out.println("HURR BERR DURR MAH DUUURRRDD");
+                System.out.println("Incorrect");
             }
             return null;
         } catch (NoSuchElementException excp) {
-            throw error("bad rotor description" + tempFirstString);
+            throw error("bad rotor description" + temporal);
         }
     }
 
@@ -189,22 +186,22 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         String[] insertedRotors = new String[numRotors];
-        Scanner settingLineScanner = new Scanner(settings);
+        Scanner creatingScanner = new Scanner(settings);
         String plugboardString;
-        settingLineScanner.next();
+        creatingScanner.next();
 
         for (int i = 0; i < numRotors; i += 1) {
-            String tempString = settingLineScanner.next();
+            String tempString = creatingScanner.next();
             insertedRotors[i] = "Rotor " + tempString;
         }
 
-        String rotorSettings = settingLineScanner.next();
+        String rotorSettings = creatingScanner.next();
 
 
-        plugboardOrLine = _input.nextLine();
-        if (settingLineScanner.hasNext()) {
+        newplug = _input.nextLine();
+        if (creatingScanner.hasNext()) {
 
-            plugboardString = settingLineScanner.nextLine();
+            plugboardString = creatingScanner.nextLine();
         } else {
 
             plugboardString = "";
@@ -250,9 +247,9 @@ public final class Main {
     private int numPawls;
 
     /** The current string of _config.next().*/
-    private String tempFirstString;
+    private String temporal;
 
     /** The next line of the code, different depending on whether there
      * is a plugboard after the settings.*/
-    private String plugboardOrLine;
+    private String newplug;
 }

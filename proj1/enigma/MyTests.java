@@ -24,7 +24,7 @@ public class MyTests {
         Alphabet permutationAlphabet = new Alphabet("JOHNCEADISMWZ");
         Permutation myPermutation =
                 new Permutation("(ANDHISMEW) (JO) (C)", permutationAlphabet);
-        assertEquals("the size is wrong", 13, myPermutation.size());
+        assertEquals("wrong size", 13, myPermutation.size());
         System.out.println("JOHNCEADISMWZ".indexOf('Z'));
         assertEquals("Permute A", 3, myPermutation.permute(6));
         assertEquals("Permute A (char)", 'N', myPermutation.permute('A'));
@@ -44,7 +44,7 @@ public class MyTests {
         Alphabet inverseAlphabet = new Alphabet("JOHNCEADISMWZ");
         Permutation myPermutation =
                 new Permutation("(ANDHISMEW) (JO) (C)", inverseAlphabet);
-        assertEquals("the size is wrong", 13, myPermutation.size());
+        assertEquals("wrong size", 13, myPermutation.size());
         System.out.println("JOHNCEADISMWZ".indexOf('Z'));
         assertEquals("Invert A", 11, myPermutation.invert(6));
         assertEquals("Invert A (char)", 'W', myPermutation.invert('A'));

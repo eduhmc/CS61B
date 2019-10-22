@@ -219,12 +219,12 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         for (int i = 1; i <= msg.length(); i += 1) {
-            System.out.print(msg.charAt(i - 1));
+            _output.print(msg.charAt(i - 1));
             if (i % 5 == 0) {
-                System.out.print(" ");
+                _output.print(" ");
             }
         }
-        System.out.println("");
+        //System.out.println("");
     }
 
     /** Alphabet. */

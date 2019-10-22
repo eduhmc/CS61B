@@ -77,8 +77,7 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        Machine ahora = readConfig();
-        temporal = _input.nextLine();
+        Machine ahora = readConfig(); temporal = _input.nextLine();
         if (temporal.charAt(0) != '*') {
             throw new EnigmaException("First line not setup.");
         }
@@ -86,14 +85,17 @@ public final class Main {
         while (_input.hasNext()) {
             String creating = temporal;
             if (creating.charAt(0) != '*') {
-                System.out.println("Incorrect");
+                throw new EnigmaException("Incorrect");
             }
             setUp(ahora, creating);
-
-            if (newplug.charAt(0) == '(') {
-                temporal = _input.nextLine();
+            if (newplug.isEmpty()) {
+                _output.append("\r\n");
             } else {
-                temporal = newplug;
+                if (newplug.charAt(0) == '(') {
+                    temporal = _input.nextLine();
+                } else {
+                    temporal = newplug;
+                }
             }
             while (temporal.charAt(0) != '*') {
                 String justForNow = "";

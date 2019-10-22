@@ -48,7 +48,9 @@ class Machine {
                     _rotors[i].set(0); checker = true;
                 }
             }
-            if (!checker) {
+            if (checker) {
+                continue;
+            } else {
                 throw new EnigmaException("Incorrect");
             }
         }
@@ -98,7 +100,7 @@ class Machine {
             c = _rotors[y].convertBackward(c);
         }
         if (_plugboard != null) {
-            c = _plugboard.permute(c);
+            c = _plugboard.invert(c);
         }
         return c;
 

@@ -77,48 +77,24 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        Machine ahora = readConfig(); temporal = _input.nextLine();
-        if (temporal.charAt(0) != '*') {
-            throw new EnigmaException("First line not setup.");
+        Machine mach = readConfig();
+        if(!_input.hasNextLine()) {
+            throw error("incorrect");
         }
-        while (_input.hasNext()) {
-            String creating = temporal;
-            if (creating.charAt(0) != '*') {
-                throw new EnigmaException("Incorrect place");
+        while (_input.hasNextLine()) {
+            String sett = _input.nextLine();
+            if (!sett.isEmpty() && sett.charAt(0) != '*') {
+                throw  error ("input wrong");
             }
-            setUp(ahora, creating);
-            if (newplug.isEmpty()) {
-                _output.append("\r\n");
-            } else {
-                if (newplug.charAt(0) == '(') {
-                    temporal = _input.nextLine();
-                } else {
-                    temporal = newplug;
-                }
+            while (sett.isEmpty()) {
+                _output.println();
+                sett = _input.nextLine();
             }
-            while (temporal.charAt(0) != '*') {
-                String justForNow = "";
-                Scanner scan = new Scanner(temporal);
-                while (scan.hasNext()) {
-                    justForNow = justForNow + scan.next();
-                }
-                String report = ahora.convert(justForNow);
-                for (int i = 1; i <= report.length(); i += 1) {
-                    _output.append(report.charAt(i - 1));
-                    if ((i % 5 == 0) && !(i == report.length())) {
-                        _output.append(' ');
-                    }
-                }
-                _output.append("\r\n");
-                if (_input.hasNext()) {
-                    temporal = _input.nextLine();
-                    while (temporal.isEmpty()) {
-                        _output.append("\r\n");
-                        temporal = _input.nextLine();
-                    }
-                } else {
-                    break;
-                }
+            setUp(mach, sett);
+            while (!_input.hasNext("\\*") && _input.hasNextLine()){
+                String start = _input.nextLine().replaceAll("\\s", "");
+                String converted = mach.convert(start);
+                printMessageLine(converted);
             }
         }
     }
@@ -218,12 +194,12 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        for (int i = 0; i < msg.length(); i += 1) {
-            if (i % 6 == 0) {
-                msg = msg.substring(0, i) + " " + msg.substring(i);
-            }
+        if (msg.length() > 5){
+            _output.print(msg.substring(0, 5) + " ");
+            printMessageLine(msg.substring(5));
+        } else {
+            _output.println(msg);
         }
-        _output.println(msg.trim());
     }
 
 

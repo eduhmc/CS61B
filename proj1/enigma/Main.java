@@ -117,6 +117,7 @@ public final class Main {
                 if (_input.hasNext()) {
                     tempFirstString = _input.nextLine();
                     while (tempFirstString.isEmpty()) {
+                        _output.append("\r\n");
                         tempFirstString = _input.nextLine();
                     }
                 } else {

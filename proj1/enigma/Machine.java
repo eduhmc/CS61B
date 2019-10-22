@@ -73,7 +73,7 @@ class Machine {
             c = _plugboard.permute(c);
         }
         HashSet<Integer> prueba = new HashSet<>();
-        for (int i = _rotors.length - 1; i > 0; i -= 1) {
+        for (int i = _rotors.length - 1; i > 0; i--) {
             if (_rotors[i - 1].rotates() && (_rotors[i].atNotch())) {
                 prueba.add(i);
                 prueba.add(i - 1);
@@ -119,17 +119,17 @@ class Machine {
     Rotor[] rotors() {
         return _rotors;
     }
-    /** Common alphabet of my rotors. */
+    /** Alphabet of my rotors. */
     private final Alphabet _alphabet;
-    /** Number of ROTORS. */
+    /** Number of rotors. */
     private int _numRotors;
-    /** Number of PAWLS. */
+    /** Number of pawls. */
     private int _pawls;
-    /** A Collection of all ROTORS. */
+    /** A Collection of all rotors. */
     private Collection<Rotor> _allRotors;
-    /** An array of ROTORS. */
+    /** An array of rotors. */
     private Rotor[] _rotors;
-    /** PLUGBOARD of the class. */
+    /** The plugboard. */
     private Permutation _plugboard;
 
 }

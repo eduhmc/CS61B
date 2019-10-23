@@ -77,24 +77,48 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        Machine mach = readConfig();
-        if(!_input.hasNextLine()) {
-            throw error("incorrect");
+        Machine ahora = readConfig(); temporal = _input.nextLine();
+        if (temporal.charAt(0) != '*') {
+            throw new EnigmaException("First line not setup.");
         }
-        while (_input.hasNextLine()) {
-            String sett = _input.nextLine();
-            if (!sett.isEmpty() && sett.charAt(0) != '*') {
-                throw  error ("input wrong");
+        while (_input.hasNext()) {
+            String creating = temporal;
+            if (creating.charAt(0) != '*') {
+                throw new EnigmaException("Incorrect place");
             }
-            while (sett.isEmpty()) {
-                _output.println();
-                sett = _input.nextLine();
+            setUp(ahora, creating);
+            if (newplug.isEmpty()) {
+                _output.append("\r\n");
+            } else {
+                if (newplug.charAt(0) == '(') {
+                    temporal = _input.nextLine();
+                } else {
+                    temporal = newplug;
+                }
             }
-            setUp(mach, sett);
-            while (!_input.hasNext("\\*") && _input.hasNextLine()){
-                String start = _input.nextLine().replaceAll("\\s", "");
-                String converted = mach.convert(start);
-                printMessageLine(converted);
+            while (temporal.charAt(0) != '*') {
+                String justForNow = "";
+                Scanner scan = new Scanner(temporal);
+                while (scan.hasNext()) {
+                    justForNow = justForNow + scan.next();
+                }
+                String report = ahora.convert(justForNow);
+                for (int i = 1; i <= report.length(); i += 1) {
+                    _output.append(report.charAt(i - 1));
+                    if ((i % 5 == 0) && !(i == report.length())) {
+                        _output.append(' ');
+                    }
+                }
+                _output.append("\r\n");
+                if (_input.hasNext()) {
+                    temporal = _input.nextLine();
+                    while (temporal.isEmpty()) {
+                        _output.append("\r\n");
+                        temporal = _input.nextLine();
+                    }
+                } else {
+                    break;
+                }
             }
         }
     }

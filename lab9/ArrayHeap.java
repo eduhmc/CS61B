@@ -120,65 +120,122 @@ public class ArrayHeap<T> {
     /* Returns the index of the left child of the node at i. */
     private int getLeftOf(int i) {
         //TODO
-        return 0;
+        return 2 * i;
     }
 
     /* Returns the index of the right child of the node at i. */
     private int getRightOf(int i) {
         //TODO
-        return 0;
+        return 2 * i + 1;
     }
 
     /* Returns the index of the node that is the parent of the node at i. */
     private int getParentOf(int i) {
         //TODO
-        return 0;
+        return i / 2;
     }
 
     /* Adds the given node as a left child of the node at the given index. */
     private void setLeft(int index, Node n) {
         //TODO
+        setNode(getLeftOf(index), n);
     }
 
     /* Adds the given node as the right child of the node at the given index. */
     private void setRight(int index, Node n) {
         //TODO
+        setNode(getRightOf(index), n);
     }
 
     /** Returns the index of the node with smaller priority. Precondition: not
       * both nodes are null. */
     private int min(int index1, int index2) {
         //TODO
-        return 0;
+        if (contents.get(index1).priority() <= contents.get(index2).priority()) {
+            return index1;
+        } else {
+            return index2;
+        }
     }
 
     /* Returns the Node with the smallest priority value, but does not remove it
      * from the heap. */
     public Node peek() {
         //TODO
-        return null;
+        int sindex = 1;
+        for (int i = 1; i < contents.size(); i++) {
+            sindex = min(sindex, i);
+        }
+        return contents.get(sindex);
     }
 
     /* Bubbles up the node currently at the given index. */
     private void bubbleUp(int index) {
         //TODO
+        if (getParentOf(index) > 0) {
+            while (contents.get(index).priority()
+                    < contents.get(getParentOf(index)).priority()) {
+                swap(index, getParentOf(index));
+                index = getParentOf(index);
+                if (getParentOf(index) <= 0) {
+                    break;
+                }
+            }
+        }
     }
 
     /* Bubbles down the node currently at the given index. */
     private void bubbleDown(int index) {
         //TODO
+        int left = getLeftOf(index);
+        int right = getRightOf(index);
+        int small;
+        if (left >= contents.size() && right >= contents.size()) {
+            return;
+        } else if (left >= contents.size()) {
+            small = right;
+        } else if (right >= contents.size()) {
+            small = left;
+        } else {
+            small = min(left, right);
+        }
+
+        if (small < contents.size()) {
+            while (contents.get(index).priority()
+                    > contents.get(small).priority()) {
+                swap(index, small);
+                index = small;
+                left = getLeftOf(index);
+                right = getRightOf(index);
+                if (left >= contents.size() && right >= contents.size()) {
+                    break;
+                } else if (left >= contents.size()) {
+                    small = right;
+                } else if (right >= contents.size()) {
+                    small = left;
+                } else {
+                    small = min(left, right);
+                }
+            }
+        }
     }
 
     /* Inserts an item with the given priority value. Same as enqueue, or offer. */
     public void insert(T item, double priority) {
-        //TODO
+        Node n = new Node(item, priority);
+        contents.add(n);
+        bubbleUp(size());
     }
 
     /* Returns the element with the smallest priority value, and removes it from
      * the heap. Same as dequeue, or poll. */
     public T removeMin() {
         //TODO
-        return null;
+        T sn = peek().item();
+        swap(1, size());
+        removeNode(size());
+        bubbleDown(1);
+        return sn;
     }
 
     /* Changes the node in this heap with the given item to have the given
@@ -186,6 +243,21 @@ public class ArrayHeap<T> {
      * item. Check for item equality with .equals(), not == */
     public void changePriority(T item, double priority) {
         //TODO
+        if (size() <= 0) {
+            return;
+        }
+        for (int i = 1; i < contents.size(); i++) {
+            double origprio = contents.get(i).priority();
+            if (contents.get(i).item.equals(item)) {
+                contents.get(i).setPriority(priority);
+                if (priority < origprio) {
+                    bubbleUp(i);
+                } else {
+                    bubbleDown(i);
+                }
+                break;
+            }
+        }
     }
 
 }

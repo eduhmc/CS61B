@@ -10,7 +10,7 @@ import static tablut.Move.mv;
 
 
 /** The state of a Tablut Game.
- *  @author
+ *  @author Eduardo huerta mercado
  */
 class Board {
 

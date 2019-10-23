@@ -25,18 +25,6 @@ public class MyTests {
 
     @Test
     public void testPermutations() {
-        Alphabet permutationAlphabet = new Alphabet("JOHNCEADISMWZ");
-        Permutation myPermutation =
-                new Permutation("(ANDHISMEW) (JO) (C)", permutationAlphabet);
-        assertEquals("wrong size", 13, myPermutation.size());
-        assertEquals("Permute A", 3, myPermutation.permute(6));
-        assertEquals("Permute A (char)", 'N', myPermutation.permute('A'));
-
-        assertEquals("Permute O", 0, myPermutation.permute(1));
-        assertEquals("Permute O (char)", 'J', myPermutation.permute('O'));
-
-        assertEquals("Permute C", 3, myPermutation.permute(6));
-        assertEquals("Permute C (char)", 'N', myPermutation.permute('A'));
 
         Permutation p = new Permutation(
                 "(EDU) (ARFOHAXTMCW) (JO)", new Alphabet());
@@ -58,18 +46,6 @@ public class MyTests {
 
     @Test
     public void testInverse() {
-        Alphabet inverseAlphabet = new Alphabet("JOHNCEADISMWZ");
-        Permutation myPermutation =
-                new Permutation("(ANDHISMEW) (JO) (C)", inverseAlphabet);
-        assertEquals("incorrect size", 13, myPermutation.size());
-        assertEquals("Invert A", 11, myPermutation.invert(6));
-        assertEquals("Invert A (char)", 'W', myPermutation.invert('A'));
-
-        assertEquals("Invert O", 0, myPermutation.invert(1));
-        assertEquals("Invert O (char)", 'J', myPermutation.invert('O'));
-
-        assertEquals("Invert C", 4, myPermutation.invert(4));
-        assertEquals("Invert C (char)", 'C', myPermutation.invert('C'));
 
 
         Permutation p = new Permutation(

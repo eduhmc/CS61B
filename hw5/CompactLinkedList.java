@@ -49,17 +49,15 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * instance variables of the containing CompactLinkedList
              * by their names (e.g., _first). */
             // FILL IN IF NEEDED
-            if (k < _size - k) {
-                _prev = -1;
-                _next = _first;
-                for (int i = 0; i < k; i += 1) {
-                    next();
+            if (k > _size - k) {
+                _prev = _last;_next = -1;
+                for (int x = _size; x > k; x--) {
+                    previous();
                 }
             } else {
-                _prev = _last;
-                _next = -1;
-                for (int i = _size; i > k; i -= 1) {
-                    previous();
+                _next = _first;_prev = -1;
+                for (int j = 0; j < k; j++) {
+                    next();
                 }
             }
         }
@@ -73,12 +71,11 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
         public T next() {
 
             if (!hasNext()) {
-                    throw new NoSuchElementException();
+                throw new NoSuchElementException();
             }
-            int n = _prev;
-            _prev = _next;
-            _next = _link[_next] ^ n;
-            _nextIndex += 1;
+            if(_next == -1)
+                throw new IllegalStateException();
+            int edu= _prev; _prev = _next; _next = _link[_next] ^ edu; _nextIndex += 1;
             return _data[_prev];
         }
 
@@ -124,22 +121,25 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
             // FILL IN
-            int nsize = _size;
-            _data[_size] = obj;
-            _link[_size] = _next ^ _prev;
-            _size += 1;
-            _nextIndex += 1;
-            if (_prev == -1) {
-                _first = nsize;
+            if (_size != _data.length) {
+                _data[_size] = obj;
+                _link[_size] = _next ^ _prev;
+                if (hasPrevious()) {
+                    _link[_prev] = _link[_prev] ^ _next ^ _size;
+                }
+                if (hasNext()) {
+                    _link[_next] = _link[_next] ^ _prev ^ _size;
+                }
+                if (_size == 0) {
+                    _first = 0;
+                }
+                _last = _size;
+                _prev = _size;
+                _size++;
+
             } else {
-                _link[_prev] = _link[_prev] ^ _next ^ nsize;
+                throw new IllegalStateException("the list is full");
             }
-            if (_next == -1) {
-                _last = nsize;
-            } else {
-                _link[_next] = _link[_next] ^ _prev ^ nsize;
-            }
-            _prev = nsize;
         }
 
 

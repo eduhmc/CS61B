@@ -38,8 +38,7 @@ public class Nybbles {
             throw new IllegalArgumentException();
         } else {
             _data[k / 8] =
-                    (_data[k / 8] & ~(0x0F << 4 * (k % 8)))
-                            | ((val & 0x0F) << 4 * (k % 8));
+                    (_data[k / 8] & ~(0x0F << 4 * (k % 8))) | ((val & 0x0F) << 4 * (k % 8));
         }
     }
 

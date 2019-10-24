@@ -124,22 +124,22 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
             // FILL IN
-            int n = _size;
+            int nsize = _size;
             _data[_size] = obj;
             _link[_size] = _next ^ _prev;
             _size += 1;
             _nextIndex += 1;
             if (_prev == -1) {
-                _first = n;
+                _first = nsize;
             } else {
-                _link[_prev] = _link[_prev] ^ _next ^ n;
+                _link[_prev] = _link[_prev] ^ _next ^ nsize;
             }
             if (_next == -1) {
-                _last = n;
+                _last = nsize;
             } else {
-                _link[_next] = _link[_next] ^ _prev ^ n;
+                _link[_next] = _link[_next] ^ _prev ^ nsize;
             }
-            _prev = n;
+            _prev = nsize;
         }
 
 

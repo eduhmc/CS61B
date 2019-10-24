@@ -75,9 +75,9 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            if(_next == -1)
-                throw new IllegalStateException();
-            int edu= _prev; _prev = _next; _next = _link[_next] ^ edu; _nextIndex += 1;
+            int edu= _prev;
+            _prev = _next;
+            _next = _link[_next] ^ edu; _nextIndex += 1;
             return _data[_prev];
         }
 
@@ -96,9 +96,9 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
             if (!hasPrevious()) {
                 throw new NoSuchElementException();
             }
-            int n = _next;
+            int pebi = _next;
             _next = _prev;
-            _prev = _link[_prev] ^ n;
+            _prev = _link[_prev] ^ pebi;
             _nextIndex -= 1;
             return _data[_next];
 
@@ -123,25 +123,20 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
             // FILL IN
-            if (_size != _data.length) {
-                _data[_size] = obj;
-                _link[_size] = _next ^ _prev;
-                if (hasPrevious()) {
-                    _link[_prev] = _link[_prev] ^ _next ^ _size;
-                }
-                if (hasNext()) {
-                    _link[_next] = _link[_next] ^ _prev ^ _size;
-                }
-                if (_size == 0) {
-                    _first = 0;
-                }
-                _last = _size;
-                _prev = _size;
-                _size++;
-
+            int bipe = _size;
+            _data[_size] = obj; _link[_size] = _next ^ _prev;
+            _size += 1; _nextIndex += 1;
+            if (_prev == -1) {
+                _first = bipe;
             } else {
-                throw new IllegalStateException("the list is full");
+                _link[_prev] = _link[_prev] ^ _next ^ bipe;
             }
+            if (_next == -1) {
+                _last = bipe;
+            } else {
+                _link[_next] = _link[_next] ^ _prev ^ bipe;
+            }
+            _prev = bipe;
         }
 
 

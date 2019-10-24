@@ -49,15 +49,17 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * instance variables of the containing CompactLinkedList
              * by their names (e.g., _first). */
             // FILL IN IF NEEDED
-            if (k > _size - k) {
-                _prev = _last;_next = -1;
-                for (int x = _size; x > k; x--) {
-                    previous();
+            if (k < _size - k) {
+                _prev = -1;
+                _next = _first;
+                for (int a = 0; a < k; a++) {
+                    next();
                 }
             } else {
-                _next = _first;_prev = -1;
-                for (int j = 0; j < k; j++) {
-                    next();
+                _prev = _last;
+                _next = -1;
+                for (int b = _size; b > k; b --) {
+                    previous();
                 }
             }
         }

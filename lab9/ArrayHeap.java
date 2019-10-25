@@ -120,13 +120,13 @@ public class ArrayHeap<T> {
     /* Returns the index of the left child of the node at i. */
     private int getLeftOf(int i) {
         //TODO
-        return 2 * i;
+        return i * 2;
     }
 
     /* Returns the index of the right child of the node at i. */
     private int getRightOf(int i) {
         //TODO
-        return 2 * i + 1;
+        return 1 + (2 * i) ;
     }
 
     /* Returns the index of the node that is the parent of the node at i. */
@@ -151,30 +151,25 @@ public class ArrayHeap<T> {
       * both nodes are null. */
     private int min(int index1, int index2) {
         //TODO
-        if (contents.get(index1).priority() <= contents.get(index2).priority()) {
-            return index1;
-        } else {
+        if (contents.get(index2).priority() <= contents.get(index1).priority()) {
             return index2;
         }
+        return index1;
     }
 
     /* Returns the Node with the smallest priority value, but does not remove it
      * from the heap. */
     public Node peek() {
         //TODO
-        int sindex = 1;
-        for (int i = 1; i < contents.size(); i++) {
-            sindex = min(sindex, i);
-        }
-        return contents.get(sindex);
+        return getNode(1);
+
     }
 
     /* Bubbles up the node currently at the given index. */
     private void bubbleUp(int index) {
         //TODO
         if (getParentOf(index) > 0) {
-            while (contents.get(index).priority()
-                    < contents.get(getParentOf(index)).priority()) {
+            while (contents.get(index).priority()  < contents.get(getParentOf(index)).priority()) {
                 swap(index, getParentOf(index));
                 index = getParentOf(index);
                 if (getParentOf(index) <= 0) {
@@ -187,34 +182,30 @@ public class ArrayHeap<T> {
     /* Bubbles down the node currently at the given index. */
     private void bubbleDown(int index) {
         //TODO
-        int left = getLeftOf(index);
-        int right = getRightOf(index);
-        int small;
-        if (left >= contents.size() && right >= contents.size()) {
+        int izquierda = getLeftOf(index); int derecha = getRightOf(index); int pequeño;
+        if (izquierda >= contents.size() && derecha  >= contents.size()) {
             return;
-        } else if (left >= contents.size()) {
-            small = right;
-        } else if (right >= contents.size()) {
-            small = left;
+        } else if (derecha  >= contents.size()) {
+            pequeño = izquierda;
+        } else if (izquierda >= contents.size()) {
+            pequeño = derecha ;
         } else {
-            small = min(left, right);
+            pequeño = min(izquierda, derecha );
         }
-
-        if (small < contents.size()) {
+        if (pequeño < contents.size()) {
             while (contents.get(index).priority()
-                    > contents.get(small).priority()) {
-                swap(index, small);
-                index = small;
-                left = getLeftOf(index);
-                right = getRightOf(index);
-                if (left >= contents.size() && right >= contents.size()) {
+                    > contents.get(pequeño).priority()) {
+                swap(index, pequeño);
+                index = pequeño;
+                izquierda = getLeftOf(index); derecha  = getRightOf(index);
+                if (izquierda >= contents.size() && derecha  >= contents.size()) {
                     break;
-                } else if (left >= contents.size()) {
-                    small = right;
-                } else if (right >= contents.size()) {
-                    small = left;
+                } else if (derecha  >= contents.size()) {
+                    pequeño = izquierda;
+                } else if (izquierda >= contents.size()) {
+                    pequeño = derecha ;
                 } else {
-                    small = min(left, right);
+                    pequeño = min(izquierda, derecha );
                 }
             }
         }

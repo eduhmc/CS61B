@@ -174,7 +174,8 @@ public class ArrayHeap<T> {
                 index = getParentOf(index);
                 if (getParentOf(index) <= 0) {
                     break;
-                }
+               }
+
             }
         }
     }
@@ -182,30 +183,30 @@ public class ArrayHeap<T> {
     /* Bubbles down the node currently at the given index. */
     private void bubbleDown(int index) {
         //TODO
-        int izquierda = getLeftOf(index); int derecha = getRightOf(index); int pequeño;
+        int izquierda = getLeftOf(index); int derecha = getRightOf(index); int peque;
         if (izquierda >= contents.size() && derecha  >= contents.size()) {
             return;
         } else if (derecha  >= contents.size()) {
-            pequeño = izquierda;
+            peque = izquierda;
         } else if (izquierda >= contents.size()) {
-            pequeño = derecha ;
+            peque = derecha ;
         } else {
-            pequeño = min(izquierda, derecha );
+            peque = min(izquierda, derecha );
         }
-        if (pequeño < contents.size()) {
+        if (peque < contents.size()) {
             while (contents.get(index).priority()
-                    > contents.get(pequeño).priority()) {
-                swap(index, pequeño);
-                index = pequeño;
+                    > contents.get(peque).priority()) {
+                swap(index, peque);
+                index = peque;
                 izquierda = getLeftOf(index); derecha  = getRightOf(index);
                 if (izquierda >= contents.size() && derecha  >= contents.size()) {
                     break;
                 } else if (derecha  >= contents.size()) {
-                    pequeño = izquierda;
+                    peque = izquierda;
                 } else if (izquierda >= contents.size()) {
-                    pequeño = derecha ;
+                    peque = derecha ;
                 } else {
-                    pequeño = min(izquierda, derecha );
+                    peque = min(izquierda, derecha );
                 }
             }
         }
@@ -213,8 +214,8 @@ public class ArrayHeap<T> {
 
     /* Inserts an item with the given priority value. Same as enqueue, or offer. */
     public void insert(T item, double priority) {
-        Node n = new Node(item, priority);
-        contents.add(n);
+        Node noding = new Node(item, priority);
+        contents.add(noding);
         bubbleUp(size());
     }
 

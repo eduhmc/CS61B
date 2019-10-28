@@ -45,8 +45,8 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         }
     }
 
-     /** An iterator over BSTs. */
-     private static class BSTIterator implements Iterator<String> {
+    /** An iterator over BSTs. */
+    private static class BSTIterator implements Iterator<String> {
         /** Stack of nodes to be delivered.  The values to be delivered
          *  are (a) the label of the top of the stack, then (b)
          *  the labels of the right child of the top of the stack inorder,
@@ -96,7 +96,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
     }
 
     // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
-    // @Override 
+    // @Override
     public Iterator<String> iterator(String low, String high) {
         return null;  // FIXME: PART B
     }

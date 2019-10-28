@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Test of a BST-based String Set.
- * @author 
+ * @author
  */
 public class ECHashStringSetTest  {
     // FIXME: Add your own tests for your ECHashStringSetTest

@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 /**
  * Test of a BST-based String Set.
- * @author
+ * @author eduhmc
  */
 public class ECHashStringSetTest {
 

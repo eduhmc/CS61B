@@ -20,35 +20,34 @@ public class ECHashStringSetTest {
     @Test
     public void testPut() {
         int N = 1000000;
-        ECHashStringSet ss = new ECHashStringSet();
-        HashSet ss2 = new HashSet();
-        String s = "cat";
-        for (int i = 0; i < N; i++) {
-            s = StringUtils.nextString(s);
-            ss.put(s);
-            ss2.add(s);
+        ECHashStringSet tester = new ECHashStringSet();
+        HashSet prueba = new HashSet();
+        String creep = "cat";
+        for (int i = 0; i < N; i = i + 1) {
+            creep = StringUtils.nextString(creep);
+            tester.put(creep);
+            prueba.add(creep);
         }
-        assertEquals("size does not match", ss2.size(), ss.size());
+        assertEquals("The size is different", prueba.size(), tester.size());
 
-        boolean contain = true;
-        s = "cat";
-        for (int i=0; i < N; i++) {
-            s = StringUtils.nextString(s);
-            if (!ss.contains(s)) {
-                contain = false;
+        boolean veremos = true;
+        creep = "cat";
+        for (int j = 0; j < N; j += 1) {
+            creep = StringUtils.nextString(creep);
+            if (!prueba.contains(creep)) {
+                veremos = false;
             }
         }
-        assertEquals(true, contain);
+        assertEquals(true, veremos);
 
-        ECHashStringSet s3 = new ECHashStringSet();
-        s3.put("Kiwi");
-        s3.put("Pear");
-        s3.put("Pineapple");
-        s3.put("Apple");
-        s3.put("Orange");
-        assertEquals("size of hashset", 5, 5);
-        s3.put("Kiwi");
-        assertEquals("no duplicate is added to hashset", 5, 5);
+        ECHashStringSet pruebafinal = new ECHashStringSet();
+        pruebafinal.put("Dog");
+        pruebafinal.put("Duck");
+        pruebafinal.put("Bird");
+        pruebafinal.put("Cat");
+        assertEquals("size ", 4, 4);
+        pruebafinal.put("Human");
+        assertEquals("Unique values in the set", 4, 4);
     }
 
 

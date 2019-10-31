@@ -1,80 +1,72 @@
-import java.util.*;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
  * @author eduhmc
  */
-public class BSTStringSet implements SortedStringSet, Iterable<String> {
+public class BSTStringSet implements StringSet, Iterable<String> {
     /** Creates a new empty set. */
     public BSTStringSet() {
-        root = null;
-    }
-
-    @Override
-    public boolean contains(String s) {
-        Node last = find(s);
-        return last != null && s.equals(last.s);
+        _root = null;
     }
 
     @Override
     public void put(String s) {
-        Node last = find(s);
-        if (last == null) {
-            root = new Node(s);
+        // FIXME: PART A
+        _root = put(s, _root);
+    }
+    private Node put(String s, Node nodal){
+        if (nodal == null){
+            return new Node(s);
+        }
+        int prueba = nodal.s.compareTo(s);
+        if (prueba > 0) {
+            nodal.left = put(s, nodal.left);
+        } else if (prueba < 0){
+            nodal.right = put(s, nodal.right);
+        }
+        return nodal;
+    }
+
+    @Override
+    public boolean contains(String s) {
+        //return false; // FIXME: PART A
+        return contains(s, _root);
+
+    }
+    private boolean contains(String s, Node nodal){
+        if (nodal == null){
+            return false;
+        }
+        if (nodal.s.equals(s)){
+            return true;
         } else {
-            int c = s.compareTo(last.s);
-            if (c < 0) {
-                last.left = new Node(s);
-            } else if (c > 0) {
-                last.right = new Node(s);
+            if (nodal.s.compareTo(s) > 0){
+                return contains(s, nodal.left);
+            } else{
+                return contains(s, nodal.right);
             }
         }
     }
 
     @Override
     public List<String> asList() {
-        ArrayList<String> result = new ArrayList<>();
-        for (String label : this) {
-            result.add(label);
-        }
+        //return null; // FIXME: PART A
+        List<String> result = new ArrayList<>();
+        asList(result, _root);
         return result;
     }
-
-    @Override
-    public Iterator<String> iterator() {
-        return new BSTIterator(root);
-    }
-
-    @Override
-    public Iterator<String> iterator(String low, String high) {
-        return new BSTRange(root, low, high);
-    }
-
-    /** Return either the node in this BST that contains S, or, if
-     *  there is no such node, the node that should be the parent
-     *  of that node, or null if neither exists. */
-    private Node find(String s) {
-        if (root == null) {
-            return null;
+    private  void asList(List<String> lst, Node nodal){
+        if (nodal == null){
+            return;
         }
-        Node p;
-        p = root;
-        while (true) {
-            int c = s.compareTo(p.s);
-            Node next;
-            if (c < 0) {
-                next = p.left;
-            } else if (c > 0) {
-                next = p.right;
-            } else {
-                return p;
-            }
-            if (next == null) {
-                return p;
-            } else {
-                p = next;
-            }
-        }
+        asList(lst, nodal.left);
+        lst.add(nodal.s);
+        asList(lst, nodal.right);
     }
 
     /** Represents a single Node of the tree. */
@@ -109,7 +101,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         @Override
         public boolean hasNext() {
-            return !_toDo.isEmpty();
+            return !_toDo.empty();
         }
 
         @Override
@@ -137,62 +129,25 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
         }
     }
 
-    private static class BSTRange implements Iterator<String> {
-
-        /** Stack of nodes to be delivered.  The values to be delivered
-         *  are (a) the label of the top of the stack, then (b)
-         *  the labels of the right child of the top of the stack inorder,
-         *  then (c) the nodes in the rest of the stack (i.e., the result
-         *  of recursively applying this rule to the result of popping
-         *  the stack. */
-        private Stack<Node> _toDo = new Stack<>();
-
-        /** Lower bound. */
-        String _low;
-
-        /** Upper bound. */
-        String _high;
-
-        /** A new iterator over the labels in NODE. */
-        BSTRange(Node node, String low, String high) {
-            _low = low;
-            _high = high;
-            addTree(node);
-        }
-
-        @Override
-        public boolean hasNext() {
-            return !_toDo.empty()
-                    && _toDo.peek().s.compareTo(_high) <= 0;
-        }
-
-        @Override
-        public String next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-
-            Node node = _toDo.pop();
-            addTree(node.right);
-            return node.s;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** Add the relevant subtrees of the tree rooted at NODE. */
-        private void addTree(Node node) {
-            while (node != null && node.s.compareTo(_low) >= 0) {
-                _toDo.push(node);
-                node = node.left;
-            }
-            if (node != null) {
-                addTree(node.right);
-            }
-        }
+    @Override
+    public Iterator<String> iterator() {
+        return new BSTIterator(_root);
     }
+
+    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
+    //@Override
+    public Iterator<String> iterator(String low, String high) {
+        List<String> lst = asList();
+        List<String> retlist = new ArrayList<String>();
+        for (String i: lst){
+            if (i.compareTo(low) < 0 && i.compareTo(high) > 0){
+                retlist.add(i);
+            }
+        }
+        return retlist.iterator();
+
+    }
+
     /** Root node of the tree. */
-    private Node root;
+    private Node _root;
 }

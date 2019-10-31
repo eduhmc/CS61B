@@ -10,7 +10,12 @@ public class BSTStringSetTest  {
     // FIXME: Add your own tests for your BST StringSet
 
     @Test
-    public void put(){
+    public void trying(){
+        BSTStringSet shit = new BSTStringSet();
+        shit.put("Nick");
+        assertEquals(shit.contains("Nick"), true);
+
+
 
     }
     @Test

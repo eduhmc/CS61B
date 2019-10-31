@@ -1,25 +1,26 @@
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Implementation of a BST based String Set.
  * @author eduhmc
  */
-public class BSTStringSet implements StringSet, Iterable<String> {
+public class BSTStringSet implements SortedStringSet, Iterable<String> {
     /** Creates a new empty set. */
     public BSTStringSet() {
-        _root = null;
+        root = null;
+    }
+
+    @Override
+    public boolean contains(String s) {
+        Node last = find(s);
+        return last != null && s.equals(last.s);
     }
 
     @Override
     public void put(String s) {
-        // FIXME: PART A
         Node last = find(s);
         if (last == null) {
-            _root = new Node(s);
+            root = new Node(s);
         } else {
             int c = s.compareTo(last.s);
             if (c < 0) {
@@ -31,15 +32,50 @@ public class BSTStringSet implements StringSet, Iterable<String> {
     }
 
     @Override
-    public boolean contains(String s) {
-        return false; // FIXME: PART A
+    public List<String> asList() {
+        ArrayList<String> result = new ArrayList<>();
+        for (String label : this) {
+            result.add(label);
+        }
+        return result;
     }
 
     @Override
-    public List<String> asList() {
-        return null; // FIXME: PART A
+    public Iterator<String> iterator() {
+        return new BSTIterator(root);
     }
 
+    @Override
+    public Iterator<String> iterator(String low, String high) {
+        return new BSTRange(root, low, high);
+    }
+
+    /** Return either the node in this BST that contains S, or, if
+     *  there is no such node, the node that should be the parent
+     *  of that node, or null if neither exists. */
+    private Node find(String s) {
+        if (root == null) {
+            return null;
+        }
+        Node p;
+        p = root;
+        while (true) {
+            int c = s.compareTo(p.s);
+            Node next;
+            if (c < 0) {
+                next = p.left;
+            } else if (c > 0) {
+                next = p.right;
+            } else {
+                return p;
+            }
+            if (next == null) {
+                return p;
+            } else {
+                p = next;
+            }
+        }
+    }
 
     /** Represents a single Node of the tree. */
     private static class Node {
@@ -73,7 +109,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
 
         @Override
         public boolean hasNext() {
-            return !_toDo.empty();
+            return !_toDo.isEmpty();
         }
 
         @Override
@@ -101,40 +137,62 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         }
     }
 
-    @Override
-    public Iterator<String> iterator() {
-        return new BSTIterator(_root);
-    }
+    private static class BSTRange implements Iterator<String> {
 
-    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
-    // @Override
-    public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME: PART B
-    }
-    private Node find(String s) {
-        if (_root == null) {
-            return null;
-        }
-        Node p;
-        p = _root;
-        while (true) {
-            int c = s.compareTo(p.s);
-            Node next;
-            if (c < 0) {
-                next = p.left;
-            } else if (c > 0) {
-                next = p.right;
-            } else {
-                return p;
-            }
-            if (next == null) {
-                return p;
-            } else {
-                p = next;
-            }
-        }
-    }
+        /** Stack of nodes to be delivered.  The values to be delivered
+         *  are (a) the label of the top of the stack, then (b)
+         *  the labels of the right child of the top of the stack inorder,
+         *  then (c) the nodes in the rest of the stack (i.e., the result
+         *  of recursively applying this rule to the result of popping
+         *  the stack. */
+        private Stack<Node> _toDo = new Stack<>();
 
+        /** Lower bound. */
+        String _low;
+
+        /** Upper bound. */
+        String _high;
+
+        /** A new iterator over the labels in NODE. */
+        BSTRange(Node node, String low, String high) {
+            _low = low;
+            _high = high;
+            addTree(node);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !_toDo.empty()
+                    && _toDo.peek().s.compareTo(_high) <= 0;
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node node = _toDo.pop();
+            addTree(node.right);
+            return node.s;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        /** Add the relevant subtrees of the tree rooted at NODE. */
+        private void addTree(Node node) {
+            while (node != null && node.s.compareTo(_low) >= 0) {
+                _toDo.push(node);
+                node = node.left;
+            }
+            if (node != null) {
+                addTree(node.right);
+            }
+        }
+    }
     /** Root node of the tree. */
-    private Node _root;
+    private Node root;
 }

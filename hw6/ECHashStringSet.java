@@ -47,15 +47,15 @@ class ECHashStringSet implements StringSet{
 
     @Override
     public List<String> asList() {
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> resultado = new ArrayList<>();
         for (int i = 0; i < _store.length; i++) {
             if (_store[i] != null) {
                 for (int j = 0; j < _store[i].size(); j++) {
-                    result.add(_store[i].get(j));
+                    resultado.add(_store[i].get(j));
                 }
             }
         }
-        return result;
+        return resultado;
     }
 
     public int size() {

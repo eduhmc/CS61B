@@ -22,16 +22,15 @@ public class ECHashStringSetTest {
         int N = 1000000;
         ECHashStringSet tester = new ECHashStringSet();
         HashSet prueba = new HashSet();
-        String creep = "cat";
+        String creep = "edu";
         for (int i = 0; i < N; i = i + 1) {
             creep = StringUtils.nextString(creep);
             tester.put(creep);
             prueba.add(creep);
         }
         assertEquals("The size is different", prueba.size(), tester.size());
-
         boolean veremos = true;
-        creep = "cat";
+        creep = "edu";
         for (int j = 0; j < N; j += 1) {
             creep = StringUtils.nextString(creep);
             if (!prueba.contains(creep)) {
@@ -39,6 +38,26 @@ public class ECHashStringSetTest {
             }
         }
         assertEquals(true, veremos);
+
+        ECHashStringSet tester2 = new ECHashStringSet();
+        String edu = "creep";
+        HashSet prueba2 = new HashSet();
+        for (int i = 0; i < N; i = i + 1) {
+            creep = StringUtils.nextString(edu);
+            tester2.put(edu);
+            prueba2.add(edu);
+        }
+
+        boolean veremos2 = true;
+        edu = "creep";
+        for (int j = 0; j < N; j += 1) {
+            edu = StringUtils.nextString(edu);
+            if (!prueba.contains(edu)) {
+                veremos2 = false;
+            }
+        }
+        assertEquals(false, veremos2);
+
 
         ECHashStringSet pruebafinal = new ECHashStringSet();
         pruebafinal.put("Dog");

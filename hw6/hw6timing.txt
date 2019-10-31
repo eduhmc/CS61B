@@ -9,7 +9,6 @@ in its scaling behavior for random strings?
 
 
 
-
 2a. Results for InsertInOrderSpeedTest for N = 10000:
 
 

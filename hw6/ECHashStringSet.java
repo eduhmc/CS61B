@@ -13,7 +13,7 @@ class ECHashStringSet implements StringSet{
     public ECHashStringSet(int numBuckets) {
         _size = 0;
         _store = (LinkedList<String>[]) new LinkedList[numBuckets];
-        for (int i = 0; i < numBuckets; i += 1) {
+        for (int i = 0; i < numBuckets; i = i + 1) {
             _store[i] = new LinkedList<String>();
         }
     }
@@ -24,13 +24,13 @@ class ECHashStringSet implements StringSet{
 
     @Override
     public void put(String s) {
-        _size += 1;
+        _size = _size + 1;
         if (s != null) {
             if (_size > _store.length * MAX_LOAD) {
                 resize();
             }
 
-            _hashcode = hash(s);
+            _hashcode = helper(s);
             if (!_store[_hashcode].contains(s)) {
                 _store[_hashcode].add(s);
             }
@@ -39,18 +39,15 @@ class ECHashStringSet implements StringSet{
 
     @Override
     public boolean contains(String s) {
-        if (s == null) {
-            return  false;
-        }
-        return _store[hash(s)].contains(s);
+        return _store[helper(s)].contains(s);
     }
 
     @Override
     public List<String> asList() {
         ArrayList<String> resultado = new ArrayList<>();
-        for (int i = 0; i < _store.length; i++) {
+        for (int i = 0; i < _store.length; i = i + 1) {
             if (_store[i] != null) {
-                for (int j = 0; j < _store[i].size(); j++) {
+                for (int j = 0; j < _store[i].size(); j = j + 1) {
                     resultado.add(_store[i].get(j));
                 }
             }
@@ -63,19 +60,22 @@ class ECHashStringSet implements StringSet{
     }
 
     public void resize() {
-        int newBucketCount = _size * 5;
-        ECHashStringSet echss = new ECHashStringSet(newBucketCount);
+        List bucket = asList();
+        _store = new LinkedList[_store.length * 2];
 
         for (int i = 0; i < _store.length; i++) {
-            for (String s : _store[i]) {
-                echss.put(s);
-            }
+            _store[i] = new LinkedList<String>();
         }
 
-        _store = echss._store;
+        for (Object x : bucket) {
+            String chara = (String) x;
+            int track = helper(chara);
+            _store[track].add(chara);
+        }
     }
 
-    private int hash(String s) {
+    private int helper(String s) {
+
         return (s.hashCode() & 0x7fffffff) % _store.length;
     }
     /**Size of the key*/

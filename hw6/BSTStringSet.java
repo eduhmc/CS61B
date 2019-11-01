@@ -127,7 +127,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
                 return contains(s, federer.right);
             }
             return contains(s, federer.left);
-            
+
         }
     }
 
@@ -146,7 +146,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
     public Iterator<String> iterator(String low, String high) {
         List<String> nuevo = asList();
         int bajo = 0; int alto = nuevo.size();
-        for (int i = 0; i < nuevo.size(); i++){
+        for (int i = 0; i < nuevo.size(); i = i + 1){
             int check = low.compareTo(nuevo.get(i));
             if (check > 0){
                 bajo = i + 1;

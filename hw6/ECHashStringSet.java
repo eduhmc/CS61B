@@ -84,6 +84,4 @@ class ECHashStringSet implements StringSet{
     private int _hashcode;
 
     private LinkedList<String>[] _store;
-
-
 }

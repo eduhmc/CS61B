@@ -31,16 +31,24 @@ public class SortedListTester {
 
 		List<Integer> list = new ArrayList<>();
 
-		SortedListHelper.insertIntoSortedList(list, 40);
+		SortedListHelper.insertIntoSortedList(list, 10);
 		assertEquals(1, list.size());
 		assertTrue(SortedListHelper.isListSorted(list));
 
-		SortedListHelper.insertIntoSortedList(list, 50);
+		SortedListHelper.insertIntoSortedList(list, 40);
 		assertEquals(2, list.size());
 		assertTrue(SortedListHelper.isListSorted(list));
 
-		SortedListHelper.insertIntoSortedList(list, 60);
+		SortedListHelper.insertIntoSortedList(list, 50);
 		assertEquals(3, list.size());
+		assertTrue(SortedListHelper.isListSorted(list));
+
+		SortedListHelper.insertIntoSortedList(list, 60);
+		assertEquals(4, list.size());
+		assertTrue(SortedListHelper.isListSorted(list));
+
+		SortedListHelper.insertIntoSortedList(list, 70);
+		assertEquals(5, list.size());
 		assertTrue(SortedListHelper.isListSorted(list));
 	}
 }

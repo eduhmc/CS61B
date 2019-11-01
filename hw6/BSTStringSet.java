@@ -117,17 +117,17 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return federer;
     }
     private boolean contains(String str, Node federer){
+        if ( (federer != null) && (!federer.s.equals(str))){
+            if(federer.s.compareTo(str) > 0){
+                return contains(str, federer.left);
+            } else{
+                return contains(str, federer.right);
+            }
+        }
         if (federer == null){
             return false;
-        }
-        if (federer.s.equals(str)){
+        }else{
             return true;
-        } else {
-            if (federer.s.compareTo(str) < 0){
-                return contains(str, federer.right);
-            } else{
-                return contains(str, federer.left);
-            }
         }
     }
 

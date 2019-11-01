@@ -15,6 +15,16 @@ public class BSTStringSetTest  {
         shit.put("Nick");
         assertEquals(shit.contains("Nick"), true);
 
+        BSTStringSet nico = new BSTStringSet();
+        nico.put("Huati");
+        assertEquals(nico.contains("Huati"), true);
+
+        BSTStringSet dazo = new BSTStringSet();
+        dazo.put("Tipo");
+        assertEquals(dazo.contains("chino"), false);
+
+
+
 
 
     }

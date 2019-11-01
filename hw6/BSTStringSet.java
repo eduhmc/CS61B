@@ -104,40 +104,40 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return new BSTIterator(_root);
     }
 
-    private Node put(String str, Node federer){
+    private Node put(String s, Node federer){
         if (federer == null){
-            return new Node(str);
+            return new Node(s);
         }
-        int prueba = federer.s.compareTo(str);
+        int prueba = federer.s.compareTo(s);
         if (prueba < 0) {
-            federer.right = put(str, federer.right);
+            federer.right = put(s, federer.right);
         } else if (prueba > 0){
-            federer.right = put(str, federer.right);
+            federer.left = put(s, federer.left);
         }
         return federer;
     }
-    private boolean contains(String str, Node federer){
-        if ( (federer != null) && (!federer.s.equals(str))){
-            if(federer.s.compareTo(str) > 0){
-                return contains(str, federer.left);
-            } else{
-                return contains(str, federer.right);
-            }
-        }
+    private boolean contains(String s, Node federer){
         if (federer == null){
             return false;
-        }else{
+        }
+        if (federer.s.equals(s)){
             return true;
+        } else {
+            if (federer.s.compareTo(s) < 0){
+                return contains(s, federer.right);
+            }
+            return contains(s, federer.left);
+            
         }
     }
 
-    private  void asList(List<String> lista, Node newnode){
-        if (newnode != null){
-            asList(lista, newnode.left);
-            lista.add(newnode.s);
-            asList(lista, newnode.right);
-        }else {
+    private  void asList(List<String> lst, Node newnode){
+        if (newnode == null){
             return;
+        }else {
+            asList(lst, newnode.left);
+            lst.add(newnode.s);
+            asList(lst, newnode.right);
         }
     }
 
@@ -145,9 +145,8 @@ public class BSTStringSet implements StringSet, Iterable<String> {
     //@Override
     public Iterator<String> iterator(String low, String high) {
         List<String> nuevo = asList();
-        int bajo = 0;
-        int alto = nuevo.size();
-        for (int i = 0; i < nuevo.size(); i = i + 1){
+        int bajo = 0; int alto = nuevo.size();
+        for (int i = 0; i < nuevo.size(); i++){
             int check = low.compareTo(nuevo.get(i));
             if (check > 0){
                 bajo = i + 1;

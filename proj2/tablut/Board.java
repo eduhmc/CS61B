@@ -10,7 +10,7 @@ import static tablut.Move.mv;
 
 
 /** The state of a Tablut Game.
- *  @author Eduardo huerta mercado
+ *  @author Eduardo Huerta Mercado
  */
 class Board {
 
@@ -38,6 +38,8 @@ class Board {
         sq(4, 6), sq(4, 2), sq(2, 4), sq(6, 4)
     };
 
+
+
     /** Initializes a game board with SIZE squares on a side in the
      *  initial position. */
     Board() {
@@ -61,10 +63,27 @@ class Board {
     /** Clears the board to the initial position. */
     void init() {
         // FIXME
+
+
+
+
+        _board = null;
+        _turn = Piece.BLACK;
+        _winner = Piece.EMPTY;
+        _repeated = false;
+        _moveCount = 0;
+        _kingPosition = sq(4,4);
+        _whitePieces = INITIAL_DEFENDERS;
+        _blackPieces = INITIAL_ATTACKERS;
+        _currentPosition = null;
+        _previousPosition = null;
     }
 
     /** Set the move limit to LIM.  It is an error if 2*LIM <= moveCount(). */
     void setMoveLimit(int n) {
+        if (moveCount() >= 2 * n){
+            return;
+        }
         // FIXME
     }
 
@@ -88,6 +107,10 @@ class Board {
      *  position is a repeat. */
     private void checkRepeated() {
         // FIXME
+        if (repeatedPosition() == true){
+
+            _winner = turn();
+        }
     }
 
     /** Return the number of moves since the initial position that have not been
@@ -98,7 +121,9 @@ class Board {
 
     /** Return location of the king. */
     Square kingPosition() {
-        return null; // FIXME
+
+        //return null; // FIXME
+        return _kingPosition;
     }
 
     /** Return the contents the square at S. */
@@ -109,7 +134,9 @@ class Board {
     /** Return the contents of the square at (COL, ROW), where
      *  0 <= COL, ROW <= 9. */
     final Piece get(int col, int row) {
+
         return null; // FIXME
+
     }
 
     /** Return the contents of the square at COL ROW. */
@@ -120,11 +147,14 @@ class Board {
     /** Set square S to P. */
     final void put(Piece p, Square s) {
         // FIXME
+        p = get(s.col(), s.row());
     }
 
     /** Set square S to P and record for undoing. */
     final void revPut(Piece p, Square s) {
         // FIXME
+        put(p, s);
+        _previousPosition = s;
     }
 
     /** Set square COL ROW to P. */
@@ -136,6 +166,7 @@ class Board {
      *  board.  For this to be true, FROM-TO must be a rook move and the
      *  squares along it, other than FROM, must be empty. */
     boolean isUnblockedMove(Square from, Square to) {
+
         return false; // FIXME
     }
 
@@ -146,7 +177,14 @@ class Board {
 
     /** Return true iff FROM-TO is a valid move. */
     boolean isLegal(Square from, Square to) {
-        return false; // FIXME
+
+        //return false; // FIXME
+        if (isLegal(from) && isUnblockedMove(from, to)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** Return true iff MOVE is a legal move in the current
@@ -263,5 +301,13 @@ class Board {
     private boolean _repeated;
 
     // FIXME: Other state?
+    private Board _board;
+    private Square _kingPosition;
+    private Square[] _whitePieces;
+    private Square[] _blackPieces;
+    private Square _currentPosition;
+    private Square _previousPosition;
+    private Move[] _movesMade;
+
 
 }

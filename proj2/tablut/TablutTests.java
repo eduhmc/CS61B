@@ -20,6 +20,7 @@ public class TablutTests {
      * This method needs to be finished and may need to be changed
      * based on your implementation.
      */
+    Board b = new Board();
     @Test
     public void testLegalWhiteMoves() {
         // FIXME: REPLACE THIS LINE - Build a board by initializing it with initialBoardState

@@ -274,6 +274,8 @@ class Board {
         if (moveCount() + 1 <= _moveLimit) {
             revPut(get(from), to);
             put(EMPTY, from);
+            _moveCount = _moveCount + 1;
+            _turn = turn().opponent();
         }
 
     }

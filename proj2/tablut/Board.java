@@ -93,11 +93,11 @@ class Board {
         }
 
         _turn = BLACK;
-        _winner = EMPTY;
+        _winner = null;
         _repeated = false;
         _moveCount = 0;
         _moveLimit = 9999;
-        _pastBoardStates = null;
+        _pastBoardStates = new HashSet<>();
 
 
     }
@@ -211,37 +211,49 @@ class Board {
      *  board.  For this to be true, FROM-TO must be a rook move and the
      *  squares along it, other than FROM, must be empty. */
     boolean isUnblockedMove(Square from, Square to) {
+        assert from.isRookMove(to);
         // FIXME - edited
-        if (from.isRookMove(to)) {
-            //check squares along - up
-            if (from.row() + 1 <= 9) {
-                if (get(from.col(), from.row() + 1) != EMPTY){
-                    return false;
-                }
-            }
-            //check squares along - down
-            if (from.row() - 1 >= 0) {
-                if (get(from.col(), from.row() - 1) != EMPTY){
-                    return false;
-                }
-            }
-            //check squares along - right
-            if (from.col() + 1 <= 9) {
-                if (get(from.col() + 1, from.row()) != EMPTY){
-                    return false;
-                }
-            }
-            //check squares along - left
-            if (from.col() - 1 >= 0) {
-                if (get(from.col() - 1, from.row()) != EMPTY){
-                    return false;
-                }
-            }
-            return true;
+        if ((from.col() == to.col() && from.row() == to.row()) || (from.col() != to.col() && from.row() != to.row()))
+        {
+            return false; //same place or diagonal move
         }
-        else {
-            return false;
+        else if (from.col() == to.col() && from.row() != to.row()) { // move up or down
+            if (from.row()> to.row()){ //UP
+                int i = from.row();
+                while (i < to.row()){
+                    if (get(from.col(),i + 1) != EMPTY){
+                        return  false;
+                    }
+                }
+            }
+            else { //DOWN
+                int i = from.row();
+                while (i > to.row()){
+                    if (get(from.col(),i - 1) != EMPTY){
+                        return  false;
+                    }
+                }
+            }
         }
+        else if (from.col() != to.col() && from.row() == to.row()) { // move left or right
+            if (from.col()> to.col()){ //left
+                int i = from.col() ;
+                while (i < to.col() ){
+                    if (get( i - 1, from.row()) != EMPTY){
+                        return  false;
+                    }
+                }
+            }
+            else { //right
+                int i = from.col();
+                while (i > to.col()){
+                    if (get(i +1,from.row()) != EMPTY){
+                        return  false;
+                    }
+                }
+            }
+        }
+        return true;
 
     }
 
@@ -259,6 +271,7 @@ class Board {
         else {
             return false;
         }
+
     }
 
     /** Return true iff MOVE is a legal move in the current

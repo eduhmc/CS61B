@@ -218,38 +218,42 @@ class Board {
             return false; //same place or diagonal move
         }
         else if (from.col() == to.col() && from.row() != to.row()) { // move up or down
-            if (from.row()> to.row()){ //UP
-                int i = from.row();
-                while (i < to.row()){
-                    if (get(from.col(),i + 1) != EMPTY){
-                        return  false;
-                    }
-                }
-            }
-            else { //DOWN
+            if (from.row()> to.row()){ //DOWN
                 int i = from.row();
                 while (i > to.row()){
                     if (get(from.col(),i - 1) != EMPTY){
                         return  false;
                     }
+                    i = i - 1;
+                }
+            }
+            else { //UP
+                int i = from.row();
+                while (i < to.row()){
+                    if (get(from.col(),i + 1) != EMPTY){
+                        return  false;
+                    }
+                    i = i + 1;
                 }
             }
         }
         else if (from.col() != to.col() && from.row() == to.row()) { // move left or right
             if (from.col()> to.col()){ //left
                 int i = from.col() ;
-                while (i < to.col() ){
+                while (i > to.col() ){
                     if (get( i - 1, from.row()) != EMPTY){
                         return  false;
                     }
+                    i = i - 1;
                 }
             }
             else { //right
                 int i = from.col();
-                while (i > to.col()){
+                while (i < to.col()){
                     if (get(i +1,from.row()) != EMPTY){
                         return  false;
                     }
+                    i = i + 1;
                 }
             }
         }

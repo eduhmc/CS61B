@@ -173,7 +173,7 @@ class Board {
         // FIXME - edited
 
         if (col >= 0 && row <= 9) {
-            return _board[col][row];
+            return _board[row][col];
 
         } else {
             return null;
@@ -189,7 +189,7 @@ class Board {
     /** Set square S to P. */
     final void put(Piece p, Square s) {
         // FIXME  - edited
-        _board[s.col()][s.row()] = p;
+        _board[s.row()][s.col()] = p;
 
     }
 
@@ -259,18 +259,22 @@ class Board {
 
     /** Return true iff FROM is a valid starting square for a move. */
     boolean isLegal(Square from) {
-        return get(from) == _turn;
+        return (get(from) == _turn) || (get(from) == KING && (_turn == WHITE));
     }
 
     /** Return true iff FROM-TO is a valid move. */
     boolean isLegal(Square from, Square to) {
         // FIXME - edited
-        if (isLegal(from) && isUnblockedMove(from, to) && to != THRONE ) {
-            return true;
-        }
-        else {
+        if (!isLegal(from)) {
             return false;
         }
+        if (_board[to.row()][to.col()] != EMPTY) {
+            return false;
+        }
+        if ((to == THRONE) && (_board[from.row()][from.col()] != KING)) {
+            return false;
+        }
+        return isUnblockedMove(from, to);
 
     }
 
@@ -287,12 +291,16 @@ class Board {
         if (moveCount() + 1 <= _moveLimit) {
             revPut(get(from), to);
             put(EMPTY, from);
+
+
             _moveCount = _moveCount + 1;
             _turn = turn().opponent();
+            if (legalMoves(_turn).size() == 0) {
+                _winner = _turn.opponent();
+            }
         }
 
     }
-
     /** Move according to MOVE, assuming it is a legal move. */
     void makeMove(Move move) {
         makeMove(move.from(), move.to());

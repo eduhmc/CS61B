@@ -269,17 +269,23 @@ class Board {
     /** Return true iff FROM-TO is a valid move. */
     boolean isLegal(Square from, Square to) {
         // FIXME - edited
-        if (!isLegal(from)) {
-            return false;
-        }
-        if (_board[to.row()][to.col()] != EMPTY) {
-            return false;
-        }
-        if ((to == THRONE) && (_board[from.row()][from.col()] != KING)) {
-            return false;
-        }
-        return isUnblockedMove(from, to);
 
+        if (isLegal(from)){
+            if ((get(to) == EMPTY) ){
+                if(get(from) != KING && to == THRONE){
+                    return false;
+                }
+                else {
+                    return isUnblockedMove(from, to);
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
 
     /** Return true iff MOVE is a legal move in the current
@@ -370,23 +376,26 @@ class Board {
         List<Move> l_Moves = new ArrayList<Move>();
 
         HashSet<Square> sideList = pieceLocations(side);
-
+        Piece turnToIgnore = _turn;
+        //Ignore turn
+        if(side == BLACK) {_turn = BLACK;}
+        else {_turn = WHITE;}
         for (Square bsq : sideList) {
-            int r0 = bsq.row(), c0 = bsq.col(), i0 = bsq.index();
-            for (int d = 0; d < 4; d += 1) {
-                for (Square sq1 : ROOK_SQUARES[i0][d]) {
-                    l_Moves.add(mv(bsq, sq1));
+            for (Square sqb : SQUARE_LIST) {
+                //search all legal moves in the board
+                if (isLegal(bsq, sqb)) {
+                    l_Moves.add(mv(bsq , sqb));
                 }
             }
         }
-
+        //set turn ignored again
+        _turn = turnToIgnore;
         return l_Moves;
     }
 
     /** Return true iff SIDE has a legal move. */
     boolean hasMove(Piece side) {
         // FIXME
-
         return legalMoves(side).size() > 0;
     }
 

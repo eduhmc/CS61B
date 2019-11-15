@@ -24,8 +24,8 @@ public class TablutTests {
     @Test
     public void testLegalWhiteMoves() {
         // FIXME: REPLACE THIS LINE - Build a board by initializing it with initialBoardState
-
-        List<Move> movesList = b.legalMoves(null); // FIXME: Get legal moves for white pieces
+        buildBoard(b,initialBoardState);
+        List<Move> movesList = b.legalMoves(Piece.WHITE); // FIXME: Get legal moves for white pieces
 
         assertEquals(56, movesList.size());
 
@@ -48,8 +48,8 @@ public class TablutTests {
     @Test
     public void testLegalBlackMoves() {
         // FIXME: REPLACE THIS LINE - Build a board by initializing it with initialBoardState
-
-        List<Move> movesList = b.legalMoves(null); // FIXME: Get legal moves for black pieces
+        buildBoard(b,initialBoardState);
+        List<Move> movesList = b.legalMoves(Piece.BLACK); // FIXME: Get legal moves for black pieces
 
         assertEquals(80, movesList.size());
 

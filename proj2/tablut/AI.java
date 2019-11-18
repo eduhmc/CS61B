@@ -1,5 +1,8 @@
 package tablut;
 
+
+import java.util.HashSet;
+
 import static java.lang.Math.*;
 
 import static tablut.Square.sq;
@@ -7,7 +10,7 @@ import static tablut.Board.THRONE;
 import static tablut.Piece.*;
 
 /** A Player that automatically generates moves.
- *  @author
+ *  @author eduhmc
  */
 class AI extends Player {
 
@@ -38,7 +41,10 @@ class AI extends Player {
 
     @Override
     String myMove() {
-        return ""; // FIXME
+        // FIXME - edited
+        Move move = findMove();
+        _controller.reportMove(move);
+        return move.toString();
     }
 
     @Override
@@ -51,7 +57,9 @@ class AI extends Player {
     private Move findMove() {
         Board b = new Board(board());
         _lastFoundMove = null;
-        // FIXME
+        // FIXME - edited
+        findMove(b,maxDepth(b), true,(_myPiece == WHITE ? 1:-1 ), -INFTY,INFTY);
+
         return _lastFoundMove;
     }
 
@@ -67,20 +75,212 @@ class AI extends Player {
      *  of the board value and does not set _lastMoveFound. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
-        return 0; // FIXME
-    }
+        int moveValue = 0;
+        //minimal value < alpha
+        if (sense == -1){
+            //look for move with minimal value
+            if (depth > 0){
+                moveValue = minimalMove(board,saveMove, alpha, beta);
+            }
+            else{ // returns static estimate
+                if (board.winner() == BLACK){
+                    return WINNING_VALUE * (- 1);
+                } else if (board.winner() == WHITE){
+                    return WINNING_VALUE;
+                } else {
+                    if (depth == 0) {
+                        return staticScore(board);
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+            }
+        }
+        //maximal value > beta
+        if (sense == 1){
+            if (depth > 0){
+                moveValue = maximalMove(board,saveMove, alpha,beta);
+            }
+            else{
+                if (board.winner() == BLACK){
+                    return WINNING_VALUE * (- 1);
+                } else if (board.winner() == WHITE){
+                    return WINNING_VALUE;
+                } else {
+                    if (depth == 0) {
+                        return staticScore(board);
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+            }
 
+        }
+        if (saveMove){
+            _lastFoundMove = null;
+        }
+        return moveValue; // FIXME - edited
+    }
+    public int minimalMove(Board board, boolean saveMove, int a, int b){
+        int minimalValue = INFTY;
+        for(Move lmove: board.legalMoves(BLACK)){
+            board.makeMove(lmove);
+            int possibleMax = maximalMove(board, false, a,b);
+            board.undo();
+            board._pastBoardStates.clear();
+            if (minimalValue >= possibleMax){
+                minimalValue = possibleMax;
+                a = min(a,possibleMax);
+                if(saveMove){
+                    _lastFoundMove = lmove;
+                }
+                if (a >= b){
+                    board.undo();
+                    break;
+                }
+            }
+        }
+        return minimalValue;
+    }
+    public int maximalMove(Board board, boolean saveMove, int a, int b){
+        int maximalValue = -INFTY;
+        for (Move lmove: board.legalMoves(WHITE)){
+            board.makeMove(lmove);
+            int possibleMin = minimalMove(board, false, a,b);
+            board.undo();
+            board._pastBoardStates.clear();
+            if (maximalValue <= possibleMin){
+                maximalValue = possibleMin;
+                a = min(a,possibleMin);
+                if(saveMove){
+                    _lastFoundMove = lmove;
+                }
+                if (a >= b){
+                    board.undo();
+                    break;
+                }
+            }
+        }
+        return maximalValue;
+    }
     /** Return a heuristically determined maximum search depth
      *  based on characteristics of BOARD. */
     private static int maxDepth(Board board) {
-        return 4; // FIXME?
+        Piece currentTurn = board.turn();
+        int maxDepthValue = 3;
+        if(board.pieceLocations(WHITE).size() < 4 && board.pieceLocations(BLACK).size() <= 5){
+            return 3;
+        }
+        if (board.pieceLocations(WHITE).size() > 6 && board.pieceLocations(BLACK).size() > 12){
+            return 2;
+        }
+        return 3; // FIXME? - edited
     }
 
     /** Return a heuristic value for BOARD. */
     private int staticScore(Board board) {
-        return 0;  // FIXME
+        int heuristicValue = 0;
+        Board testBoard = new Board();
+        testBoard.copy(board);
+        Piece currentTurn = testBoard.turn();
+        //calculate possibilities for BLACK and WHITE
+        if (currentTurn == WHITE){
+            heuristicValue = heuristicValue + ( heuristicBlackWhite(board, testBoard) * -3000 );
+        } else { //BLACK
+            heuristicValue = heuristicValue + ( heuristicBlackWhite(board, testBoard) * 1500 );
+        }
+        //calculate posibilities for KING
+        heuristicValue = heuristicValue + heuristicKing(getPiecesBoard(board), new HashSet<>(),1024, 5,board.kingPosition());
+
+        return heuristicValue;  // FIXME - edited
+    }
+    public  int heuristicBlackWhite (Board board, Board testBoard ){
+        Piece currentTurn = testBoard.turn();
+        int legalMovesCounter = 0;
+        for(Move lmove : testBoard.legalMoves(currentTurn)){
+            testBoard.makeMove(lmove);
+            if (testBoard.repeatedPosition()){
+                legalMovesCounter = legalMovesCounter + 0;
+            } else {
+                legalMovesCounter = legalMovesCounter + board.pieceLocations(currentTurn).size() - testBoard.pieceLocations(currentTurn).size();
+            }
+            testBoard = new Board();
+            testBoard.copy(board);
+        }
+        return legalMovesCounter;
+    }
+    public int heuristicKing (Piece[][] board, HashSet<Square> kingPath, int verifyingNumber, int dir , Square kingPos){
+        int heuristicKingValue = 0;
+        if (kingPath.contains(kingPos) || verifyingNumber < 3){
+            return heuristicKingValue;
+        }
+        else{
+            kingPath.add(kingPos);
+            Piece[][] testBoard = copyArray(board);
+            //check north east south and west
+            for(int currentDir = 0; currentDir <4; currentDir++){
+                if (!verifyEdge(testBoard, currentDir, kingPos)) {
+                    int testCol = kingPos.col() + possibleCols[currentDir];
+                    int testRow = kingPos.row() + possibleRows[currentDir];
+                    boolean rowBoolean = testRow >= 0 && testRow < testBoard.length ;
+                    boolean colBoolean = testCol >= 0 && testCol < testBoard[0].length ;
+                    if (colBoolean && rowBoolean && testBoard[testRow][testCol] == EMPTY) {
+                        testBoard[kingPos.row()][kingPos.col()] = EMPTY;
+                        testBoard[testRow][testCol] = KING;
+                        heuristicKingValue += heuristicKing(testBoard,kingPath, (currentDir == dir? verifyingNumber: verifyingNumber/2),currentDir, sq(testCol, testRow));
+                        testBoard = copyArray(board);
+                    }
+                } else {
+                    heuristicKingValue += verifyingNumber;
+                }
+            }
+            return heuristicKingValue;
+        }
+
+
+    }
+    public Piece[][] copyArray(Piece[][] array){
+        Piece[][] newArray = new Piece[array.length][array[0].length];
+        for(int i = 0;i<array.length;i++){
+            for(int j = 0;j<array[0].length;j++){
+                newArray[i][j] = array[i][j];
+            }
+        }
+        return newArray;
     }
 
+    public boolean verifyEdge(Piece[][] copiedBoard, int currentDir , Square kingPos){
+        int testRow = kingPos.row() + possibleRows[currentDir];
+        int testCol = kingPos.col() + possibleCols[currentDir];
+        boolean verifyEdgeValue = false;
+        boolean rowBoolean = testRow >= 0 && testRow < copiedBoard.length ;
+        boolean colBoolean = testCol >= 0 && testCol < copiedBoard[0].length ;
+        Piece[][] testBoard2 = copiedBoard;
+        while (rowBoolean && colBoolean){
+            if(testBoard2[testRow][testCol] == WHITE || testBoard2[testRow][testCol] == BLACK){
+                testRow = testRow + possibleRows[currentDir];
+                testCol = testCol + possibleCols[currentDir];
+            } else {
+                return verifyEdgeValue;
+            }
+        }
+        verifyEdgeValue = true;
+        return verifyEdgeValue;
+    }
+    private int[] possibleRows = new int[]{-1,0,1,0};
+    private int[] possibleCols = new int[]{0,1,0,-1};
+
+    public Piece[][] getPiecesBoard (Board board){
+        Piece[][] testBoard = new Piece[board.getBoard().length][board.getBoard().length];
+        for (int i = 0; i < board.getBoard().length; i += 1){
+            for(int j = 0; j < board.getBoard().length; j += 1){
+                testBoard[i][j] = board.getBoard()[i][j];
+            }
+        }
+        return testBoard;
+    }
     // FIXME: More here.
 
 }

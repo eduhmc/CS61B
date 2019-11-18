@@ -57,7 +57,6 @@ class Board {
             return;
         }
         init();
-        // FIXME -edited
         _board = model._board;
         _turn = model._turn;
         _winner = model._winner;
@@ -70,7 +69,6 @@ class Board {
 
     /** Clears the board to the initial position. */
     void init() {
-        // FIXME - edited
         _board = new Piece[SIZE][SIZE];
         _previousBoard = new Piece[SIZE][SIZE];
         for (int i = 0; i < 9; i++) {
@@ -84,19 +82,19 @@ class Board {
 
         for (int i = 0; i < INITIAL_DEFENDERS.length; i++) {
             Square currentSquare = INITIAL_DEFENDERS[i];
-            put(WHITE,currentSquare);
+            put(WHITE, currentSquare);
         }
 
         for (int i = 0; i < INITIAL_ATTACKERS.length; i++) {
             Square currentSquare = INITIAL_ATTACKERS[i];
-            put(BLACK,currentSquare);
+            put(BLACK, currentSquare);
         }
 
         _turn = BLACK;
         _winner = null;
         _repeated = false;
         _moveCount = 0;
-        _moveLimit = 9999;
+        _moveLimit = -1;
         _pastBoardStates = new HashSet<>();
 
 
@@ -104,13 +102,10 @@ class Board {
 
     /** Set the move limit to LIM.  It is an error if 2*LIM <= moveCount(). */
     void setMoveLimit(int n) {
-        // FIXME - Edited
-        _moveLimit = n;
-
-        if (2 * _moveLimit < moveCount()) {
+        if (2 * n < moveCount()) {
             throw error("exceeds move limit");
         }
-
+        _moveLimit = n;
     }
 
     /** Return a Piece representing whose move it is (WHITE or BLACK). */
@@ -132,7 +127,6 @@ class Board {
     /** Record current position and set winner() next mover if the current
      *  position is a repeat. */
     private void checkRepeated() {
-        // FIXME - edited
         if ( ! _pastBoardStates.contains( encodedBoard() ) ) {
             _pastBoardStates.add(encodedBoard());
         }
@@ -170,8 +164,6 @@ class Board {
     /** Return the contents of the square at (COL, ROW), where
      *  0 <= COL, ROW <= 9. */
     final Piece get(int col, int row) {
-        // FIXME - edited
-
         if (col >= 0 && row <= 9) {
             return _board[row][col];
 
@@ -183,21 +175,19 @@ class Board {
 
     /** Return the contents of the square at COL ROW. */
     final Piece get(char col, char row) {
-        return get(row - '1', col - 'a'); // get(col - 'a', row - '1');
+        return get(row - '1', col - 'a');
     }
 
     /** Set square S to P. */
     final void put(Piece p, Square s) {
-        // FIXME  - edited
         _board[s.row()][s.col()] = p;
 
     }
 
     /** Set square S to P and record for undoing. */
     final void revPut(Piece p, Square s) {
-        // FIXME - edited
         _previousBoard = _board;
-        _pastBoardStates.add(encodedBoard()); // state before last change
+        _pastBoardStates.add(encodedBoard());
         put(p, s);
 
     }
@@ -212,13 +202,13 @@ class Board {
      *  squares along it, other than FROM, must be empty. */
     boolean isUnblockedMove(Square from, Square to) {
         assert from.isRookMove(to);
-        // FIXME - edited
-        if ((from.col() == to.col() && from.row() == to.row()) || (from.col() != to.col() && from.row() != to.row()))
+        if ((from.col() == to.col() && from.row() == to.row()) ||
+                (from.col() != to.col() && from.row() != to.row()))
         {
-            return false; //same place or diagonal move
+            return false;
         }
-        else if (from.col() == to.col() && from.row() != to.row()) { // move up or down
-            if (from.row()> to.row()){ //DOWN
+        else if (from.col() == to.col() && from.row() != to.row()) {
+            if (from.row()> to.row()){
                 int i = from.row();
                 while (i > to.row()){
                     if (get(from.col(),i - 1) != EMPTY){
@@ -237,8 +227,8 @@ class Board {
                 }
             }
         }
-        else if (from.col() != to.col() && from.row() == to.row()) { // move left or right
-            if (from.col()> to.col()){ //left
+        else if (from.col() != to.col() && from.row() == to.row()) {
+            if (from.col()> to.col()){
                 int i = from.col() ;
                 while (i > to.col() ){
                     if (get( i - 1, from.row()) != EMPTY){
@@ -247,7 +237,7 @@ class Board {
                     i = i - 1;
                 }
             }
-            else { //right
+            else {
                 int i = from.col();
                 while (i < to.col()){
                     if (get(i +1,from.row()) != EMPTY){
@@ -268,22 +258,18 @@ class Board {
 
     /** Return true iff FROM-TO is a valid move. */
     boolean isLegal(Square from, Square to) {
-        // FIXME - edited
 
-        if (isLegal(from)){
-            if ((get(to) == EMPTY) ){
-                if(get(from) != KING && to == THRONE){
+        if (isLegal(from)) {
+            if ((get(to) == EMPTY) ) {
+                if(get(from) != KING && to == THRONE) {
                     return false;
-                }
-                else {
+                } else {
                     return isUnblockedMove(from, to);
                 }
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -297,19 +283,83 @@ class Board {
     /** Move FROM-TO, assuming this is a legal move. */
     void makeMove(Square from, Square to) {
         assert isLegal(from, to);
-        // FIXME
-        if (moveCount() + 1 <= _moveLimit) {
-            revPut(get(from), to);
-            put(EMPTY, from);
+        revPut(get(from), to);
+        put(EMPTY, from);
 
+        Square northSQ = to.rookMove(0,2);
+        Square betweenNorthSQ = to.rookMove(0,1);
+        verifyCapture(northSQ, betweenNorthSQ, to);
+        Square eastSQ = to.rookMove(1,2);
+        Square betweenEastSQ = to.rookMove(1,1);
+        verifyCapture(eastSQ, betweenEastSQ, to);
+        Square southSQ = to.rookMove(2,2);
+        Square betweenSouthSQ = to.rookMove(2,1);
+        verifyCapture(southSQ, betweenSouthSQ, to);
+        Square westSQ = to.rookMove(3,2);
+        Square betweenWestSQ = to.rookMove(3,1);
+        verifyCapture(westSQ, betweenWestSQ, to);
 
-            _moveCount = _moveCount + 1;
-            _turn = turn().opponent();
-            if (legalMoves(_turn).size() == 0) {
-                _winner = _turn.opponent();
-            }
+        checkRepeated();
+
+        _moveCount = _moveCount + 1;
+
+        if (legalMoves(_turn).size() == 0) {
+            _winner = _turn.opponent();
+        }
+        if (kingPosition().isEdge()){
+            _winner = WHITE;
+        }
+        if (_winner != null){
+            return;
         }
 
+        _turn = turn().opponent();
+
+
+    }
+    void verifyCapture(Square northSQ, Square betweenNorthSQ, Square to) {
+        if (northSQ != null){
+            if (get(betweenNorthSQ) != KING){
+                if ((get(to).side() == get(northSQ).side()) && (get(betweenNorthSQ) == get(to).opponent())) {
+                    capture(to, northSQ);
+                }
+                if (northSQ == THRONE && get(northSQ) == EMPTY){
+                    capture(to, northSQ);
+                }
+                if (northSQ == THRONE && get(northSQ) == WHITE ){
+                    Integer sumSurroundingThrone = 0 ;
+                    if (get(NTHRONE) == BLACK){
+                        sumSurroundingThrone += 1;
+                    }
+                    if (get(ETHRONE) == BLACK){
+                        sumSurroundingThrone += 1;
+                    }
+                    if (get(STHRONE) == BLACK){
+                        sumSurroundingThrone += 1;
+                    }
+                    if (get(WTHRONE) == BLACK){
+                        sumSurroundingThrone += 1;
+                    }
+                    if (sumSurroundingThrone > 2 && (to == NTHRONE || to == ETHRONE || to == STHRONE || to == WTHRONE) ){
+                        capture(to, northSQ);
+                    }
+                }
+            } else {
+                if (betweenNorthSQ == NTHRONE || betweenNorthSQ == ETHRONE || betweenNorthSQ == STHRONE || betweenNorthSQ == WTHRONE ){
+                    Square d1 = to.diag1(betweenNorthSQ);
+                    Square d2 = to.diag2(betweenNorthSQ);
+                    if (get(d1) == BLACK && get(d2) == BLACK && get(THRONE) == EMPTY && get(to) == BLACK){
+                        capture(to,northSQ);
+                        _winner = BLACK;
+                    }
+                } else {
+                    if (get(to) == BLACK && betweenNorthSQ != THRONE){
+                        capture(to, northSQ);
+                    }
+                }
+
+            }
+        }
     }
     /** Move according to MOVE, assuming it is a legal move. */
     void makeMove(Move move) {
@@ -319,8 +369,6 @@ class Board {
     /** Capture the piece between SQ0 and SQ2, assuming a piece just moved to
      *  SQ0 and the necessary conditions are satisfied. */
     private void capture(Square sq0, Square sq2) {
-        // FIXME - Edited
-        //make sq1 EMPTY
         put(EMPTY, sq0.between(sq2));
     }
 
@@ -328,7 +376,6 @@ class Board {
     void undo() {
         if (_moveCount > 0) {
             undoPosition();
-            // FIXME
             _pastBoardStates.remove(encodedBoard());
             _turn = _turn.opponent();
             _moveCount = _moveCount - 1;
@@ -338,8 +385,6 @@ class Board {
     /** Remove record of current position in the set of positions encountered,
      *  unless it is a repeated position or we are at the first move. */
     private void undoPosition() {
-        // FIXME
-
         if(_pastBoardStates.size() == 1) {
             return;
 
@@ -358,7 +403,6 @@ class Board {
     /** Clear the undo stack and board-position counts. Does not modify the
      *  current position or win status. */
     void clearUndo() {
-        // FIXME - Edited
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 _previousBoard[i][j] = EMPTY;
@@ -372,30 +416,29 @@ class Board {
      *  SIDE (ignoring whose turn it is at the moment). */
     List<Move> legalMoves(Piece side) {
         assert side != EMPTY;
-        // FIXME - Edited
         List<Move> l_Moves = new ArrayList<Move>();
 
         HashSet<Square> sideList = pieceLocations(side);
         Piece turnToIgnore = _turn;
-        //Ignore turn
         if(side == BLACK) {_turn = BLACK;}
         else {_turn = WHITE;}
         for (Square bsq : sideList) {
             for (Square sqb : SQUARE_LIST) {
-                //search all legal moves in the board
                 if (isLegal(bsq, sqb)) {
                     l_Moves.add(mv(bsq , sqb));
                 }
             }
         }
-        //set turn ignored again
         _turn = turnToIgnore;
         return l_Moves;
     }
 
+    public Piece[][] getBoard(){
+        return _board;
+    }
+
     /** Return true iff SIDE has a legal move. */
     boolean hasMove(Piece side) {
-        // FIXME
         return legalMoves(side).size() > 0;
     }
 
@@ -431,8 +474,7 @@ class Board {
     }
 
     /** Return the locations of all pieces on SIDE. */
-    private HashSet<Square> pieceLocations(Piece side) {
-        // FIXME - edited
+    public HashSet<Square> pieceLocations(Piece side) {
         HashSet<Square> hs = new HashSet<>();
         assert side != EMPTY;
         for (int i = 0; i < 9; i++) {
@@ -465,11 +507,14 @@ class Board {
     private int _moveCount;
     /** True when current board is a repeated position (ending the game). */
     private boolean _repeated;
-
-    // FIXME: Other state?
+    /** Board. */
     private Piece[][] _board;
+    /** Previous board. */
     private Piece[][] _previousBoard;
-    private HashSet<String> _pastBoardStates = new HashSet<>();
+    /** All past boards. */
+    public HashSet<String> _pastBoardStates = new HashSet<>();
+    /** Limit. */
     private int _moveLimit;
 
 }
+

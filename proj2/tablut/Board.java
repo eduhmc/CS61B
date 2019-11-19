@@ -560,7 +560,7 @@ class Board {
         }
         return false;
     }
-    /** Helper method */
+    /** Helper method. */
     void clearing() {
         _pastBoardStates.clear();
 

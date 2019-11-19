@@ -18,7 +18,17 @@ public class BST {
      */
     private BSTNode linkedListToTree(Iterator iter, int n) {
         // YOUR CODE HERE
-        return null;
+        if (n <= 0) {
+            return null;
+        }
+        Object head = iter.next();
+        BSTNode left = linkedListToTree(iter, n / 2);
+        BSTNode root = new BSTNode();
+        root.item = head;
+        root.left = left;
+        root.item = iter.next();
+        root.right = linkedListToTree(iter, n - n / 2 - 1);
+        return root;
     }
 
     /**

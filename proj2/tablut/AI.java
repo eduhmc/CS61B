@@ -228,7 +228,7 @@ class AI extends Player {
 
     /** Return true iff MOVE is a legal move in the current
      *  position.
-     * @param kingPosition  lo
+     * @param kingPosition  position of king
      * @return value
      *  */
     public int countKingHeuristic(Square kingPosition) {

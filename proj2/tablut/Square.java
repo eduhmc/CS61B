@@ -8,14 +8,15 @@ import java.util.List;
 import static tablut.Utils.*;
 
 /** Represents a position on a Tablut board.  Positions are numbered
- *  from 0 (lower-left corner) to BOARD_SIZE * BOARD_SIZE - 1 (upper-right corner).
+ *  from 0 (lower-left corner) to BOARD_SIZE
+ *  * BOARD_SIZE - 1 (upper-right corner).
  *  Squares are immutable and unique: there is precisely one square created for
  *  each distinct position.  Clients create squares using the factory method
  *  sq, not the constructor.  Because there is a unique Square object for each
  *  position, you can freely use the cheap == operator (rather than the
  *  .equals method) to compare Squares, and the program does not waste time
  *  creating the same square over and over again.
- *  @author
+ *  @author eduhmc
  */
 final class Square {
 
@@ -218,7 +219,7 @@ final class Square {
     static {
         for (Square sq : SQUARES) {
             int r0 = sq.row(), c0 = sq.col(), i0 = sq.index();
-            for (int d = 0; d < DIR.length; d += 1) {
+            for (int d = 0; d < DIR.length; d++) {
                 SqList L = ROOK_SQUARES[i0][d] = new SqList();
                 for (int k = 1; true; k += 1) {
                     int c1 = c0 + k * DIR[d][0], r1 = r0 + k * DIR[d][1];

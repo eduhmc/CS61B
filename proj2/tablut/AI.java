@@ -144,7 +144,7 @@ class AI extends Player {
                 int possibleMax = extremeMove(-1,
                         board, depth - 1, false, a, b);
                 board.undo();
-                board._pastBoardStates.clear();
+                board.clearing();
                 if (possibleMax >= extremeValue) {
                     extremeValue = possibleMax;
                     a = max(a, possibleMax);
@@ -163,7 +163,7 @@ class AI extends Player {
                 board.makeMove(lmove);
                 int possibleMin = extremeMove(1, board, depth - 1, false, a, b);
                 board.undo();
-                board._pastBoardStates.clear();
+                board.clearing();
                 if (possibleMin <= extremeValue) {
                     extremeValue = possibleMin;
                     a = min(a, possibleMin);

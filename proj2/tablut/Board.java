@@ -560,7 +560,11 @@ class Board {
         }
         return false;
     }
+    /** Helper method */
+    void clearing() {
+        _pastBoardStates.clear();
 
+    }
     /** Piece whose turn it is (WHITE or BLACK). */
     private Piece _turn;
     /** Cached value of winner on this board, or EMPTY if it has not been
@@ -575,7 +579,7 @@ class Board {
     /** Previous board. */
     private HashMap<Integer, Piece[][]> _undoStack;
     /** All past boards. */
-    public HashSet<String> _pastBoardStates = new HashSet<>();
+    private HashSet<String> _pastBoardStates = new HashSet<>();
     /** Limit. */
     private int _moveLimit;
 }

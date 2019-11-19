@@ -1,12 +1,14 @@
 package tablut;
 
-
-import java.util.*;
-
+import java.util.HashMap;
+import java.util.HashSet;
 import static tablut.Piece.*;
 import static tablut.Square.*;
 import static tablut.Move.mv;
 import static tablut.Utils.error;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Formatter;
 
 
 /** The state of a Tablut Game.
@@ -61,6 +63,11 @@ class Board {
         _pastBoardStates = model._pastBoardStates;
         _undoStack = model._undoStack;
     }
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param a  lol
+     * @return array
+     *  */
     Piece[][] copyArray(Piece[][] a) {
         Piece[][] nArray = new Piece[9][9];
         for (int i = 0; i < 9; i++) {
@@ -166,7 +173,7 @@ class Board {
 
     /** Return the contents of the square at COL ROW. */
     final Piece get(char col, char row) {
-        return get(col - 'a',row - '1');
+        return get(col - 'a', row - '1');
     }
 
     /** Set square S to P. */
@@ -180,47 +187,58 @@ class Board {
         _moveCount++;
         captureOpportunity(s);
         Piece[][] aux = copyArray(_board);
-        _undoStack.put(_moveCount,aux );
+        _undoStack.put(_moveCount, aux);
         if (kingPosition().isEdge()) {
             _winner = WHITE;
         }
     }
-
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param s  lol
+     *  */
     void captureOpportunity(Square s) {
-        //look north
-        if (s.row() + 2 < 9 ) {
-            Square northSQ = sq(s.col(),s.row() + 2);
-            capture(s,northSQ);
+        if (s.row() + 2 < 9) {
+            Square northSQ = sq(s.col(), s.row() + 2);
+            capture(s, northSQ);
         }
-        //look east
-        if (s.col() + 2 < 9 ) {
+        if (s.col() + 2 < 9) {
             Square eastSQ = sq(s.col() + 2, s.row());
-            capture(s,eastSQ);
+            capture(s, eastSQ);
         }
-        if (s.row() - 2 >= 0 ) {
+        if (s.row() - 2 >= 0) {
             Square southSQ = sq(s.col(), s.row() - 2);
-            capture(s,southSQ);
+            capture(s, southSQ);
         }
-        if (s.col() - 2 >= 0 ) {
+        if (s.col() - 2 >= 0) {
             Square westSQ = sq(s.col() - 2, s.row());
-            capture(s,westSQ);
+            capture(s, westSQ);
         }
     }
-
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param from  lol
+     * @param to  lol
+     * @param between  lol
+     *  */
     void willCaptureP(Square from, Square to, Square between) {
         boolean captured = false;
         boolean isKing = _board[between.col()][between.row()] == KING;
         Piece pFrom = _board[from.col()][from.row()];
         Piece pTo = _board[to.col()][to.row()];
         Piece pBetween = _board[between.col()][between.row()];
-        if (pBetween.opponent() == pFrom.side() && pBetween.opponent().side() == pTo.side()) {
+        if (pBetween.opponent() == pFrom.side()
+                && pBetween.opponent().side() == pTo.side()) {
             captured = true;
-        } else if ((pFrom.side() == pBetween.opponent().side() && kingPosition() != THRONE && to == THRONE) || (pTo.side() == pBetween.opponent().side() && kingPosition() != THRONE && from == THRONE)) {
+        } else if ((pFrom.side() == pBetween.opponent().side()
+                && kingPosition() != THRONE && to == THRONE)
+                || (pTo.side() == pBetween.opponent().side()
+                && kingPosition() != THRONE && from == THRONE)) {
             captured = true;
         } else {
-            if(pBetween== WHITE && kingPosition() == THRONE && between.adjacent(THRONE)){
+            if (pBetween == WHITE && kingPosition()
+                    == THRONE && between.adjacent(THRONE)) {
                 int captureVCount = 0;
-                for (int i = 0; i<4; i++){
+                for (int i = 0; i < 4; i++) {
                     Square st = INITIAL_DEFENDERS[i];
                     if (_board[st.col()][st.row()] == BLACK) {
                         captureVCount++;
@@ -238,11 +256,16 @@ class Board {
             }
         }
     }
-
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param from  lol
+     * @param to lol
+     * @param between lol
+     *  */
     boolean willCaptureK(Square from, Square to, Square between) {
         int captureVCount = 0;
-        if (between == THRONE){
-            for (int i = 0; i<4; i++){
+        if (between == THRONE) {
+            for (int i = 0; i < 4; i++) {
                 Square st = INITIAL_DEFENDERS[i];
                 if (_board[st.col()][st.row()] == BLACK) {
                     captureVCount++;
@@ -252,28 +275,32 @@ class Board {
                 _board[between.col()][between.row()] = EMPTY;
                 _winner = BLACK;
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
-        if (kingPosition() == NTHRONE || kingPosition() == ETHRONE || kingPosition() == STHRONE || kingPosition() == WTHRONE ) {
-            for (int i = 0; i<4; i++){
+        if (kingPosition() == NTHRONE || kingPosition() == ETHRONE
+                || kingPosition() == STHRONE || kingPosition() == WTHRONE) {
+            for (int i = 0; i < 4; i++) {
                 Square st = INITIAL_DEFENDERS[i];
                 if (_board[st.col()][st.row()] == KING) {
-                    if (checkDiagonalsKing(st) == 2 ) {
+                    if (checkDiagonalsKing(st) == 2) {
                         return true;
                     }
                 }
 
             }
         } else {
-            willCaptureP(from,to,between);
+            willCaptureP(from, to, between);
 
         }
         return false;
     }
-
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param between lol
+     * @return diagonals
+     *  */
     int checkDiagonalsKing(Square between) {
         int countDiagonals = 0;
         Square d1 = THRONE.diag1(between);
@@ -378,7 +405,7 @@ class Board {
     /** Move FROM-TO, assuming this is a legal move. */
     void makeMove(Square from, Square to) {
         Piece pFrom = _board[from.col()][from.row()];
-        put(EMPTY,from);
+        put(EMPTY, from);
         revPut(pFrom, to);
         _turn = turn().opponent();
         checkRepeated();
@@ -393,14 +420,15 @@ class Board {
      *  SQ0 and the necessary conditions are satisfied. */
     private void capture(Square sq0, Square sq2) {
         Square between = sq0.between(sq2);
-        if(between.adjacent(sq0) && between.adjacent((sq2))) {
-            if (_board[between.col()][between.row()]== KING  ) {
-                if (willCaptureK(sq0,sq2,between)) {
+        if (between.adjacent(sq0) && between.adjacent((sq2))) {
+            if (_board[between.col()][between.row()] == KING) {
+                if (willCaptureK(sq0, sq2, between)) {
                     _board[between.col()][between.row()] = EMPTY;
                     _winner = BLACK;
                 }
-            } else if (_board[between.col()][between.row()] != KING && _board[between.col()][between.row()] != EMPTY) {
-                willCaptureP(sq0,sq2,between);
+            } else if (_board[between.col()][between.row()] != KING
+                    && _board[between.col()][between.row()] != EMPTY) {
+                willCaptureP(sq0, sq2, between);
             }
         }
     }
@@ -426,7 +454,7 @@ class Board {
     /** Clear the undo stack and board-position counts. Does not modify the
      *  current position or win status. */
     void clearUndo() {
-        if(_undoStack != null) {
+        if (_undoStack != null) {
             _undoStack.clear();
             _moveCount = 0;
         }
@@ -443,7 +471,7 @@ class Board {
         for (Square bsq : sideList) {
             for (Square sqb : SQUARE_LIST) {
                 if (isLegalNoTurn(bsq, sqb)) {
-                    if(mv(bsq,sqb) != null) {
+                    if (mv(bsq, sqb) != null) {
                         lmoves.add(mv(bsq, sqb));
                     }
                 }

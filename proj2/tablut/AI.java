@@ -2,15 +2,11 @@ package tablut;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import static java.lang.Double.parseDouble;
 import static java.lang.Math.*;
 
 import static tablut.Square.sq;
 import static tablut.Piece.*;
-import static tablut.Utils.error;
+
 
 /** A Player that automatically generates moves.
  *  @author eduhmc
@@ -37,10 +33,27 @@ class AI extends Player {
      * A magnitude greater than a normal value.
      */
     private static final int HEURISTIC_SIDE_WEIGHT = 30;
-    private static final int HEURISTIC_SIDES_WEIGHT = HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT;
+    /**
+     * A magnitude greater than a normal value.
+     */
+    private static final int HEURISTIC_SIDES_WEIGHT = HEURISTIC_SIDE_WEIGHT
+            * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT
+            * HEURISTIC_SIDE_WEIGHT;
+    /**
+     * A magnitude greater than a normal value.
+     */
     private static final int NUMBER_B_PIECES = 16;
+    /**
+     * A magnitude greater than a normal value.
+     */
     private static final int NUMBER_W_PIECES = 9;
+    /**
+     * A magnitude greater than a normal value.
+     */
     private static final int NUMBER_DIRECTIONS = 4;
+    /**
+     * A magnitude greater than a normal value.
+     */
     private static final int SIZE = 9;
     /**
      * A new AI with no piece or controller (intended to produce
@@ -105,8 +118,18 @@ class AI extends Player {
         int moveValue = extremeMove(sense, board, depth, saveMove, alpha, beta);
         return moveValue;
     }
-
-    public int extremeMove(int sense, Board board, int depth, boolean save, int a, int b) {
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param sense  lol
+     * @param board lol
+     * @param depth lol
+     * @param save  lol
+     * @param a lol
+     * @param b lol
+     * @return value
+     *  */
+    public int extremeMove(int sense, Board board,
+                           int depth, boolean save, int a, int b) {
         if (board.winner() == WHITE || board.winner() == BLACK) {
             return staticScore(board);
         }
@@ -118,7 +141,8 @@ class AI extends Player {
             extremeValue = -INFTY;
             for (Move lmove : board.legalMoves(WHITE)) {
                 board.makeMove(lmove);
-                int possibleMax = extremeMove(-1, board, depth - 1, false, a, b);
+                int possibleMax = extremeMove(-1,
+                        board, depth - 1, false, a, b);
                 board.undo();
                 board._pastBoardStates.clear();
                 if (possibleMax >= extremeValue) {
@@ -183,25 +207,30 @@ class AI extends Player {
             score = WINNING_VALUE;
             return score;
         }
-        score = countKingHeuristic(board.kingPosition()) * HEURISTIC_SIDES_WEIGHT;
+        score = countKingHeuristic(board.kingPosition())
+                * HEURISTIC_SIDES_WEIGHT;
 
         ArrayList<Square> sideWList = new ArrayList<>();
-        int heuristicW = countSideHeuristic(WHITE,board,sideWList);
+        int heuristicW = countSideHeuristic(WHITE, board, sideWList);
         double distanceW = countHeuristicDistance(sideWList, board);
 
         ArrayList<Square> sideBList = new ArrayList<>();
-        int  heuristicB =countSideHeuristic(BLACK,board,sideWList);;
-        double distanceB =countHeuristicDistance(sideBList, board);
+        int  heuristicB = countSideHeuristic(BLACK, board, sideWList);
+        double distanceB = countHeuristicDistance(sideBList, board);
 
         score = score + (heuristicW - heuristicB);
 
-        //score = score + (int) (distanceB - distanceW) * HEURISTIC_SIDE_WEIGHT;
+        score = score + (int) (distanceB - distanceW) * HEURISTIC_SIDE_WEIGHT;
 
         return score;
 
     }
 
-
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param kingPosition  lo
+     * @return value
+     *  */
     public int countKingHeuristic(Square kingPosition) {
         int kingHeuristic = 0;
         int kc = kingPosition.col();
@@ -221,37 +250,61 @@ class AI extends Player {
         }
 
         return kingHeuristic;
-
-
     }
-    public int countSideHeuristic(Piece side, Board board, ArrayList<Square> sideList) {
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param side lol
+     * @param board lol
+     * @param sideList lol
+     * @return value
+     *  */
+    public int countSideHeuristic(Piece side, Board board,
+                                  ArrayList<Square> sideList) {
         int sideCounter = 0;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (board.get(i,j).side() == side) {
-                    sideList.add(sq(i,j));
+                if (board.get(i, j).side() == side) {
+                    sideList.add(sq(i, j));
                     sideCounter++;
                 }
             }
         }
         if (side == BLACK) {
-            sideCounter = sideCounter * ((NUMBER_DIRECTIONS * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT) / NUMBER_B_PIECES);
-        }
-        else {
-            sideCounter = sideCounter * ((NUMBER_DIRECTIONS * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT) / NUMBER_W_PIECES);
+            sideCounter = sideCounter * ((NUMBER_DIRECTIONS
+                    * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT)
+                    / NUMBER_B_PIECES);
+        } else {
+            sideCounter = sideCounter * ((NUMBER_DIRECTIONS
+                    * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT)
+                    / NUMBER_W_PIECES);
         }
         return sideCounter;
     }
-    public double countHeuristicDistance (ArrayList<Square> sideList, Board board) {
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param sideList  lol
+     * @param board lol
+     * @return value
+     *  */
+    public double countHeuristicDistance(ArrayList<Square> sideList,
+                                         Board board) {
         double sideDistance = 0;
         for (Square x : sideList) {
-            sideDistance = sideDistance + simulateDistance(board.kingPosition(), x);
+            sideDistance = sideDistance
+                    + simulateDistance(board.kingPosition(), x);
 
         }
         return sideDistance;
     }
-    public Double simulateDistance (Square sq0, Square sq1) {
-        return Math.sqrt(Math.pow((sq0.col() - sq1.col()), 2) + Math.pow((sq0.row() - sq1.row()), 2) );
+    /** Return true iff MOVE is a legal move in the current
+     *  position.
+     * @param sq0  lol
+     * @param sq1 lol
+     * @return value
+     *  */
+    public Double simulateDistance(Square sq0, Square sq1) {
+        return Math.sqrt(Math.pow((sq0.col() - sq1.col()), 2)
+                + Math.pow((sq0.row() - sq1.row()), 2));
     }
 
 }

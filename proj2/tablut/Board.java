@@ -36,7 +36,7 @@ class Board {
 
     /** Initial positions of defenders of the king. */
     static final Square[] INITIAL_DEFENDERS = {
-            NTHRONE, ETHRONE, STHRONE, WTHRONE,
+        NTHRONE, ETHRONE, STHRONE, WTHRONE,
             sq(4, 6), sq(4, 2), sq(2, 4), sq(6, 4)
     };
 
@@ -100,7 +100,10 @@ class Board {
 
     }
 
-    /** Set the move limit to LIM.  It is an error if 2*LIM <= moveCount(). */
+    /** Set the move limit to LIM.  It is an error if 2*LIM <= moveCount().
+     *  /** Return the value of P modulo the size of size.
+     *  @param n describing place.
+     * */
     void setMoveLimit(int n) {
         if (2 * n < moveCount()) {
             throw error("exceeds move limit");
@@ -127,10 +130,9 @@ class Board {
     /** Record current position and set winner() next mover if the current
      *  position is a repeat. */
     private void checkRepeated() {
-        if ( ! _pastBoardStates.contains( encodedBoard() ) ) {
+        if (!_pastBoardStates.contains(encodedBoard())) {
             _pastBoardStates.add(encodedBoard());
-        }
-        else {
+        } else {
             _winner = turn().opponent();
             _repeated = true;
 
@@ -147,10 +149,9 @@ class Board {
     Square kingPosition() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (_board[i][j] == KING){
-                    return sq(i,j);
-                };
-
+                if (_board[i][j] == KING) {
+                    return sq(i, j);
+                }
             }
         }
         return THRONE;
@@ -202,45 +203,40 @@ class Board {
      *  squares along it, other than FROM, must be empty. */
     boolean isUnblockedMove(Square from, Square to) {
         assert from.isRookMove(to);
-        if ((from.col() == to.col() && from.row() == to.row()) ||
-                (from.col() != to.col() && from.row() != to.row()))
-        {
+        if ((from.col() == to.col() && from.row() == to.row())
+                || (from.col() != to.col() && from.row() != to.row())) {
             return false;
-        }
-        else if (from.col() == to.col() && from.row() != to.row()) {
-            if (from.row()> to.row()){
+        } else if (from.col() == to.col() && from.row() != to.row()) {
+            if (from.row() > to.row()) {
                 int i = from.row();
-                while (i > to.row()){
-                    if (get(from.col(),i - 1) != EMPTY){
+                while (i > to.row()) {
+                    if (get(from.col(), i - 1) != EMPTY) {
                         return  false;
                     }
                     i = i - 1;
                 }
-            }
-            else { //UP
+            } else {
                 int i = from.row();
-                while (i < to.row()){
-                    if (get(from.col(),i + 1) != EMPTY){
+                while (i < to.row()) {
+                    if (get(from.col(), i + 1) != EMPTY) {
                         return  false;
                     }
                     i = i + 1;
                 }
             }
-        }
-        else if (from.col() != to.col() && from.row() == to.row()) {
-            if (from.col()> to.col()){
-                int i = from.col() ;
-                while (i > to.col() ){
-                    if (get( i - 1, from.row()) != EMPTY){
-                        return  false;
+        } else if (from.col() != to.col() && from.row() == to.row()) {
+            if (from.col() > to.col()) {
+                int i = from.col();
+                while (i > to.col()) {
+                    if (get(i - 1, from.row()) != EMPTY) {
+                        return false;
                     }
                     i = i - 1;
                 }
-            }
-            else {
+            } else {
                 int i = from.col();
-                while (i < to.col()){
-                    if (get(i +1,from.row()) != EMPTY){
+                while (i < to.col()) {
+                    if (get(i + 1, from.row()) != EMPTY) {
                         return  false;
                     }
                     i = i + 1;
@@ -248,7 +244,6 @@ class Board {
             }
         }
         return true;
-
     }
 
     /** Return true iff FROM is a valid starting square for a move. */
@@ -260,8 +255,8 @@ class Board {
     boolean isLegal(Square from, Square to) {
 
         if (isLegal(from)) {
-            if ((get(to) == EMPTY) ) {
-                if(get(from) != KING && to == THRONE) {
+            if ((get(to) == EMPTY)) {
+                if (get(from) != KING && to == THRONE) {
                     return false;
                 } else {
                     return isUnblockedMove(from, to);
@@ -286,17 +281,17 @@ class Board {
         revPut(get(from), to);
         put(EMPTY, from);
 
-        Square northSQ = to.rookMove(0,2);
-        Square betweenNorthSQ = to.rookMove(0,1);
+        Square northSQ = to.rookMove(0, 2);
+        Square betweenNorthSQ = to.rookMove(0, 1);
         verifyCapture(northSQ, betweenNorthSQ, to);
-        Square eastSQ = to.rookMove(1,2);
-        Square betweenEastSQ = to.rookMove(1,1);
+        Square eastSQ = to.rookMove(1, 2);
+        Square betweenEastSQ = to.rookMove(1, 1);
         verifyCapture(eastSQ, betweenEastSQ, to);
-        Square southSQ = to.rookMove(2,2);
-        Square betweenSouthSQ = to.rookMove(2,1);
+        Square southSQ = to.rookMove(2, 2);
+        Square betweenSouthSQ = to.rookMove(2, 1);
         verifyCapture(southSQ, betweenSouthSQ, to);
-        Square westSQ = to.rookMove(3,2);
-        Square betweenWestSQ = to.rookMove(3,1);
+        Square westSQ = to.rookMove(3, 2);
+        Square betweenWestSQ = to.rookMove(3, 1);
         verifyCapture(westSQ, betweenWestSQ, to);
 
         checkRepeated();
@@ -306,54 +301,63 @@ class Board {
         if (legalMoves(_turn).size() == 0) {
             _winner = _turn.opponent();
         }
-        if (kingPosition().isEdge()){
+        if (kingPosition().isEdge()) {
             _winner = WHITE;
         }
-        if (_winner != null){
+        if (_winner != null) {
             return;
         }
 
         _turn = turn().opponent();
-
-
     }
+    /** Verify capture.
+     * @param northSQ describing place.
+     * @param betweenNorthSQ describing place.
+     * @param to describing place.
+     * */
     void verifyCapture(Square northSQ, Square betweenNorthSQ, Square to) {
-        if (northSQ != null){
-            if (get(betweenNorthSQ) != KING){
-                if ((get(to).side() == get(northSQ).side()) && (get(betweenNorthSQ) == get(to).opponent())) {
+        if (northSQ != null) {
+            if (get(betweenNorthSQ) != KING) {
+                if ((get(to).side() == get(northSQ).side())
+                        && (get(betweenNorthSQ) == get(to).opponent())) {
                     capture(to, northSQ);
                 }
-                if (northSQ == THRONE && get(northSQ) == EMPTY){
+                if (northSQ == THRONE && get(northSQ) == EMPTY) {
                     capture(to, northSQ);
                 }
-                if (northSQ == THRONE && get(northSQ) == WHITE ){
-                    Integer sumSurroundingThrone = 0 ;
-                    if (get(NTHRONE) == BLACK){
+                if (northSQ == THRONE && get(northSQ) == WHITE) {
+                    Integer sumSurroundingThrone = 0;
+                    if (get(NTHRONE) == BLACK) {
                         sumSurroundingThrone += 1;
                     }
-                    if (get(ETHRONE) == BLACK){
+                    if (get(ETHRONE) == BLACK) {
                         sumSurroundingThrone += 1;
                     }
-                    if (get(STHRONE) == BLACK){
+                    if (get(STHRONE) == BLACK) {
                         sumSurroundingThrone += 1;
                     }
-                    if (get(WTHRONE) == BLACK){
+                    if (get(WTHRONE) == BLACK) {
                         sumSurroundingThrone += 1;
                     }
-                    if (sumSurroundingThrone > 2 && (to == NTHRONE || to == ETHRONE || to == STHRONE || to == WTHRONE) ){
+                    if (sumSurroundingThrone > 2 && (to == NTHRONE
+                            || to == ETHRONE || to == STHRONE
+                            || to == WTHRONE)) {
                         capture(to, northSQ);
                     }
                 }
             } else {
-                if (betweenNorthSQ == NTHRONE || betweenNorthSQ == ETHRONE || betweenNorthSQ == STHRONE || betweenNorthSQ == WTHRONE ){
+                if (betweenNorthSQ == NTHRONE || betweenNorthSQ == ETHRONE
+                        || betweenNorthSQ == STHRONE
+                        || betweenNorthSQ == WTHRONE) {
                     Square d1 = to.diag1(betweenNorthSQ);
                     Square d2 = to.diag2(betweenNorthSQ);
-                    if (get(d1) == BLACK && get(d2) == BLACK && get(THRONE) == EMPTY && get(to) == BLACK){
-                        capture(to,northSQ);
+                    if (get(d1) == BLACK && get(d2) == BLACK
+                            && get(THRONE) == EMPTY && get(to) == BLACK) {
+                        capture(to, northSQ);
                         _winner = BLACK;
                     }
                 } else {
-                    if (get(to) == BLACK && betweenNorthSQ != THRONE){
+                    if (get(to) == BLACK && betweenNorthSQ != THRONE) {
                         capture(to, northSQ);
                     }
                 }
@@ -385,11 +389,11 @@ class Board {
     /** Remove record of current position in the set of positions encountered,
      *  unless it is a repeated position or we are at the first move. */
     private void undoPosition() {
-        if(_pastBoardStates.size() == 1) {
+        if (_pastBoardStates.size() == 1) {
             return;
 
         }
-        if(repeatedPosition()) {
+        if (repeatedPosition()) {
             _repeated = true;
             return;
         }
@@ -416,24 +420,27 @@ class Board {
      *  SIDE (ignoring whose turn it is at the moment). */
     List<Move> legalMoves(Piece side) {
         assert side != EMPTY;
-        List<Move> l_Moves = new ArrayList<Move>();
+        List<Move> lmoves = new ArrayList<Move>();
 
         HashSet<Square> sideList = pieceLocations(side);
         Piece turnToIgnore = _turn;
-        if(side == BLACK) {_turn = BLACK;}
-        else {_turn = WHITE;}
+        if (side == BLACK) {
+            _turn = BLACK;
+        } else {
+            _turn = WHITE;
+        }
         for (Square bsq : sideList) {
             for (Square sqb : SQUARE_LIST) {
                 if (isLegal(bsq, sqb)) {
-                    l_Moves.add(mv(bsq , sqb));
+                    lmoves.add(mv(bsq, sqb));
                 }
             }
         }
         _turn = turnToIgnore;
-        return l_Moves;
+        return lmoves;
     }
-
-    public Piece[][] getBoard(){
+    /** Return board. */
+    public Piece[][] getBoard() {
         return _board;
     }
 
@@ -480,7 +487,7 @@ class Board {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (_board[i][j] == side) {
-                    hs.add(sq(i,j));
+                    hs.add(sq(i, j));
                 }
             }
         }
@@ -493,7 +500,8 @@ class Board {
         char[] result = new char[Square.SQUARE_LIST.size() + 1];
         result[0] = turn().toString().charAt(0);
         for (Square sq : SQUARE_LIST) {
-            result[sq.index() + 1] = get(sq).toString().charAt(0); //W or B or K or -
+            result[sq.index() + 1] =
+                    get(sq).toString().charAt(0);
         }
         return new String(result);
     }

@@ -1,12 +1,10 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 /** HW #7, Sorting ranges.
- *  @author
+ *  @author eduhmc
   */
 public class Intervals {
     /** Assuming that INTERVALS contains two-element arrays of integers,
@@ -14,7 +12,27 @@ public class Intervals {
      *  total length covered by the union of the intervals. */
     public static int coveredLength(List<int[]> intervals) {
         // REPLACE WITH APPROPRIATE STATEMENTS.
-        return 0;
+        Comparator<int[]> comparator = new Comparator<>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return Integer.valueOf(o1[0]).compareTo(Integer.valueOf(o2[0]));
+            }
+        };
+        intervals.sort(comparator);
+        int temp = 0;
+        int start = Integer.MIN_VALUE;
+        int end = Integer.MIN_VALUE;
+        for (int i = 0; i < intervals.size(); i += 1) {
+            if (intervals.get(i)[0] > end) {
+                temp += (end - start);
+                start = intervals.get(i)[0];
+                end = intervals.get(i)[1];
+            } else if (intervals.get(i)[0] <= end && intervals.get(i)[1] > end) {
+                end = intervals.get(i)[1];
+            }
+        }
+        temp += (end - start);
+        return temp;
     }
 
     /** Test intervals. */

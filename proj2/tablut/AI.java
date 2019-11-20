@@ -24,15 +24,15 @@ class AI extends Player {
      */
     private static final int WILL_WIN_VALUE = Integer.MAX_VALUE - 40;
     /**
-     * A magnitude greater than a normal value.
+     * An integer so style check doesn't say magic number.
      */
     private static final int INFTY = Integer.MAX_VALUE;
 
 
     /**
-     * A magnitude greater than a normal value.
+     * An integer so style check doesn't say magic number.
      */
-    private static final int HEURISTIC_SIDE_WEIGHT = 30;
+    private static final int HEURISTIC_SIDE_WEIGHT = 10;
     /**
      * A magnitude greater than a normal value.
      */
@@ -40,19 +40,19 @@ class AI extends Player {
             * HEURISTIC_SIDE_WEIGHT * HEURISTIC_SIDE_WEIGHT
             * HEURISTIC_SIDE_WEIGHT;
     /**
-     * A magnitude greater than a normal value.
+     *  An integer so style check doesn't say magic number.
      */
     private static final int NUMBER_B_PIECES = 16;
     /**
-     * A magnitude greater than a normal value.
+     * An integer so style check doesn't say magic number.
      */
     private static final int NUMBER_W_PIECES = 9;
     /**
-     * A magnitude greater than a normal value.
+     * An integer so style check doesn't say magic number.
      */
-    private static final int NUMBER_DIRECTIONS = 4;
+    private static final int NUMBER_DIRECTIONS = 3;
     /**
-     * A magnitude greater than a normal value.
+     * An integer so style check doesn't say magic number.
      */
     private static final int SIZE = 9;
     /**
@@ -193,7 +193,11 @@ class AI extends Player {
      * Return a heuristic value for BOARD.
      */
     private int staticScore(Board board) {
-
+        if (board.winner() == WHITE) {
+            return WINNING_VALUE;
+        } else if (board.winner() == BLACK) {
+            return -WINNING_VALUE;
+        }
 
         if (board.winner() == WHITE || board.winner() == BLACK) {
             return (board.winner() == WHITE ? WINNING_VALUE : -WINNING_VALUE);
@@ -253,9 +257,9 @@ class AI extends Player {
     }
     /** Return true iff MOVE is a legal move in the current
      *  position.
-     * @param side lol
-     * @param board lol
-     * @param sideList lol
+     * @param side defines side
+     * @param board is board
+     * @param sideList which side is it
      * @return value
      *  */
     public int countSideHeuristic(Piece side, Board board,
@@ -282,8 +286,8 @@ class AI extends Player {
     }
     /** Return true iff MOVE is a legal move in the current
      *  position.
-     * @param sideList  lol
-     * @param board lol
+     * @param sideList  arraylist
+     * @param board board
      * @return value
      *  */
     public double countHeuristicDistance(ArrayList<Square> sideList,
@@ -298,8 +302,8 @@ class AI extends Player {
     }
     /** Return true iff MOVE is a legal move in the current
      *  position.
-     * @param sq0  lol
-     * @param sq1 lol
+     * @param sq0 x direc
+     * @param sq1 x2 direc
      * @return value
      *  */
     public Double simulateDistance(Square sq0, Square sq1) {

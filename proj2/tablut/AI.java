@@ -50,7 +50,7 @@ class AI extends Player {
     /**
      * An integer so style check doesn't say magic number.
      */
-    private static final int NUMBER_DIRECTIONS = 3;
+    private static final int NUMBER_DIRECTIONS = 4;
     /**
      * An integer so style check doesn't say magic number.
      */

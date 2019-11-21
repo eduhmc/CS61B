@@ -322,20 +322,20 @@ public class MySortingAlgorithms {
 
         }
         public void msd(int[] a, int start, int end, int k, int[] temp) {
-            int right = 1 << 8;
-            int m = right - 1;
-            int[] buckets = new int[right + 1];
+            int derecha = 1 << 8;
+            int mierda = derecha - 1;
+            int[] moños = new int[derecha + 1];
             int shift = 32 - 8 * k - 8;
             for (int i = start; i <= end; i++) {
-                int c = (a[i] >> shift) & m;
-                buckets[c + 1]++;
+                int c = (a[i] >> shift) & mierda;
+                moños[c + 1]++;
             }
-            for (int r = 0; r < right; r++) {
-                buckets[r + 1] += buckets[r];
+            for (int r = 0; r < derecha; r++) {
+                moños[r + 1] += moños[r];
             }
             for (int i = start; i <= end; i++) {
-                int c = (a[i] >> shift) & m;
-                temp[buckets[c]++] = a[i];
+                int c = (a[i] >> shift) & mierda;
+                temp[moños[c]++] = a[i];
             }
             for (int i = start; i <= end; i++) {
                 a[i] = temp[i - start];
@@ -343,12 +343,12 @@ public class MySortingAlgorithms {
             if (k == 4) {
                 return;
             }
-            if (buckets[0] > 0) {
-                msd(a, start, start + buckets[0] - 1, k + 1, temp);
+            if (moños[0] > 0) {
+                msd(a, start, start + moños[0] - 1, k + 1, temp);
             }
-            for (int r = 0; r < right; r++) {
-                if (buckets[r + 1] > buckets[r]) {
-                    msd(a, start + buckets[r], start + buckets[r + 1] - 1, k + 1, temp);
+            for (int r = 0; r < derecha; r++) {
+                if (moños[r + 1] > moños[r]) {
+                    msd(a, start + moños[r], start + moños[r + 1] - 1, k + 1, temp);
                 }
             }
         }

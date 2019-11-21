@@ -19,20 +19,20 @@ public class Intervals {
             }
         };
         intervals.sort(comparator);
-        int temp = 0;
-        int start = Integer.MIN_VALUE;
-        int end = Integer.MIN_VALUE;
-        for (int i = 0; i < intervals.size(); i += 1) {
-            if (intervals.get(i)[0] > end) {
-                temp += (end - start);
-                start = intervals.get(i)[0];
-                end = intervals.get(i)[1];
-            } else if (intervals.get(i)[0] <= end && intervals.get(i)[1] > end) {
-                end = intervals.get(i)[1];
+        int temporal = 0;
+        int comienzo = Integer.MIN_VALUE;
+        int finales = Integer.MIN_VALUE;
+        for (int a = 0; a < intervals.size(); a++) {
+            if (intervals.get(a)[0] > finales) {
+                temporal += (finales - comienzo);
+                comienzo = intervals.get(a)[0];
+                finales = intervals.get(a)[1];
+            } else if (intervals.get(a)[0] <= finales && intervals.get(a)[1] > finales) {
+                finales = intervals.get(a)[1];
             }
         }
-        temp += (end - start);
-        return temp;
+        temporal += (finales - comienzo);
+        return temporal;
     }
 
     /** Test intervals. */

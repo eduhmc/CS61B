@@ -42,14 +42,13 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             // FIXME
             k = Math.min(array.length, k);
-            for (int i = 1; i < k; i += 1) {
-                int temp = array[i];
-                int j = i - 1;
-                while (j >= 0 && array[j] > temp) {
-                    array[j + 1] = array[j];
-                    j -= 1;
+            for (int a = 1; a < k; a += 1) {
+                int temporal = array[a]; int x = a - 1;
+                while (x >= 0 && array[x] > temporal) {
+                    array[x + 1] = array[x];
+                    x -= 1;
                 }
-                array[j + 1] = temp;
+                array[x + 1] = temporal;
             }
         }
 
@@ -70,16 +69,16 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             // FIXME
             k = Math.min(array.length, k);
-            for (int i = 0; i < k - 1; i += 1) {
-                int min_idx = i;
-                for (int j = i + 1; j < k; j += 1) {
-                    if (array[j] < array[min_idx]) {
-                        min_idx = j;
+            for (int a = 0; a < k - 1; a++) {
+                int minimo = a;
+                for (int b = a + 1; b < k; b++) {
+                    if (array[b] < array[minimo]) {
+                        minimo = b;
                     }
                 }
-                int temp = array[min_idx];
-                array[min_idx] = array[i];
-                array[i] = temp;
+                int temporal = array[minimo];
+                array[minimo] = array[a];
+                array[a] = temporal;
             }
 
         }
@@ -102,25 +101,23 @@ public class MySortingAlgorithms {
             if (k < 2) {
                 return;
             }
-            int mid = k / 2;
-            int[] l = new int[mid];
-            int[] r = new int[k - mid];
+            int medio = k / 2;
+            int[] lino = new int[medio ];
+            int[] ready = new int[k - medio ];
 
-            for (int i = 0; i < mid; i += 1) {
-                l[i] = array[i];
+            for (int a = 0; a < medio ; a++) {
+                lino[a] = array[a];
             }
-            for (int i = mid; i < k; i += 1) {
-                r[i - mid] = array[i];
+            for (int i = medio ; i < k; i += 1) {
+                ready[i - medio ] = array[i];
             }
-            sort(l, mid);
-            sort(r, k - mid);
-            merge(array, l, r, mid, k - mid);
+            sort(lino, medio );
+            sort(ready, k - medio );
+            merge(array, lino, ready, medio , k - medio );
         }
         public void merge(int[] array, int[] l, int[] r, int left, int right) {
             int i, j, k;
-            i = 0;
-            j = 0;
-            k = 0;
+            i = 0; j = 0; k = 0;
             while (i < left && j < right) {
                 if (l[i] < r[j]) {
                     array[k++] = l[i++];
@@ -154,22 +151,22 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             // FIXME: to be implemented
             k = Math.min(array.length, k);
-            int max = array[0];
+            int maximo = array[0];
             for (int i = 1; i < array.length; i++) {
-                if (array[i] > max) {
-                    max = array[i];
+                if (array[i] > maximo) {
+                    maximo = array[i];
                 }
             }
-            int[] counts = new int[max + 1];
-            for(int i = 0; i < k; i += 1) {
-                counts[array[i]]++;
+            int[] lima = new int[maximo + 1];
+            for(int a = 0; a < k; a++) {
+                lima[array[a]]++;
             }
-            int index = 0;
-            for(int elem = 0; elem < max + 1; elem += 1){
-                int end = counts[elem] + index;
-                if(end != index)
-                    Arrays.fill(array, index, end, elem);
-                index = end;
+            int indice = 0;
+            for(int elem = 0; elem < maximo + 1; elem++){
+                int airpods = lima[elem] + indice;
+                if(airpods != indice)
+                    Arrays.fill(array, indice, airpods, elem);
+                indice = airpods;
             }
         }
 
@@ -188,29 +185,27 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             // FIXME
             int n = Math.min(array.length, k);
-            for (int i = n / 2 - 1; i >= 0; i--)
-                heapify(array, n, i);
-            for (int i = n - 1; i >= 0; i--) {
+            for (int x = n / 2 - 1; x >= 0; x--)
+                heapify(array, n, x);
+            for (int x = n - 1; x >= 0; x--) {
                 int temp = array[0];
-                array[0] = array[i];
-                array[i] = temp;
-                heapify(array, i, 0);
+                array[0] = array[x];
+                array[x] = temp;
+                heapify(array, x, 0);
             }
         }
         void heapify(int arr[], int n, int i)
         {
-            int max = i;
-            int l = 2 * i + 1;
-            int r = 2 * i + 2;
-            if (l < n && arr[l] > arr[max])
-                max = l;
-            if (r < n && arr[r] > arr[max])
-                max = r;
-            if (max != i) {
+            int macara = i; int nico = 2 * i + 1; int fabi = 2 * i + 2;
+            if (nico < n && arr[nico] > arr[macara])
+                macara = nico;
+            if (fabi < n && arr[fabi] > arr[macara])
+                macara = fabi;
+            if (macara != i) {
                 int temp = arr[i];
-                arr[i] = arr[max];
-                arr[max] = temp;
-                heapify(arr, n, max);
+                arr[i] = arr[macara];
+                arr[macara] = temp;
+                heapify(arr, n, macara);
             }
 
 
@@ -275,32 +270,30 @@ public class MySortingAlgorithms {
         public void sort(int[] a, int k) {
             // FIXME
             k = Math.min(k, a.length);
-            int[] temp = new int[k];
+            int[] temporal = new int[k];
             for (int i = 0; i < k; i += 1) {
-                temp[i] = a[i];
+                temporal[i] = a[i];
             }
-            lsd(temp);
+            lsd(temporal);
             for (int i = 0; i < k; i += 1) {
-                a[i] = temp[i];
+                a[i] = temporal[i];
             }
         }
         public static void lsd(int[] arr) {
-            Queue<Integer>[] buckets = new Queue[10];
+            Queue<Integer>[] cueue = new Queue[10];
             for (int i = 0; i < 10; i++) {
-                buckets[i] = new LinkedList<>();
+                cueue[i] = new LinkedList<>();
             }
-            boolean sorted = false;
-            int exp = 1;
+            boolean sorted = false; int exp = 1;
             while (!sorted) {
                 sorted = true;
                 for (int item : arr) {
                     int bucket = (item / exp) % 10;
                     if (bucket > 0) sorted = false;
-                    buckets[bucket].add(item);
+                    cueue[bucket].add(item);
                 }
-                exp *= 10;
-                int index = 0;
-                for (Queue<Integer> bucket : buckets) {
+                exp *= 10; int index = 0;
+                for (Queue<Integer> bucket : cueue) {
                     while (!bucket.isEmpty()) {
                         arr[index++] = bucket.remove();
                     }
@@ -353,11 +346,11 @@ public class MySortingAlgorithms {
             if (buckets[0] > 0) {
                 msd(a, start, start + buckets[0] - 1, k + 1, temp);
             }
-            for (int r = 0; r < right; r++)
-                if (buckets[r + 1] > buckets[r])
+            for (int r = 0; r < right; r++) {
+                if (buckets[r + 1] > buckets[r]) {
                     msd(a, start + buckets[r], start + buckets[r + 1] - 1, k + 1, temp);
-
-
+                }
+            }
         }
 
         @Override

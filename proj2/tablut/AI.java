@@ -32,7 +32,7 @@ class AI extends Player {
     /**
      * An integer so style check doesn't say magic number.
      */
-    private static final int HEURISTIC_SIDE_WEIGHT = 10;
+    private static final int HEURISTIC_SIDE_WEIGHT = 1;
     /**
      * A magnitude greater than a normal value.
      */
@@ -166,7 +166,7 @@ class AI extends Player {
                 board.clearing();
                 if (possibleMin <= extremeValue) {
                     extremeValue = possibleMin;
-                    a = min(a, possibleMin);
+                    b = min(b, possibleMin);
                     if (save) {
                         _lastFoundMove = lmove;
                     }
@@ -193,11 +193,6 @@ class AI extends Player {
      * Return a heuristic value for BOARD.
      */
     private int staticScore(Board board) {
-        if (board.winner() == WHITE) {
-            return WINNING_VALUE;
-        } else if (board.winner() == BLACK) {
-            return -WINNING_VALUE;
-        }
 
         if (board.winner() == WHITE || board.winner() == BLACK) {
             return (board.winner() == WHITE ? WINNING_VALUE : -WINNING_VALUE);

@@ -471,7 +471,9 @@ class Board {
         for (Square bsq : sideList) {
             for (Square sqb : SQUARE_LIST) {
                 if (isLegalNoTurn(bsq, sqb)) {
-                    if (mv(bsq, sqb) != null) {
+                    if (bsq == kingPosition() && sqb.isEdge()){
+                        lmoves.add(0, mv(bsq, sqb));
+                    } else if (mv(bsq, sqb) != null) {
                         lmoves.add(mv(bsq, sqb));
                     }
                 }

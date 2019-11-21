@@ -160,23 +160,6 @@ public class MySortingAlgorithms {
                     max = array[i];
                 }
             }
-//            int numCounts[] = new int[max + 1];
-//            for (int num : array) {
-//                numCounts[num]++;
-//            }
-//            int[] sortedArray = new int[array.length];
-//            int currentSortedIndex = 0;
-//
-//            for (int num = 0; num < numCounts.length; num++) {
-//                int count = numCounts[num];
-//                for (int i = 0; i < count; i++) {
-//                    sortedArray[currentSortedIndex] = num;
-//                    currentSortedIndex++;
-//                }
-//            }
-//            for (int i = 0; i < sortedArray.length; i += 1) {
-//                array[i] = sortedArray[i];
-//            }
             int[] counts = new int[max + 1];
             for(int i = 0; i < k; i += 1) {
                 counts[array[i]]++;
@@ -340,23 +323,7 @@ public class MySortingAlgorithms {
         public void sort(int[] a, int k) {
             // FIXME
             k = Math.min(k, a.length);
-//            int maxLength = 0;
-//            int[] temp = new int[k];
-//            for (int i = 0; i < k; i += 1) {
-//                temp[i] = a[i];
-//            }
-//            for (int i = 0; i < k; i++) {
-//                String number = Integer.toString(a[i]);
-//                if (number.length() > maxLength) {
-//                    maxLength = number.length();
-//                }
-//            }
-//            for (int i = maxLength; i >= 1; i -= 1) {
-//                msd(temp, i);
-//            }
-//            for (int i = 0; i < k; i += 1) {
-//                a[i] = temp[i];
-//            }
+
             int[] temp = new int[k];
             msd(a, 0, k - 1, 0, temp);
 

@@ -89,7 +89,6 @@ class BoardWidget extends Pad {
 
     /** Handle a click on S. */
     private void click(Square s) {
-
         repaint();
     }
 

@@ -2,9 +2,11 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.*;
+
 /**
  *  A weighted graph.
- *  @author
+ *  @author eduhmc
  */
 public class Graph {
 
@@ -73,7 +75,36 @@ public class Graph {
      *  from STARTVERTEX to all other vertices. */
     public int[] dijkstras(int startVertex) {
         // TODO: Your code here!
-        return null;
+        int[] dist = new int[vertexCount];
+        int[] back = new int[vertexCount];
+        PriorityQueue<Integer> fringe = new PriorityQueue<Integer>(vertexCount, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if (dist[o1] <= dist[o2]) {
+                    return o1;
+                }
+                return o2;
+            }
+        });
+
+        for (int k = 0; k < vertexCount; k++) {
+            dist[k] = Integer.MAX_VALUE;
+            fringe.add(k);
+        }
+        dist[startVertex]=0;
+
+        while (!fringe.isEmpty()) {
+            int length = dist.length - fringe.size();
+            int v = fringe.poll();
+            for (int vertex : neighbors(v)) {
+                if (dist[v] + getEdge(v, vertex).edgeWeight < dist[vertex]) {
+                    dist[vertex] = dist[v] + getEdge(v, vertex).edgeWeight;
+                    back[vertex] = v;
+                    fringe.add(vertex);
+                }
+            }
+        }
+        return dist;
     }
 
     /** Returns the edge (V1, V2). (ou may find this helpful to implement!) */

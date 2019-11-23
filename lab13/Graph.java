@@ -75,36 +75,62 @@ public class Graph {
      *  from STARTVERTEX to all other vertices. */
     public int[] dijkstras(int startVertex) {
         // TODO: Your code here!
-        int[] dist = new int[vertexCount];
-        int[] back = new int[vertexCount];
-        PriorityQueue<Integer> fringe = new PriorityQueue<Integer>(vertexCount, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                if (dist[o1] <= dist[o2]) {
-                    return o1;
-                }
-                return o2;
-            }
-        });
+        int[] weightList = new int[vertexCount];
+        boolean[] visited = new boolean[vertexCount];
 
-        for (int k = 0; k < vertexCount; k++) {
-            dist[k] = Integer.MAX_VALUE;
-            fringe.add(k);
-        }
-        dist[startVertex]=0;
+        List<Integer> currList = new ArrayList<Integer>();
+        List<Integer> nextList = new ArrayList<Integer>();
 
-        while (!fringe.isEmpty()) {
-            int length = dist.length - fringe.size();
-            int v = fringe.poll();
-            for (int vertex : neighbors(v)) {
-                if (dist[v] + getEdge(v, vertex).edgeWeight < dist[vertex]) {
-                    dist[vertex] = dist[v] + getEdge(v, vertex).edgeWeight;
-                    back[vertex] = v;
-                    fringe.add(vertex);
+        Arrays.fill(weightList, Integer.MAX_VALUE);
+        Arrays.fill(visited, false);
+        currList.add(startVertex);
+        weightList[startVertex] = 0;
+        visited[startVertex] = true;
+
+
+        for (int i = 0; i < vertexCount; i += 1) {
+            ArrayList<Integer> newCurrList = new ArrayList<Integer>();
+            int[] distance = new int[currList.size()];
+            Stack<Integer> currListStack = new Stack<>();
+            currListStack.addAll(currList);
+
+            for (int num = 0; num < currList.size(); num += 1) {
+                distance[num] = weightList[num];
+            }
+
+            Arrays.sort(distance);
+
+            while (!currListStack.empty()) {
+                int currV = currListStack.pop();
+                for (int indDist = 0; indDist < distance.length; indDist += 1) {
+                    if (distance[indDist] == weightList[currV]) {
+                        distance[indDist] = currV;
+                    }
                 }
             }
+
+            for (int i2 = 0; i2 < distance.length; i2 += 1) {
+                newCurrList.add(distance[i2]);
+            }
+
+            currList = newCurrList;
+            for (int currVertex: currList) {
+                for (int neighbours: neighbors(currVertex)) {
+                    if (!visited[neighbours]) {
+                        weightList[neighbours] = Math.min(weightList[neighbours],
+                                weightList[currVertex] + getEdge(currVertex, neighbours).info());
+                        if (!currList.contains(neighbours)) {
+                            nextList.add(neighbours);
+                        }
+                    }
+                }
+                visited[currVertex] = true;
+            }
+            currList = nextList;
+            nextList = new ArrayList<Integer>();
         }
-        return dist;
+        // TODO: Your code here!
+        return weightList;
     }
 
     /** Returns the edge (V1, V2). (ou may find this helpful to implement!) */

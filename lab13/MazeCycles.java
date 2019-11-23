@@ -12,7 +12,7 @@ public class MazeCycles extends MazeExplorer {
     protected boolean[] marked;
     */
     private boolean targetFound = false;
-    private Maze maze;
+    private Maze Maze;
     private int[] temp;
     /** Set up to find cycles of M. */
     public MazeCycles(Maze m) {
@@ -28,9 +28,7 @@ public class MazeCycles extends MazeExplorer {
     // Helper methods go here
     public void solve_helper(int[] i, int s) {
         if (marked[s]) {
-            targetFound = true;
-            edgeTo[s] = i[s];
-            announce();
+            targetFound = true; edgeTo[s] = i[s]; announce();
             int next = i[s];
             while (next != s) {
                 edgeTo[next] = i[next];
@@ -42,10 +40,9 @@ public class MazeCycles extends MazeExplorer {
             return;
         }
 
-        marked[s] = true;
-        announce();
+        marked[s] = true; announce();
 
-        for (int w : maze.adj(s)) {
+        for (int w : Maze.adj(s)) {
             if (w != i[s]) {
                 i[w] = s;
                 solve_helper(i, w);

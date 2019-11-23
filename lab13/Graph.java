@@ -75,62 +75,7 @@ public class Graph {
      *  from STARTVERTEX to all other vertices. */
     public int[] dijkstras(int startVertex) {
         // TODO: Your code here!
-        int[] weightList = new int[vertexCount];
-        boolean[] visited = new boolean[vertexCount];
-
-        List<Integer> currList = new ArrayList<Integer>();
-        List<Integer> nextList = new ArrayList<Integer>();
-
-        Arrays.fill(weightList, Integer.MAX_VALUE);
-        Arrays.fill(visited, false);
-        currList.add(startVertex);
-        weightList[startVertex] = 0;
-        visited[startVertex] = true;
-
-
-        for (int i = 0; i < vertexCount; i += 1) {
-            ArrayList<Integer> newCurrList = new ArrayList<Integer>();
-            int[] distance = new int[currList.size()];
-            Stack<Integer> currListStack = new Stack<>();
-            currListStack.addAll(currList);
-
-            for (int num = 0; num < currList.size(); num += 1) {
-                distance[num] = weightList[num];
-            }
-
-            Arrays.sort(distance);
-
-            while (!currListStack.empty()) {
-                int currV = currListStack.pop();
-                for (int indDist = 0; indDist < distance.length; indDist += 1) {
-                    if (distance[indDist] == weightList[currV]) {
-                        distance[indDist] = currV;
-                    }
-                }
-            }
-
-            for (int i2 = 0; i2 < distance.length; i2 += 1) {
-                newCurrList.add(distance[i2]);
-            }
-
-            currList = newCurrList;
-            for (int currVertex: currList) {
-                for (int neighbours: neighbors(currVertex)) {
-                    if (!visited[neighbours]) {
-                        weightList[neighbours] = Math.min(weightList[neighbours],
-                                weightList[currVertex] + getEdge(currVertex, neighbours).info());
-                        if (!currList.contains(neighbours)) {
-                            nextList.add(neighbours);
-                        }
-                    }
-                }
-                visited[currVertex] = true;
-            }
-            currList = nextList;
-            nextList = new ArrayList<Integer>();
-        }
-        // TODO: Your code here!
-        return weightList;
+        return null;
     }
 
     /** Returns the edge (V1, V2). (ou may find this helpful to implement!) */

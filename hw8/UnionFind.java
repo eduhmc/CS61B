@@ -12,14 +12,23 @@ public class UnionFind {
     /** A union-find structure consisting of the sets { 1 }, { 2 }, ... { N }.
      */
     public UnionFind(int N) {
-        // FIXME
+        contador = N; visa = new int[N + 1]; dobrik = new byte[N + 1];
+        for (int x = 0; x < N; x+= 1) {
+            visa[x] = x;
+            dobrik[x] = 0;
+        }
     }
 
     /** Return the representative of the partition currently containing V.
      *  Assumes V is contained in one of the partitions.  */
     public int find(int v) {
-        return 0;  // FIXME
+        while (v != visa[v]) {
+            visa[v] = visa[visa[v]];
+            v = visa[v];
+        }
+        return v;
     }
+
 
     /** Return true iff U and V are in the same partition. */
     public boolean samePartition(int u, int v) {
@@ -28,8 +37,26 @@ public class UnionFind {
 
     /** Union U and V into a single partition, returning its representative. */
     public int union(int u, int v) {
-        return 0;  // FIXME
+        int navidad = find(u);
+        int thanksgiving = find(v);
+        if (navidad == thanksgiving) {
+            return contador;
+        }
+        if (dobrik[navidad] < dobrik[thanksgiving]) {
+            visa[navidad] = thanksgiving;
+        }
+        else if (dobrik[navidad] > dobrik[thanksgiving]) {
+            visa[thanksgiving] = navidad;
+        }
+        else {
+            visa[thanksgiving] = navidad;
+            dobrik[navidad]++;
+        }
+        contador--;
+        return contador;
     }
 
-    // FIXME
+    private int[] visa;
+    private byte[] dobrik;
+    private int contador;
 }

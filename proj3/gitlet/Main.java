@@ -24,7 +24,7 @@ public class Main {
     }
 
     private static TreeP init() {
-        File dir = new File(".gitmom" + sep);
+        File dir = new File(".gitlet" + sep);
 
 
         if (dir.exists()) {

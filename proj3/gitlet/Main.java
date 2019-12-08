@@ -32,11 +32,12 @@ public class Main {
                     + "already exists in the current directory.");
             return null;
         }else{
-            System.out.println("vamos a crear un nuevo directorio");
+            //System.out.println("vamos a crear un nuevo directorio");
+
         }
 
         dir.mkdirs();
-        System.out.println("se creo el directorio");
+        //System.out.println("se creo el directorio");
         return TreeP.init();
 
     }
@@ -47,7 +48,7 @@ public class Main {
             return;
         }
         try {
-            File f = new File(".gitmom" + sep + "path");
+            File f = new File(".gitlet" + sep + "path");
 
             ObjectOutputStream out =
                     new ObjectOutputStream(new FileOutputStream(f));

@@ -9,11 +9,6 @@ import java.io.IOException;
  */
 public class Main {
 
-    /** Usage: java gitlet.Main ARGS, where ARGS contains
-     *  <COMMAND> <OPERAND> .... */
-    public static void main(String... args) {
-        // FILL THIS IN
-    }
     private static TreeP Arbol1;
 
     private static String opcion1;
@@ -21,7 +16,7 @@ public class Main {
     private static String sep = File.separator;
 
 
-    public static void main(String args) {
+    public static void main(String... args) {
         if (nullCase(args)) {
             return;
         }
@@ -29,14 +24,19 @@ public class Main {
     }
 
     private static TreeP init() {
-        File dir = new File(".gitlet" + sep);
+        File dir = new File(".gitmom" + sep);
+
 
         if (dir.exists()) {
             System.out.println("A Gitlet version-control system "
                     + "already exists in the current directory.");
             return null;
+        }else{
+            System.out.println("vamos a crear un nuevo directorio");
         }
+
         dir.mkdirs();
+        System.out.println("se creo el directorio");
         return TreeP.init();
 
     }
@@ -47,7 +47,8 @@ public class Main {
             return;
         }
         try {
-            File f = new File(".gitlet" + sep + "path");
+            File f = new File(".gitmom" + sep + "path");
+
             ObjectOutputStream out =
                     new ObjectOutputStream(new FileOutputStream(f));
             out.writeObject(repo);
@@ -56,9 +57,10 @@ public class Main {
         }
     }
 
-    public static void Arr(String Argumentos){
+    public static void Arr(String... Argumentos){
 
-        opcion1 = Argumentos;
+        //opcion1 = Argumentos[0];
+        opcion1 = "init";
 
         if(opcion1=="init"){
             Arbol1 = init();
@@ -68,7 +70,7 @@ public class Main {
         }
     }
 
-    public static boolean nullCase(String args) {
+    public static boolean nullCase(String... args) {
         if (args == null) {
             System.out.println("Please enter a command.");
             return true;
@@ -77,4 +79,5 @@ public class Main {
     }
 
 }
+
 

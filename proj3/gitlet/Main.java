@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
- *  @author eduhmc
+ *  @author eduhmc00
  */
 public class Main {
 

@@ -22,7 +22,7 @@ public class Main implements Serializable {
     /** A method that works as an temporary list.
      * @return An arrayist
      */
-    private static ArrayList<String> workingDirFiles() {
+    private static ArrayList<String> ayuda() {
         ArrayList<String> porahora = new ArrayList<>();
         porahora.addAll(Utils.plainFilenamesIn(FileSystems.getDefault().getPath(".").toString()));
         porahora.remove(".gitignore"); porahora.remove("Makefile");
@@ -153,9 +153,7 @@ public class Main implements Serializable {
                 return;
             }
         }
-        Commit deal = new Commit(impreso, aqui,
-                directory, actual, corriente.bearcard());
-
+        Commit deal = new Commit(impreso, aqui, directory, actual, corriente.bearcard());
         deal.añadir();
         alla.cambios(deal);
         directory.getcommiteando().add(deal.bearcard());
@@ -181,167 +179,128 @@ public class Main implements Serializable {
     }
 
 
-    /** Checkout method, where we retrieve only the file
-     * with the name specified from the specified commit.
-     * folder.
-     * @param commitID the ID of the commit we want to
-     *                 checkout our file from.
-     * @param fileName the name of the file we want.
+    /** A method that helps with the commit class.
+     * @param calcard parameter of the function
+     * @param apellido parameter of the function
      */
-    private static void checkoutID(String commitID, String fileName) {
-        if (!commitID.contains("commit")) {
-            commitID = "commit" + commitID;
+    private static void checkoutID(String calcard, String apellido) {
+        if (!calcard.contains("commit")) {
+            calcard = "commit" + calcard;
         }
-        File desiredCommitFile = new File(objectRepo + commitID);
-
-        if (!desiredCommitFile.exists()) {
+        File este = new File(objectRepo + calcard);
+        if (!este.exists()) {
             System.out.println("No commit with that id exists.");
             return;
         }
-
-        Commit desiredCommit =
-                Utils.readObject(new File(objectRepo + commitID), Commit.class);
-
-        fileName = desiredCommit.cambiandochars(fileName);
-        if (!desiredCommit.atrapararchivo().containsKey(fileName)
-                || desiredCommit.agarrarelpasado().contains(fileName)) {
+        Commit aquel = Utils.readObject(new File(objectRepo + calcard), Commit.class);
+        apellido = aquel.cambiandochars(apellido);
+        if (!aquel.atrapararchivo().containsKey(apellido) || aquel.agarrarelpasado().contains(apellido)) {
             System.out.println("File does not exist in that commit.");
             return;
         }
-        File oldVersion = new File(desiredCommit
-                .irAlPasado().get(fileName));
-
-        fileName = desiredCommit.anticambiandochars(fileName);
-        Utils.writeContents(new File(fileName),
-                Utils.readContentsAsString(oldVersion));
+        File oldVersion = new File(aquel.irAlPasado().get(apellido));
+        apellido = aquel.anticambiandochars(apellido);
+        Utils.writeContents(new File(apellido), Utils.readContentsAsString(oldVersion));
     }
 
-    /** Checkout method, where we retrieve everything
-     * from the headcommit of the specified branch
-     * and sets the branch to the current branch.
-     * @param branchName the name of the file we want.
+    /** A method that helps with the commit class.
+     * @param rama parameter of the function
      */
-    private static void checkoutBranchName(String branchName) {
-        if (!directory.getcurr().keySet().contains(branchName)) {
+    private static void checkoutBranchName(String rama) {
+        if (!directory.getcurr().keySet().contains(rama)) {
             System.out.println("No such branch exists.");
             return;
-        } else if (directory.agarrandorama().agarrar().equals(branchName)) {
+        } else if (directory.agarrandorama().agarrar().equals(rama)) {
             System.out.println("No need to checkout the current branch.");
             return;
         }
-        Branch checkoutBranch = directory.getcurr().get(branchName);
-        Branch currBranch = directory.agarrandorama();
-
-        for (String fileName: checkoutBranch
-                .agarralider().irAlPasado().keySet()) {
-            File checkoutFile = new File(checkoutBranch.agarralider()
-                    .irAlPasado().get(fileName));
-            File oldFile;
+        Branch actual = directory.getcurr().get(rama);
+        Branch este = directory.agarrandorama();
+        for (String s: actual.agarralider().irAlPasado().keySet()) {
+            File salir = new File(actual.agarralider().irAlPasado().get(s));
+            File pisado;
             try {
-                oldFile = new File(currBranch.agarralider()
-                        .irAlPasado().get(fileName));
+                pisado = new File(este.agarralider().irAlPasado().get(s));
             } catch (NullPointerException ignored) {
-                oldFile = new File(checkoutBranch.agarralider()
-                        .irAlPasado().get(fileName));
+                pisado = new File(actual.agarralider().irAlPasado().get(s));
             }
-            File tempFile = new File(currBranch.agarralider()
-                    .anticambiandochars(fileName));
-            if (tempFile.exists() && (!Utils.readContentsAsString(checkoutFile)
-                    .equals(Utils.readContentsAsString(tempFile))
-                    && !Utils.readContentsAsString(tempFile)
-                    .equals(Utils.readContentsAsString(oldFile)))) {
-                System.out.println("There is an untracked file"
-                        + " in the way; delete it or add it first.");
+            File porahora = new File(este.agarralider().anticambiandochars(s));
+            if (porahora.exists() && (!Utils.readContentsAsString(salir).equals(Utils.readContentsAsString(porahora))
+                    && !Utils.readContentsAsString(porahora).equals(Utils.readContentsAsString(pisado)))) {
+                System.out.println("There is an untracked file in the way; delete it or add it first.");
                 return;
             }
         }
-
-        ArrayList<File> filesToDelete = new ArrayList<>();
-        for (String fileName: currBranch.agarralider()
-                .irAlPasado().keySet()) {
-            if (!checkoutBranch.agarralider()
-                    .irAlPasado().containsKey(fileName)) {
-                File targetFile = new File(fileName);
-                filesToDelete.add(targetFile);
+        ArrayList<File> lst = new ArrayList<>();
+        for (String x: este.agarralider().irAlPasado().keySet()) {
+            if (!actual.agarralider().irAlPasado().containsKey(x)) {
+                File walmart = new File(x);
+                lst.add(walmart);
             }
         }
 
-        for (File files: filesToDelete) {
-            files.delete();
+        for (File f: lst) {
+            f.delete();
         }
 
-        for (String fileName: checkoutBranch
-                .agarralider().irAlPasado().keySet()) {
-            fileName = checkoutBranch.agarralider()
-                    .anticambiandochars(fileName);
-            checkoutName(fileName, checkoutBranch.agarralider());
+        for (String x: este.agarralider().irAlPasado().keySet()) {
+            x = este.agarralider().anticambiandochars(x);
+            checkoutName(x, este.agarralider());
         }
 
-        directory.obteniendorama(checkoutBranch);
+        directory.obteniendorama(este);
     }
 
-    /** Prints out a log of all the commits starting with the
-     * current branch head, trailing backwards to the init commit.
+    /** usleess method that only does sout
      */
     private static void log() {
-        Commit currCommit = directory.agarrandorama().agarralider();
-        while (currCommit != null) {
-            System.out.println(currCommit.toString());
-            currCommit = currCommit.estadodefamlista();
+        Commit actual = directory.agarrandorama().agarralider();
+        while (actual != null) {
+            System.out.println(actual.toString());
+            actual = actual.estadodefamlista();
         }
     }
 
-    /** Unstage the file and mark it to be not included in next commit.
-     * Also remove the file from the working directory if it is still
-     * there UNLESS it is untracked in the current commit.
-     * @param fileName the name of the file we want to remove.
+    /** Void method
+     * @param s is the parameter
      */
-    private static void rm(String fileName) {
-        Branch currBranch = directory.agarrandorama();
-        Commit currCommit = currBranch.agarralider();
-        String processedFileName = currCommit.cambiandochars(fileName);
-        Stage currStage = currBranch.fixing();
-        String myStageRepo = stageRepo + currStage.bearcard() + separator;
+    private static void rm(String s) {
+        Branch actual = directory.agarrandorama();
+        Commit presente= actual.agarralider();
+        String esteno = presente.cambiandochars(s);
+        Stage corriente = actual.fixing();
+        String rubik = stageRepo + corriente.bearcard() + separator;
 
-        if (!currCommit.irAlPasado().containsKey(processedFileName)
-                && !Utils.plainFilenamesIn(myStageRepo)
-                .contains(processedFileName)) {
+        if (!presente.irAlPasado().containsKey(esteno) && !Utils.plainFilenamesIn(rubik).contains(esteno)) {
             System.out.println("No reason to remove the file.");
             return;
         }
-
-        if (currCommit.irAlPasado().keySet().contains(fileName)) {
-            currCommit.agarrarelpasado().add(fileName);
+        if (presente.irAlPasado().keySet().contains(s)) {
+            presente.agarrarelpasado().add(s);
         }
-
-        if (Utils.plainFilenamesIn(myStageRepo).contains(processedFileName)) {
-            File theFile = new File(myStageRepo + processedFileName);
-            theFile.delete();
+        if (Utils.plainFilenamesIn(rubik).contains(esteno)) {
+            File mio = new File(rubik + esteno);
+            mio.delete();
         }
-        currStage.getdicto().remove(processedFileName);
-        currStage.traerback().add(fileName);
-        currStage.almacenando();
-
-        if (currCommit.irAlPasado().containsKey(processedFileName)) {
-            String oldFilDir = currCommit
-                    .irAlPasado().get(processedFileName);
-            File oldFile = new File(oldFilDir);
-            File thisFile = new File(fileName);
-            if (thisFile.exists() && Utils.readContentsAsString(oldFile)
-                    .equals(Utils.readContentsAsString(thisFile))) {
+        corriente.getdicto().remove(esteno);
+        corriente.traerback().add(s);
+        corriente.almacenando();
+        if (presente.irAlPasado().containsKey(esteno)) {
+            String antiq = presente.irAlPasado().get(esteno);
+            File pusado = new File(antiq);
+            File estesi = new File(s);
+            if (estesi.exists() && Utils.readContentsAsString(pusado).equals(Utils.readContentsAsString(estesi))) {
                 try {
-                    Utils.restrictedDelete(thisFile);
+                    Utils.restrictedDelete(estesi);
                 } catch (IllegalArgumentException e) {
-                    thisFile.delete();
+                    estesi.delete();
                 }
             }
         }
-        Utils.writeObject(new File(objectRepo
-                + currCommit.bearcard()), currCommit);
+        Utils.writeObject(new File(objectRepo + presente.bearcard()), presente);
     }
 
-    /** Basically log, except it displays the information for
-     * every commit ever made, ordering does not matter.
+    /** Log method
      */
     private static void globalLog() {
         for (String commitNames: Utils.plainFilenamesIn(objectRepo)) {
@@ -350,308 +309,252 @@ public class Main implements Serializable {
         }
     }
 
-    /** Finds all files with the given commit message and prints
-     * their commit IDs out one per line, one at a time.
-     * @param message the commit message.
+    /** A method that helps with commit
+     * @param edu is the parameter
      */
-    private static void find(String message) {
-        boolean foundAtLeastOne = false;
-        for (String commitNames: Utils.plainFilenamesIn(objectRepo)) {
-            File thisFile = new File(objectRepo + commitNames);
-            Commit thisCommit = Utils.readObject(thisFile, Commit.class);
-            if (thisCommit.imprimiendo().equals(message)) {
+    private static void find(String edu) {
+        boolean fcheck = false;
+        for (String c: Utils.plainFilenamesIn(objectRepo)) {
+            File este = new File(objectRepo + c);
+            Commit thisCommit = Utils.readObject(este, Commit.class);
+            if (thisCommit.imprimiendo().equals(edu)) {
                 System.out.println(thisCommit.bearcard().substring(6));
-                foundAtLeastOne = true;
+                fcheck = true;
             }
         }
-        if (!foundAtLeastOne) {
+        if (!fcheck) {
             System.out.println("Found no commit with that message.");
             return;
         }
     }
 
 
-    /** Displays what branches exist (and marks the current one), what
-     * files have been staged, and what files have been marked for untracking.
-     * Note that the files should be in SORTED ORDER.
+    /** A method that helps with commit
      */
     private static void status() {
-        ArrayList<String> filesToPrint = new ArrayList<>();
-        String fileName = "";
-
+        ArrayList<String> lst = new ArrayList<>();
+        String este = "";
         System.out.println("=== Branches ===");
-        for (Branch branches: directory.getcurr().values()) {
-            if (branches == directory.agarrandorama()) {
-                fileName = "*" + fileName;
+        for (Branch i: directory.getcurr().values()) {
+            if (i == directory.agarrandorama()) {
+                este = "*" + este;
             }
-            fileName = fileName + branches.agarrar();
-            filesToPrint.add(fileName);
-            fileName = "";
+            este = este + i.agarrar();
+            lst.add(este);
+            este = "";
         }
-        Collections.sort(filesToPrint);
-        for (String files: filesToPrint) {
+        Collections.sort(lst);
+        for (String files: lst) {
             System.out.println(files);
         }
         System.out.println();
-
-        filesToPrint.clear();
-
+        lst.clear();
         System.out.println("=== Staged Files ===");
         Stage currStage = directory.agarrandorama().fixing();
         Commit currCommit = directory.agarrandorama().agarralider();
         for (String stagedFiles: currStage.getdicto()) {
-            filesToPrint.add(currCommit.anticambiandochars(stagedFiles));
+            lst.add(currCommit.anticambiandochars(stagedFiles));
         }
-        Collections.sort(filesToPrint);
-        for (String files: filesToPrint) {
+        Collections.sort(lst);
+        for (String files: lst) {
             System.out.println(files);
         }
         System.out.println();
-
-        filesToPrint.clear();
-
+        lst.clear();
         System.out.println("=== Removed Files ===");
-        filesToPrint.addAll(directory.agarrandorama().agarralider()
+        lst.addAll(directory.agarrandorama().agarralider()
                 .atraparestado().traerback());
-        Collections.sort(filesToPrint);
-        for (String files: filesToPrint) {
+        Collections.sort(lst);
+        for (String files: lst) {
             System.out.println(files);
         }
         System.out.println();
-        filesToPrint.clear();
-
+        lst.clear();
         System.out.println("=== Modifications Not Staged For Commit ===");
-        statusPt2(currStage, currCommit, fileName, filesToPrint);
+        statusPt2(currStage, currCommit, este, lst);
     }
 
-    /** Part 2 of the "status" command.
-     * @param currStage The current stage
-     * @param currCommit The current commit
-     * @param fileName The file name
-     * @param filesToPrint The files to print
+    /** void method
+     * @param a lol
+     * @param e lol
+     * @param fi lol
+     * @param o Tpatam
      */
-    private static void statusPt2(Stage currStage,
-                                  Commit currCommit, String fileName,
-                                  ArrayList<String> filesToPrint) {
+    private static void statusPt2(Stage a, Commit e, String fi, ArrayList<String> o) {
         System.out.println();
         System.out.println("=== Untracked Files ===");
         System.out.println();
     }
 
-    /** Creates a new branch with it's current commit pointer
-     * pointed at the current head commit of the current branch.
-     * @param name the name of the new branch.
+    /** Void method
+     * @param edu args.
      */
-    private static void branch(String name) {
+    private static void branch(String edu) {
 
-        if (directory.getcurr().containsKey(name)) {
+        if (directory.getcurr().containsKey(edu)) {
             System.out.println("A branch with that name already exists.");
             return;
         }
-        Branch newBranch = new Branch(name,
-                directory.agarrandorama().agarralider(), directory);
-
-        Stage newBranchStage = new Stage(directory, new Date());
-        newBranchStage.guardando(directory.agarrandorama().agarralider());
-
-        directory.getcurr().put(newBranch.agarrar(), newBranch);
-        newBranch.mascambios(newBranchStage);
+        Branch prox = new Branch(edu, directory.agarrandorama().agarralider(), directory);
+        Stage este = new Stage(directory, new Date());
+        este.guardando(directory.agarrandorama().agarralider());
+        directory.getcurr().put(prox.agarrar(), prox);
+        prox.mascambios(este);
     }
 
-    /** Removes the current branch from directory.myChildren. That's
-     * about it really lol.
-     * @param branchName literally what it says it is.
+    /** Void method
+     * @param edu is the argument.
      */
-    private static void removeBranch(String branchName) {
-        if (!directory.getcurr().containsKey(branchName)) {
+    private static void removeBranch(String edu) {
+        if (!directory.getcurr().containsKey(edu)) {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        if (directory.agarrandorama().agarrar().equals(branchName)) {
+        if (directory.agarrandorama().agarrar().equals(edu)) {
             System.out.println("Cannot remove the current branch.");
             return;
         }
-        directory.getcurr().remove(branchName);
+        directory.getcurr().remove(edu);
     }
 
-    /** Resets the working directory to the given commitID.
-     * @param commitID the commitID of the commit we're trying to reset
-     *                 to.
+    /** void method
+     * @param calc targ
      */
-    private static void reset(String commitID) {
-        if (!directory.getcommiteando().contains("commit" + commitID)) {
+    private static void reset(String calc) {
+        if (!directory.getcommiteando().contains("commit" + calc)) {
             System.out.println("No commit with that id exists.");
             return;
         }
 
-        Branch currBranch = directory.agarrandorama();
-        Commit currCommit = currBranch.agarralider();
-        Stage currStage = currBranch.fixing();
-
-        Commit revertToCommit = Utils.readObject(
-                new File(objectRepo + "commit" + commitID), Commit.class);
-
-        for (String fileName: revertToCommit.irAlPasado().keySet()) {
-            if (currCommit.agarrarelpasado().contains(fileName)) {
-                System.out.println("There is an untracked file "
-                        + "in the way; delete it or add it first.");
+        Branch esy = directory.agarrandorama();
+        Commit proximo = esy.agarralider();
+        Stage sueño = esy.fixing();
+        Commit patras = Utils.readObject(new File(objectRepo + "commit" + calc), Commit.class);
+        for (String i: patras.irAlPasado().keySet()) {
+            if (proximo.agarrarelpasado().contains(i)) {
+                System.out.println("There is an untracked file in the way; delete it or add it first.");
                 return;
             }
         }
-
-
-        for (String fileName: currCommit.irAlPasado().keySet()) {
-            if (!revertToCommit.irAlPasado().containsKey(fileName)) {
-                new File(currCommit.anticambiandochars(fileName)).delete();
+        for (String i: proximo.irAlPasado().keySet()) {
+            if (!patras.irAlPasado().containsKey(i)) {
+                new File(proximo.anticambiandochars(i)).delete();
             }
         }
-        for (String fileName: revertToCommit.irAlPasado().keySet()) {
-            String revProcessedFileName = currCommit.anticambiandochars(fileName);
-            Utils.writeContents(new File(revProcessedFileName),
-                    Utils.readContentsAsString(new File(revertToCommit
-                            .irAlPasado().get(fileName))));
+        for (String i: patras.irAlPasado().keySet()) {
+            String revProcessedFileName = proximo.anticambiandochars(i);
+            Utils.writeContents(new File(revProcessedFileName), Utils.readContentsAsString(new File(patras.irAlPasado().get(i))));
         }
     }
 
 
-    /** Finds the appropriate split point by compiling all the commits
-     * within the given branch. And then traversing the currentBranch
-     * one commit at a time until we reach a commit that is contained
-     * within the given Branch.
-     * @param givenCommit the commit that is indicated.
-     * @param curCommit the current commit.
-     * @return commit which is the closest split point to the
-     * current branch
+    /** A method that helps with the commit class
+     * @param vista args
+     * @param hasta args
+     * @return something
      */
-    private static Commit findSplitPoint(Commit curCommit, Commit givenCommit) {
-        HashSet<String> allGBCommits = new HashSet<>();
-        Commit trackerCommit = givenCommit;
-
-        while (trackerCommit != null) {
-            allGBCommits.add(trackerCommit.bearcard());
-            trackerCommit = trackerCommit.estadodefamlista();
+    private static Commit findSplitPoint(Commit hasta, Commit vista) {
+        HashSet<String> lst = new HashSet<>();
+        Commit contador= vista;
+        while (contador != null) {
+            lst.add(contador.bearcard());
+            contador = contador.estadodefamlista();
         }
-
-        while (!allGBCommits.contains(curCommit.bearcard())) {
-            for (String theCommit: curCommit.famlista()) {
-                Commit thisCommit = Utils.readObject(
-                        new File(objectRepo + theCommit), Commit.class);
-                if (allGBCommits.contains(thisCommit)) {
-                    return thisCommit;
+        while (!lst.contains(hasta.bearcard())) {
+            for (String x: hasta.famlista()) {
+                Commit esto = Utils.readObject(new File(objectRepo + x), Commit.class);
+                if (lst.contains(esto)) {
+                    return esto;
                 }
             }
-            curCommit = curCommit.estadodefamlista();
+            hasta = hasta.estadodefamlista();
         }
-        return curCommit;
+        return hasta;
     }
 
-    /** Merges files from the given branch into the current branch.
-     * @param branchName the name of the branch we want
+    /** Void method
+     * @param moña args
      */
-    private static void merge(String branchName) {
-        if (!directory.getcurr().containsKey(branchName)) {
+    private static void merge(String moña) {
+        if (!directory.getcurr().containsKey(moña)) {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        Branch currBranch = directory.agarrandorama();
-        Branch gottenBranch = directory.getcurr().get(branchName);
-        Commit currCommit = currBranch.agarralider();
-        Commit getCommit = gottenBranch.agarralider();
-        if (currBranch.agarrar().equals(branchName)) {
+        Branch actual = directory.agarrandorama();
+        Branch chequeo = directory.getcurr().get(moña);
+        Commit este = actual.agarralider();
+        Commit acabar = chequeo.agarralider();
+        if (actual.agarrar().equals(moña)) {
             System.out.println("Cannot merge a branch with itself.");
             return;
         }
-        Commit splitPoint = findSplitPoint(currCommit, getCommit);
-        if (splitPoint.bearcard().equals(getCommit.bearcard())) {
-            System.out.println("Given branch is an "
-                    + "ancestor of the current branch.");
+        Commit quiebre = findSplitPoint(este, acabar);
+        if (quiebre.bearcard().equals(acabar.bearcard())) {
+            System.out.println("Given branch is an ancestor of the current branch.");
             return;
-        } else if (splitPoint.bearcard()
-                .equals(gottenBranch.liderdefila())) {
-            directory.obteniendorama(gottenBranch);
+        } else if (quiebre.bearcard().equals(chequeo.liderdefila())) {
+            directory.obteniendorama(chequeo);
             System.out.println("Current branch fast-forwarded.");
             return;
         }
-
-        if (!Utils.plainFilenamesIn(currBranch
-                .fixing().agarracommits()).isEmpty()) {
+        if (!Utils.plainFilenamesIn(actual.fixing().agarracommits()).isEmpty()) {
             System.out.println("You have uncommitted changes.");
             return;
         }
-
-        for (String fileName: splitPoint.irAlPasado().keySet()) {
-            boolean dummy = true;
-            File spFile = new File(splitPoint
-                    .irAlPasado().get(fileName));
+        for (String f: quiebre.irAlPasado().keySet()) {
+            boolean ptm = true;
+            File csm = new File(quiebre.irAlPasado().get(f));
             try {
-                File ccFile = new File(currCommit
-                        .irAlPasado().get(fileName));
-                File gcFile = new File(getCommit
-                        .irAlPasado().get(fileName));
-                if (Utils.readContentsAsString(spFile)
-                        .equals(Utils.readContentsAsString(ccFile))
-                        && !gcFile.exists()) {
-                    if (!currCommit.irAlPasado()
-                            .containsKey(fileName)) {
-                        System.out.println("There is an untracked file"
-                                + " in the way; delete it or add it first.");
+                File crjo = new File(este.irAlPasado().get(f));
+                File alv = new File(quiebre.irAlPasado().get(f));
+                if (Utils.readContentsAsString(csm).equals(Utils.readContentsAsString(crjo)) && !alv.exists()) {
+                    if (!este.irAlPasado().containsKey(f)) {
+                        System.out.println("There is an untracked file in the way; delete it or add it first.");
                         return;
                     }
-                    Utils.restrictedDelete(currCommit
-                            .anticambiandochars(fileName));
+                    Utils.restrictedDelete(este.anticambiandochars(f));
                 }
             } catch (NullPointerException e) {
-                dummy = false;
+                ptm = false;
             }
         }
-        mergePt2(currBranch, gottenBranch, getCommit, currCommit, splitPoint);
+        mergePt2(actual, chequeo, este, acabar, quiebre);
     }
 
-    /** Basically part 2 of the "merge" command to make the style
-     * checker happy :P.
-     * @param currBranch it
-     * @param gottenBranch be
-     * @param getCommit like
-     * @param currCommit that
-     * @param splitPoint sometimes
+    /** Void method
+     * @param roger it
+     * @param rafa be
+     * @param nole like
+     * @param tipsa that
+     * @param andy sometimes
      */
-    private static void mergePt2(Branch currBranch, Branch gottenBranch,
-                                 Commit getCommit, Commit currCommit,
-                                 Commit splitPoint) {
-        boolean occuredMergeConflict = false;
-        for (String fileName: getCommit.irAlPasado().keySet()) {
-            File gcFile = new File(getCommit
-                    .irAlPasado().get(fileName));
+    private static void mergePt2(Branch roger, Branch rafa, Commit nole, Commit tipsa, Commit andy) {
+        boolean check = false;
+        for (String fileName: nole.irAlPasado().keySet()) {
+            File gcFile = new File(nole.irAlPasado().get(fileName));
             File ccFile, spFile;
             try {
-                ccFile = new File(currCommit
-                        .irAlPasado().get(fileName));
+                ccFile = new File(tipsa.irAlPasado().get(fileName));
             } catch (NullPointerException ignored) {
                 ccFile = null;
             }
             try {
-                spFile = new File(splitPoint
-                        .irAlPasado().get(fileName));
+                spFile = new File(andy.irAlPasado().get(fileName));
             } catch (NullPointerException ignored) {
                 spFile = null;
             }
-            fileName = currCommit.anticambiandochars(fileName);
+            fileName = tipsa.anticambiandochars(fileName);
             if (spFile == null && ccFile == null) {
-                checkoutID(getCommit.bearcard(), fileName);
+                checkoutID(nole.bearcard(), fileName);
                 add(fileName);
             } else if (spFile != null && ccFile != null) {
-                if ((!Utils.readContentsAsString(gcFile)
-                        .equals(Utils.readContentsAsString(spFile))
-                        || getCommit.estadodefamlista()
-                        .agarrarelpasado().contains(fileName))
-                        && Utils.readContentsAsString(ccFile)
-                        .equals(Utils.readContentsAsString(spFile))) {
-                    if (getCommit.estadodefamlista()
+                if ((!Utils.readContentsAsString(gcFile).equals(Utils.readContentsAsString(spFile)) || nole.estadodefamlista().agarrarelpasado().contains(fileName)) && Utils.readContentsAsString(ccFile).equals(Utils.readContentsAsString(spFile))) {
+                    if (nole.estadodefamlista()
                             .agarrarelpasado().contains(fileName)) {
                         Utils.restrictedDelete(
-                                currCommit.anticambiandochars(fileName));
+                                tipsa.anticambiandochars(fileName));
                     } else {
-                        checkoutID(getCommit.bearcard(), fileName);
+                        checkoutID(nole.bearcard(), fileName);
                         add(fileName);
                     }
                 } else if (!Utils.readContentsAsString(gcFile)
@@ -664,11 +567,11 @@ public class Main implements Serializable {
                             + Utils.readContentsAsString(gcFile);
                     concatFiles = concatFiles + ">>>>>>>";
                     Utils.writeContents(new File(fileName), concatFiles);
-                    occuredMergeConflict = true;
+                    check = true;
                 }
             }
         }
-        mergePt3(gottenBranch, currBranch, occuredMergeConflict);
+        mergePt3(rafa, roger, check);
     }
 
     /** Basically, part 3 of the "merge" command to make the
@@ -775,13 +678,11 @@ public class Main implements Serializable {
 
     /** The directory to the object repository.
      */
-    private static String objectRepo = ".gitlet"
-            + separator + "objectRepository" + separator;
+    private static String objectRepo = ".gitlet" + separator + "objectRepository" + separator;
 
     /** The directory to the stage repository.
      */
-    private static String stageRepo =
-            ".gitlet" + separator + "stages" + separator;
+    private static String stageRepo = ".gitlet" + separator + "stages" + separator;
 
     /** The overarching TreeP which represents me entire repository.
      */

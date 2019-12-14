@@ -33,14 +33,14 @@ public class Main implements Serializable {
     /** A method that doesn't return anything.
      */
     static void saveDirectory() {
-        if (directory == null) {
+        if (junta == null) {
             return;
         }
         try {
             File f = new File(".gitlet" + espacio + "repo" + espacio);
             ObjectOutputStream dirStream =
                     new ObjectOutputStream(new FileOutputStream(f));
-            dirStream.writeObject(directory);
+            dirStream.writeObject(junta);
             dirStream.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -91,18 +91,18 @@ public class Main implements Serializable {
             return;
         }
         iniciando.mkdirs(); este.mkdirs(); caja.mkdirs();
-        directory = new TreeP();
+        junta = new TreeP();
         Date actual = new Date();
         actual.setTime(0);
-        Stage estadodeam= new Stage(directory, actual);
-        Commit initCommit = new Commit("initial commit", actual, directory, estadodeam, null);
+        Stage estadodeam= new Stage(junta, actual);
+        Commit initCommit = new Commit("initial commit", actual, junta, estadodeam, null);
         initCommit.añadir();
         estadodeam.guardando(initCommit);
-        Stage prox = new Stage(directory, new Date());
+        Stage prox = new Stage(junta, new Date());
         prox.guardando(initCommit);
-        Branch nuevoperro = new Branch("master", initCommit, directory);
-        directory.getcurr().put(nuevoperro.agarrar(), nuevoperro);
-        directory.obteniendorama(nuevoperro);
+        Branch nuevoperro = new Branch("master", initCommit, junta);
+        junta.getcurr().put(nuevoperro.agarrar(), nuevoperro);
+        junta.obteniendorama(nuevoperro);
         nuevoperro.cambios(initCommit);
         nuevoperro.mascambios(prox);
     }
@@ -111,8 +111,8 @@ public class Main implements Serializable {
      * @param estado lol
      */
     static void add(String estado) {
-        Commit headCommit = directory.agarrandorama().agarralider();
-        directory.agarrandorama().fixing().add(estado);
+        Commit headCommit = junta.agarrandorama().agarralider();
+        junta.agarrandorama().fixing().add(estado);
         if (headCommit.agarrarelpasado().contains(estado)) {
             headCommit.agarrarelpasado().remove(estado);
         }
@@ -123,8 +123,8 @@ public class Main implements Serializable {
      * @param impreso refers to a line of text
      */
     static void commit(String impreso) {
-        Date aqui = new Date(); Branch alla = directory.agarrandorama();
-        Stage atras = new Stage(directory, aqui);
+        Date aqui = new Date(); Branch alla = junta.agarrandorama();
+        Stage atras = new Stage(junta, aqui);
         Stage actual = alla.fixing();
         Commit corriente = alla.agarralider();
 
@@ -153,10 +153,10 @@ public class Main implements Serializable {
                 return;
             }
         }
-        Commit deal = new Commit(impreso, aqui, directory, actual, corriente.bearcard());
+        Commit deal = new Commit(impreso, aqui, junta, actual, corriente.bearcard());
         deal.añadir();
         alla.cambios(deal);
-        directory.getcommiteando().add(deal.bearcard());
+        junta.getcommiteando().add(deal.bearcard());
         alla.mascambios(atras);
         atras.guardando(deal);
     }
@@ -165,7 +165,7 @@ public class Main implements Serializable {
      * @param master parameter of the function
      * @param edu parameter of the function
      */
-    private static void checkoutName(String edu, Commit master) {
+    private static void stanford(String edu, Commit master) {
         edu = master.cambiandochars(edu);
         if (master.irAlPasado() == null || !master.irAlPasado().containsKey(edu)
                 || (master.estadodefamlista().agarrarelpasado().contains(edu)) && !master.irAlPasado().containsKey(edu)) {
@@ -183,16 +183,16 @@ public class Main implements Serializable {
      * @param calcard parameter of the function
      * @param apellido parameter of the function
      */
-    private static void checkoutID(String calcard, String apellido) {
+    private static void berkeley(String calcard, String apellido) {
         if (!calcard.contains("commit")) {
             calcard = "commit" + calcard;
         }
-        File este = new File(objectRepo + calcard);
+        File este = new File(pintura + calcard);
         if (!este.exists()) {
             System.out.println("No commit with that id exists.");
             return;
         }
-        Commit aquel = Utils.readObject(new File(objectRepo + calcard), Commit.class);
+        Commit aquel = Utils.readObject(new File(pintura + calcard), Commit.class);
         apellido = aquel.cambiandochars(apellido);
         if (!aquel.atrapararchivo().containsKey(apellido) || aquel.agarrarelpasado().contains(apellido)) {
             System.out.println("File does not exist in that commit.");
@@ -206,16 +206,16 @@ public class Main implements Serializable {
     /** A method that helps with the commit class.
      * @param rama parameter of the function
      */
-    private static void checkoutBranchName(String rama) {
-        if (!directory.getcurr().keySet().contains(rama)) {
+    private static void fibonacci(String rama) {
+        if (!junta.getcurr().keySet().contains(rama)) {
             System.out.println("No such branch exists.");
             return;
-        } else if (directory.agarrandorama().agarrar().equals(rama)) {
+        } else if (junta.agarrandorama().agarrar().equals(rama)) {
             System.out.println("No need to checkout the current branch.");
             return;
         }
-        Branch actual = directory.getcurr().get(rama);
-        Branch este = directory.agarrandorama();
+        Branch actual = junta.getcurr().get(rama);
+        Branch este = junta.agarrandorama();
         for (String s: actual.agarralider().irAlPasado().keySet()) {
             File salir = new File(actual.agarralider().irAlPasado().get(s));
             File pisado;
@@ -245,16 +245,16 @@ public class Main implements Serializable {
 
         for (String x: este.agarralider().irAlPasado().keySet()) {
             x = este.agarralider().anticambiandochars(x);
-            checkoutName(x, este.agarralider());
+            stanford(x, este.agarralider());
         }
 
-        directory.obteniendorama(este);
+        junta.obteniendorama(este);
     }
 
     /** usleess method that only does sout
      */
     private static void log() {
-        Commit actual = directory.agarrandorama().agarralider();
+        Commit actual = junta.agarrandorama().agarralider();
         while (actual != null) {
             System.out.println(actual.toString());
             actual = actual.estadodefamlista();
@@ -265,12 +265,11 @@ public class Main implements Serializable {
      * @param s is the parameter
      */
     private static void rm(String s) {
-        Branch actual = directory.agarrandorama();
+        Branch actual = junta.agarrandorama();
         Commit presente= actual.agarralider();
         String esteno = presente.cambiandochars(s);
         Stage corriente = actual.fixing();
-        String rubik = stageRepo + corriente.bearcard() + espacio;
-
+        String rubik = cuadro + corriente.bearcard() + espacio;
         if (!presente.irAlPasado().containsKey(esteno) && !Utils.plainFilenamesIn(rubik).contains(esteno)) {
             System.out.println("No reason to remove the file.");
             return;
@@ -297,14 +296,14 @@ public class Main implements Serializable {
                 }
             }
         }
-        Utils.writeObject(new File(objectRepo + presente.bearcard()), presente);
+        Utils.writeObject(new File(pintura + presente.bearcard()), presente);
     }
 
     /** Log method
      */
     private static void globalLog() {
-        for (String commitNames: Utils.plainFilenamesIn(objectRepo)) {
-            File thisFile = new File(objectRepo + commitNames);
+        for (String commitNames: Utils.plainFilenamesIn(pintura)) {
+            File thisFile = new File(pintura + commitNames);
             System.out.println(Utils.readObject(thisFile, Commit.class));
         }
     }
@@ -314,8 +313,8 @@ public class Main implements Serializable {
      */
     private static void find(String edu) {
         boolean fcheck = false;
-        for (String c: Utils.plainFilenamesIn(objectRepo)) {
-            File este = new File(objectRepo + c);
+        for (String c: Utils.plainFilenamesIn(pintura)) {
+            File este = new File(pintura + c);
             Commit thisCommit = Utils.readObject(este, Commit.class);
             if (thisCommit.imprimiendo().equals(edu)) {
                 System.out.println(thisCommit.bearcard().substring(6));
@@ -335,8 +334,8 @@ public class Main implements Serializable {
         ArrayList<String> lst = new ArrayList<>();
         String este = "";
         System.out.println("=== Branches ===");
-        for (Branch i: directory.getcurr().values()) {
-            if (i == directory.agarrandorama()) {
+        for (Branch i: junta.getcurr().values()) {
+            if (i == junta.agarrandorama()) {
                 este = "*" + este;
             }
             este = este + i.agarrar();
@@ -350,8 +349,8 @@ public class Main implements Serializable {
         System.out.println();
         lst.clear();
         System.out.println("=== Staged Files ===");
-        Stage currStage = directory.agarrandorama().fixing();
-        Commit currCommit = directory.agarrandorama().agarralider();
+        Stage currStage = junta.agarrandorama().fixing();
+        Commit currCommit = junta.agarrandorama().agarralider();
         for (String stagedFiles: currStage.getdicto()) {
             lst.add(currCommit.anticambiandochars(stagedFiles));
         }
@@ -362,7 +361,7 @@ public class Main implements Serializable {
         System.out.println();
         lst.clear();
         System.out.println("=== Removed Files ===");
-        lst.addAll(directory.agarrandorama().agarralider()
+        lst.addAll(junta.agarrandorama().agarralider()
                 .atraparestado().traerback());
         Collections.sort(lst);
         for (String files: lst) {
@@ -371,7 +370,7 @@ public class Main implements Serializable {
         System.out.println();
         lst.clear();
         System.out.println("=== Modifications Not Staged For Commit ===");
-        statusPt2(currStage, currCommit, este, lst);
+        cambiasso(currStage, currCommit, este, lst);
     }
 
     /** void method
@@ -380,7 +379,7 @@ public class Main implements Serializable {
      * @param fi lol
      * @param o Tpatam
      */
-    private static void statusPt2(Stage a, Commit e, String fi, ArrayList<String> o) {
+    private static void cambiasso(Stage a, Commit e, String fi, ArrayList<String> o) {
         System.out.println();
         System.out.println("=== Untracked Files ===");
         System.out.println();
@@ -391,14 +390,14 @@ public class Main implements Serializable {
      */
     private static void branch(String edu) {
 
-        if (directory.getcurr().containsKey(edu)) {
+        if (junta.getcurr().containsKey(edu)) {
             System.out.println("A branch with that name already exists.");
             return;
         }
-        Branch prox = new Branch(edu, directory.agarrandorama().agarralider(), directory);
-        Stage este = new Stage(directory, new Date());
-        este.guardando(directory.agarrandorama().agarralider());
-        directory.getcurr().put(prox.agarrar(), prox);
+        Branch prox = new Branch(edu, junta.agarrandorama().agarralider(), junta);
+        Stage este = new Stage(junta, new Date());
+        este.guardando(junta.agarrandorama().agarralider());
+        junta.getcurr().put(prox.agarrar(), prox);
         prox.mascambios(este);
     }
 
@@ -406,30 +405,30 @@ public class Main implements Serializable {
      * @param edu is the argument.
      */
     private static void removeBranch(String edu) {
-        if (!directory.getcurr().containsKey(edu)) {
+        if (!junta.getcurr().containsKey(edu)) {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        if (directory.agarrandorama().agarrar().equals(edu)) {
+        if (junta.agarrandorama().agarrar().equals(edu)) {
             System.out.println("Cannot remove the current branch.");
             return;
         }
-        directory.getcurr().remove(edu);
+        junta.getcurr().remove(edu);
     }
 
     /** void method
      * @param calc targ
      */
     private static void reset(String calc) {
-        if (!directory.getcommiteando().contains("commit" + calc)) {
+        if (!junta.getcommiteando().contains("commit" + calc)) {
             System.out.println("No commit with that id exists.");
             return;
         }
 
-        Branch esy = directory.agarrandorama();
+        Branch esy = junta.agarrandorama();
         Commit proximo = esy.agarralider();
         Stage sueño = esy.fixing();
-        Commit patras = Utils.readObject(new File(objectRepo + "commit" + calc), Commit.class);
+        Commit patras = Utils.readObject(new File(pintura + "commit" + calc), Commit.class);
         for (String i: patras.irAlPasado().keySet()) {
             if (proximo.agarrarelpasado().contains(i)) {
                 System.out.println("There is an untracked file in the way; delete it or add it first.");
@@ -453,7 +452,7 @@ public class Main implements Serializable {
      * @param hasta args
      * @return something
      */
-    private static Commit findSplitPoint(Commit hasta, Commit vista) {
+    private static Commit puntodequiebre(Commit hasta, Commit vista) {
         HashSet<String> lst = new HashSet<>();
         Commit contador= vista;
         while (contador != null) {
@@ -462,7 +461,7 @@ public class Main implements Serializable {
         }
         while (!lst.contains(hasta.bearcard())) {
             for (String x: hasta.famlista()) {
-                Commit esto = Utils.readObject(new File(objectRepo + x), Commit.class);
+                Commit esto = Utils.readObject(new File(pintura + x), Commit.class);
                 if (lst.contains(esto)) {
                     return esto;
                 }
@@ -476,24 +475,24 @@ public class Main implements Serializable {
      * @param moña args
      */
     private static void merge(String moña) {
-        if (!directory.getcurr().containsKey(moña)) {
+        if (!junta.getcurr().containsKey(moña)) {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        Branch actual = directory.agarrandorama();
-        Branch chequeo = directory.getcurr().get(moña);
+        Branch actual = junta.agarrandorama();
+        Branch chequeo = junta.getcurr().get(moña);
         Commit este = actual.agarralider();
         Commit acabar = chequeo.agarralider();
         if (actual.agarrar().equals(moña)) {
             System.out.println("Cannot merge a branch with itself.");
             return;
         }
-        Commit quiebre = findSplitPoint(este, acabar);
+        Commit quiebre = puntodequiebre(este, acabar);
         if (quiebre.bearcard().equals(acabar.bearcard())) {
             System.out.println("Given branch is an ancestor of the current branch.");
             return;
         } else if (quiebre.bearcard().equals(chequeo.liderdefila())) {
-            directory.obteniendorama(chequeo);
+            junta.obteniendorama(chequeo);
             System.out.println("Current branch fast-forwarded.");
             return;
         }
@@ -518,7 +517,7 @@ public class Main implements Serializable {
                 ptm = false;
             }
         }
-        mergePt2(actual, chequeo, este, acabar, quiebre);
+        union(actual, chequeo, este, acabar, quiebre);
     }
 
     /** Void method
@@ -528,7 +527,7 @@ public class Main implements Serializable {
      * @param tipsa that
      * @param andy sometimes
      */
-    private static void mergePt2(Branch roger, Branch rafa, Commit nole, Commit tipsa, Commit andy) {
+    private static void union(Branch roger, Branch rafa, Commit nole, Commit tipsa, Commit andy) {
         boolean check = false;
         for (String x: nole.irAlPasado().keySet()) {
             File csm = new File(nole.irAlPasado().get(x));
@@ -545,7 +544,7 @@ public class Main implements Serializable {
             }
             x = tipsa.anticambiandochars(x);
             if (ptm == null && crj == null) {
-                checkoutID(nole.bearcard(), x);
+                berkeley(nole.bearcard(), x);
                 add(x);
             } else if (ptm != null && crj != null) {
                 if ((!Utils.readContentsAsString(csm).equals(Utils.readContentsAsString(ptm)) || nole.estadodefamlista().agarrarelpasado().contains(x)) && Utils.readContentsAsString(crj).equals(Utils.readContentsAsString(ptm))) {
@@ -554,22 +553,22 @@ public class Main implements Serializable {
                         Utils.restrictedDelete(
                                 tipsa.anticambiandochars(x));
                     } else {
-                        checkoutID(nole.bearcard(), x);
+                        berkeley(nole.bearcard(), x);
                         add(x);
                     }
                 } else if (!Utils.readContentsAsString(csm)
                         .equals(Utils.readContentsAsString(crj))) {
-                    String concatFiles = "<<<<<<< HEAD\n";
-                    concatFiles = concatFiles + Utils.readContentsAsString(crj);
-                    concatFiles = concatFiles + "=======\n";
-                    concatFiles = concatFiles + Utils.readContentsAsString(csm);
-                    concatFiles = concatFiles + ">>>>>>>";
-                    Utils.writeContents(new File(x), concatFiles);
+                    String buda = "<<<<<<< HEAD\n";
+                    buda = buda + Utils.readContentsAsString(crj);
+                    buda = buda + "=======\n";
+                    buda = buda + Utils.readContentsAsString(csm);
+                    buda = buda + ">>>>>>>";
+                    Utils.writeContents(new File(x), buda);
                     check = true;
                 }
             }
         }
-        mergePt3(rafa, roger, check);
+        juntasa(rafa, roger, check);
     }
 
     /** Void method
@@ -577,12 +576,12 @@ public class Main implements Serializable {
      * @param cr7 args
      * @param ney args
      */
-    private static void mergePt3(Branch messi, Branch cr7, boolean ney) {
+    private static void juntasa(Branch messi, Branch cr7, boolean ney) {
         commit("Merged " + messi.agarrar() + " into " + cr7.agarrar() + ".");
-        directory.agarrandorama().agarralider().estadodegit();
-        Commit este = directory.agarrandorama().agarralider();
+        junta.agarrandorama().agarralider().estadodegit();
+        Commit este = junta.agarrandorama().agarralider();
         este.famlista().add(messi.liderdefila());
-        Utils.writeObject(new File(objectRepo + este.bearcard()), este);
+        Utils.writeObject(new File(pintura + este.bearcard()), este);
         if (ney) {
             System.out.println("Encountered a merge conflict.");
         }
@@ -593,7 +592,7 @@ public class Main implements Serializable {
      *  <COMMAND> <dormir> .... */
     public static void main(String... args) {
         String quiero = args[0]; String[] dormirs = null;
-        directory = loadDirectory();
+        junta = loadDirectory();
         try {
             dormirs = Arrays.copyOfRange(args, 1, args.length);
         } catch (IndexOutOfBoundsException ignored) {
@@ -614,12 +613,11 @@ public class Main implements Serializable {
                     throw new IndexOutOfBoundsException();
                 }
                 if (!dormirList.contains("--") && dormirList.size() == 1) {
-                    checkoutBranchName(dormirs[0]);
+                    fibonacci(dormirs[0]);
                 } else if (dormirs[0].equals("--")) {
-                    checkoutName(dormirs[1],
-                            directory.agarrandorama().agarralider());
+                    stanford(dormirs[1], junta.agarrandorama().agarralider());
                 } else if (dormirs[1].equals("--")) {
-                    checkoutID(dormirs[0], dormirs[2]);
+                    berkeley(dormirs[0], dormirs[2]);
                 } else {
                     throw new IndexOutOfBoundsException();
                 }
@@ -650,30 +648,19 @@ public class Main implements Serializable {
         saveDirectory();
     }
 
-    /** Void method
-     */
-    public static void trialMethod() {
-        System.out.println("yes");
-    }
 
-    /** Void method
-     * @param edu args
-     */
-    public static void trialMethod(String edu) {
-        System.out.println("trying" + edu);
-    }
 
     /** variable */
     private static String espacio = File.separator;
 
     /** variable */
-    private static String objectRepo = ".gitlet" + espacio + "objectRepository" + espacio;
+    private static String pintura = ".gitlet" + espacio + "objectRepository" + espacio;
 
     /** variable */
-    private static String stageRepo = ".gitlet" + espacio + "stages" + espacio;
+    private static String cuadro = ".gitlet" + espacio + "stages" + espacio;
 
     /** variable */
-    private static TreeP directory = null;
+    private static TreeP junta = null;
     /** Treep method
      * @return something
      */

@@ -2,6 +2,9 @@ package gitlet;
 
 import ucb.junit.textui;
 import org.junit.Test;
+
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 /** The suite of all JUnit tests for the gitlet package.
@@ -21,7 +24,25 @@ public class UnitTest {
         int edu = 3;
         assertEquals(3, edu);
     }
+    /** TEST */
+    public boolean deleteDirectory(File x) {
+        if (!x.exists()) {
+            System.out.println("all good");
+            return false;
+        }
+        File[] lst = x.listFiles();
+        if (lst != null) {
+            for (File file : lst) {
+                deleteDirectory(file);
+            }
+        }
+        return x.delete();
+    }
 
+    boolean deleteDirectory(String fileName) {
+        File theFile = new File(fileName);
+        return deleteDirectory(theFile);
+    }
 }
 
 

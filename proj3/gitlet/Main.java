@@ -109,7 +109,7 @@ public class Main implements Serializable {
         Stage initStage = new Stage(directory, initialCommitDate);
         Commit initCommit = new Commit("initial commit", initialCommitDate, directory, initStage, null);
 
-        initCommit.addCommit();
+        initCommit.añadir();
         initStage.guardando(initCommit);
 
         Stage nextCommitsStage = new Stage(directory, new Date());
@@ -136,10 +136,10 @@ public class Main implements Serializable {
     static void add(String fileName) {
         Commit headCommit = directory.agarrandorama().agarralider();
         directory.agarrandorama().fixing().add(fileName);
-        if (headCommit.getMyUntrackedFiles().contains(fileName)) {
-            headCommit.getMyUntrackedFiles().remove(fileName);
+        if (headCommit.agarrarelpasado().contains(fileName)) {
+            headCommit.agarrarelpasado().remove(fileName);
         }
-        headCommit.saveCommit();
+        headCommit.salvando();
     }
 
     /** Method run by the "commit" command.
@@ -158,14 +158,14 @@ public class Main implements Serializable {
             return;
         } else if (curBranch.fixing().getdicto().size() == 0) {
             try {
-                Commit parentCommit = currCommit.getMyParentCommit();
+                Commit parentCommit = currCommit.estadodefamlista();
                 boolean newRemovedFile = false;
-                if (parentCommit.getMyUntrackedFiles().size()
-                        != currCommit.getMyUntrackedFiles().size()) {
+                if (parentCommit.agarrarelpasado().size()
+                        != currCommit.agarrarelpasado().size()) {
                     newRemovedFile = true;
                 } else {
-                    for (String fileName: parentCommit.getMyUntrackedFiles()) {
-                        if (!currCommit.getMyUntrackedFiles()
+                    for (String fileName: parentCommit.agarrarelpasado()) {
+                        if (!currCommit.agarrarelpasado()
                                 .contains(fileName)) {
                             newRemovedFile = true;
                         }
@@ -181,12 +181,12 @@ public class Main implements Serializable {
             }
         }
         Commit newCommit = new Commit(message, tempCommitDate,
-                directory, currStage, currCommit.getMyID());
+                directory, currStage, currCommit.bearcard());
 
-        newCommit.addCommit();
+        newCommit.añadir();
 
         curBranch.cambios(newCommit);
-        directory.getcommiteando().add(newCommit.getMyID());
+        directory.getcommiteando().add(newCommit.bearcard());
         curBranch.mascambios(newStage);
         newStage.guardando(newCommit);
     }
@@ -199,20 +199,20 @@ public class Main implements Serializable {
      * @param fileName the name of the file we want.
      */
     private static void checkoutName(String fileName, Commit headCommit) {
-        fileName = headCommit.processString(fileName);
+        fileName = headCommit.cambiandochars(fileName);
 
-        if (headCommit.getOldFileToRepoLoc() == null
-                || !headCommit.getOldFileToRepoLoc().containsKey(fileName)
-                || (headCommit.getMyParentCommit()
-                .getMyUntrackedFiles().contains(fileName))
-                && !headCommit.getOldFileToRepoLoc().containsKey(fileName)) {
+        if (headCommit.irAlPasado() == null
+                || !headCommit.irAlPasado().containsKey(fileName)
+                || (headCommit.estadodefamlista()
+                .agarrarelpasado().contains(fileName))
+                && !headCommit.irAlPasado().containsKey(fileName)) {
             System.out.println("File does not exist in that commit.");
             return;
         }
         File oldVersion = new File(headCommit
-                .getOldFileToRepoLoc().get(fileName));
+                .irAlPasado().get(fileName));
 
-        fileName = headCommit.processStringRev(fileName);
+        fileName = headCommit.anticambiandochars(fileName);
         Utils.writeContents(new File(fileName),
                 Utils.readContentsAsString(oldVersion));
     }
@@ -239,16 +239,16 @@ public class Main implements Serializable {
         Commit desiredCommit =
                 Utils.readObject(new File(objectRepo + commitID), Commit.class);
 
-        fileName = desiredCommit.processString(fileName);
-        if (!desiredCommit.getMyFilePointers().containsKey(fileName)
-                || desiredCommit.getMyUntrackedFiles().contains(fileName)) {
+        fileName = desiredCommit.cambiandochars(fileName);
+        if (!desiredCommit.atrapararchivo().containsKey(fileName)
+                || desiredCommit.agarrarelpasado().contains(fileName)) {
             System.out.println("File does not exist in that commit.");
             return;
         }
         File oldVersion = new File(desiredCommit
-                .getOldFileToRepoLoc().get(fileName));
+                .irAlPasado().get(fileName));
 
-        fileName = desiredCommit.processStringRev(fileName);
+        fileName = desiredCommit.anticambiandochars(fileName);
         Utils.writeContents(new File(fileName),
                 Utils.readContentsAsString(oldVersion));
     }
@@ -270,19 +270,19 @@ public class Main implements Serializable {
         Branch currBranch = directory.agarrandorama();
 
         for (String fileName: checkoutBranch
-                .agarralider().getOldFileToRepoLoc().keySet()) {
+                .agarralider().irAlPasado().keySet()) {
             File checkoutFile = new File(checkoutBranch.agarralider()
-                    .getOldFileToRepoLoc().get(fileName));
+                    .irAlPasado().get(fileName));
             File oldFile;
             try {
                 oldFile = new File(currBranch.agarralider()
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
             } catch (NullPointerException ignored) {
                 oldFile = new File(checkoutBranch.agarralider()
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
             }
             File tempFile = new File(currBranch.agarralider()
-                    .processStringRev(fileName));
+                    .anticambiandochars(fileName));
             if (tempFile.exists() && (!Utils.readContentsAsString(checkoutFile)
                     .equals(Utils.readContentsAsString(tempFile))
                     && !Utils.readContentsAsString(tempFile)
@@ -295,9 +295,9 @@ public class Main implements Serializable {
 
         ArrayList<File> filesToDelete = new ArrayList<>();
         for (String fileName: currBranch.agarralider()
-                .getOldFileToRepoLoc().keySet()) {
+                .irAlPasado().keySet()) {
             if (!checkoutBranch.agarralider()
-                    .getOldFileToRepoLoc().containsKey(fileName)) {
+                    .irAlPasado().containsKey(fileName)) {
                 File targetFile = new File(fileName);
                 filesToDelete.add(targetFile);
             }
@@ -308,9 +308,9 @@ public class Main implements Serializable {
         }
 
         for (String fileName: checkoutBranch
-                .agarralider().getOldFileToRepoLoc().keySet()) {
+                .agarralider().irAlPasado().keySet()) {
             fileName = checkoutBranch.agarralider()
-                    .processStringRev(fileName);
+                    .anticambiandochars(fileName);
             checkoutName(fileName, checkoutBranch.agarralider());
         }
 
@@ -324,7 +324,7 @@ public class Main implements Serializable {
         Commit currCommit = directory.agarrandorama().agarralider();
         while (currCommit != null) {
             System.out.println(currCommit.toString());
-            currCommit = currCommit.getMyParentCommit();
+            currCommit = currCommit.estadodefamlista();
         }
     }
 
@@ -336,19 +336,19 @@ public class Main implements Serializable {
     private static void rm(String fileName) {
         Branch currBranch = directory.agarrandorama();
         Commit currCommit = currBranch.agarralider();
-        String processedFileName = currCommit.processString(fileName);
+        String processedFileName = currCommit.cambiandochars(fileName);
         Stage currStage = currBranch.fixing();
         String myStageRepo = stageRepo + currStage.bearcard() + separator;
 
-        if (!currCommit.getOldFileToRepoLoc().containsKey(processedFileName)
+        if (!currCommit.irAlPasado().containsKey(processedFileName)
                 && !Utils.plainFilenamesIn(myStageRepo)
                 .contains(processedFileName)) {
             System.out.println("No reason to remove the file.");
             return;
         }
 
-        if (currCommit.getOldFileToRepoLoc().keySet().contains(fileName)) {
-            currCommit.getMyUntrackedFiles().add(fileName);
+        if (currCommit.irAlPasado().keySet().contains(fileName)) {
+            currCommit.agarrarelpasado().add(fileName);
         }
 
         if (Utils.plainFilenamesIn(myStageRepo).contains(processedFileName)) {
@@ -359,9 +359,9 @@ public class Main implements Serializable {
         currStage.traerback().add(fileName);
         currStage.almacenando();
 
-        if (currCommit.getOldFileToRepoLoc().containsKey(processedFileName)) {
+        if (currCommit.irAlPasado().containsKey(processedFileName)) {
             String oldFilDir = currCommit
-                    .getOldFileToRepoLoc().get(processedFileName);
+                    .irAlPasado().get(processedFileName);
             File oldFile = new File(oldFilDir);
             File thisFile = new File(fileName);
             if (thisFile.exists() && Utils.readContentsAsString(oldFile)
@@ -374,7 +374,7 @@ public class Main implements Serializable {
             }
         }
         Utils.writeObject(new File(objectRepo
-                + currCommit.getMyID()), currCommit);
+                + currCommit.bearcard()), currCommit);
     }
 
     /** Basically log, except it displays the information for
@@ -396,8 +396,8 @@ public class Main implements Serializable {
         for (String commitNames: Utils.plainFilenamesIn(objectRepo)) {
             File thisFile = new File(objectRepo + commitNames);
             Commit thisCommit = Utils.readObject(thisFile, Commit.class);
-            if (thisCommit.getMyMessage().equals(message)) {
-                System.out.println(thisCommit.getMyID().substring(6));
+            if (thisCommit.imprimiendo().equals(message)) {
+                System.out.println(thisCommit.bearcard().substring(6));
                 foundAtLeastOne = true;
             }
         }
@@ -437,7 +437,7 @@ public class Main implements Serializable {
         Stage currStage = directory.agarrandorama().fixing();
         Commit currCommit = directory.agarrandorama().agarralider();
         for (String stagedFiles: currStage.getdicto()) {
-            filesToPrint.add(currCommit.processStringRev(stagedFiles));
+            filesToPrint.add(currCommit.anticambiandochars(stagedFiles));
         }
         Collections.sort(filesToPrint);
         for (String files: filesToPrint) {
@@ -449,7 +449,7 @@ public class Main implements Serializable {
 
         System.out.println("=== Removed Files ===");
         filesToPrint.addAll(directory.agarrandorama().agarralider()
-                .getMyStage().traerback());
+                .atraparestado().traerback());
         Collections.sort(filesToPrint);
         for (String files: filesToPrint) {
             System.out.println(files);
@@ -528,8 +528,8 @@ public class Main implements Serializable {
         Commit revertToCommit = Utils.readObject(
                 new File(objectRepo + "commit" + commitID), Commit.class);
 
-        for (String fileName: revertToCommit.getOldFileToRepoLoc().keySet()) {
-            if (currCommit.getMyUntrackedFiles().contains(fileName)) {
+        for (String fileName: revertToCommit.irAlPasado().keySet()) {
+            if (currCommit.agarrarelpasado().contains(fileName)) {
                 System.out.println("There is an untracked file "
                         + "in the way; delete it or add it first.");
                 return;
@@ -537,16 +537,16 @@ public class Main implements Serializable {
         }
 
 
-        for (String fileName: currCommit.getOldFileToRepoLoc().keySet()) {
-            if (!revertToCommit.getOldFileToRepoLoc().containsKey(fileName)) {
-                new File(currCommit.processStringRev(fileName)).delete();
+        for (String fileName: currCommit.irAlPasado().keySet()) {
+            if (!revertToCommit.irAlPasado().containsKey(fileName)) {
+                new File(currCommit.anticambiandochars(fileName)).delete();
             }
         }
-        for (String fileName: revertToCommit.getOldFileToRepoLoc().keySet()) {
-            String revProcessedFileName = currCommit.processStringRev(fileName);
+        for (String fileName: revertToCommit.irAlPasado().keySet()) {
+            String revProcessedFileName = currCommit.anticambiandochars(fileName);
             Utils.writeContents(new File(revProcessedFileName),
                     Utils.readContentsAsString(new File(revertToCommit
-                            .getOldFileToRepoLoc().get(fileName))));
+                            .irAlPasado().get(fileName))));
         }
     }
 
@@ -565,19 +565,19 @@ public class Main implements Serializable {
         Commit trackerCommit = givenCommit;
 
         while (trackerCommit != null) {
-            allGBCommits.add(trackerCommit.getMyID());
-            trackerCommit = trackerCommit.getMyParentCommit();
+            allGBCommits.add(trackerCommit.bearcard());
+            trackerCommit = trackerCommit.estadodefamlista();
         }
 
-        while (!allGBCommits.contains(curCommit.getMyID())) {
-            for (String theCommit: curCommit.getAllMyParents()) {
+        while (!allGBCommits.contains(curCommit.bearcard())) {
+            for (String theCommit: curCommit.famlista()) {
                 Commit thisCommit = Utils.readObject(
                         new File(objectRepo + theCommit), Commit.class);
                 if (allGBCommits.contains(thisCommit)) {
                     return thisCommit;
                 }
             }
-            curCommit = curCommit.getMyParentCommit();
+            curCommit = curCommit.estadodefamlista();
         }
         return curCommit;
     }
@@ -599,11 +599,11 @@ public class Main implements Serializable {
             return;
         }
         Commit splitPoint = findSplitPoint(currCommit, getCommit);
-        if (splitPoint.getMyID().equals(getCommit.getMyID())) {
+        if (splitPoint.bearcard().equals(getCommit.bearcard())) {
             System.out.println("Given branch is an "
                     + "ancestor of the current branch.");
             return;
-        } else if (splitPoint.getMyID()
+        } else if (splitPoint.bearcard()
                 .equals(gottenBranch.liderdefila())) {
             directory.obteniendorama(gottenBranch);
             System.out.println("Current branch fast-forwarded.");
@@ -616,26 +616,26 @@ public class Main implements Serializable {
             return;
         }
 
-        for (String fileName: splitPoint.getOldFileToRepoLoc().keySet()) {
+        for (String fileName: splitPoint.irAlPasado().keySet()) {
             boolean dummy = true;
             File spFile = new File(splitPoint
-                    .getOldFileToRepoLoc().get(fileName));
+                    .irAlPasado().get(fileName));
             try {
                 File ccFile = new File(currCommit
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
                 File gcFile = new File(getCommit
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
                 if (Utils.readContentsAsString(spFile)
                         .equals(Utils.readContentsAsString(ccFile))
                         && !gcFile.exists()) {
-                    if (!currCommit.getOldFileToRepoLoc()
+                    if (!currCommit.irAlPasado()
                             .containsKey(fileName)) {
                         System.out.println("There is an untracked file"
                                 + " in the way; delete it or add it first.");
                         return;
                     }
                     Utils.restrictedDelete(currCommit
-                            .processStringRev(fileName));
+                            .anticambiandochars(fileName));
                 }
             } catch (NullPointerException e) {
                 dummy = false;
@@ -656,39 +656,39 @@ public class Main implements Serializable {
                                  Commit getCommit, Commit currCommit,
                                  Commit splitPoint) {
         boolean occuredMergeConflict = false;
-        for (String fileName: getCommit.getOldFileToRepoLoc().keySet()) {
+        for (String fileName: getCommit.irAlPasado().keySet()) {
             File gcFile = new File(getCommit
-                    .getOldFileToRepoLoc().get(fileName));
+                    .irAlPasado().get(fileName));
             File ccFile, spFile;
             try {
                 ccFile = new File(currCommit
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
             } catch (NullPointerException ignored) {
                 ccFile = null;
             }
             try {
                 spFile = new File(splitPoint
-                        .getOldFileToRepoLoc().get(fileName));
+                        .irAlPasado().get(fileName));
             } catch (NullPointerException ignored) {
                 spFile = null;
             }
-            fileName = currCommit.processStringRev(fileName);
+            fileName = currCommit.anticambiandochars(fileName);
             if (spFile == null && ccFile == null) {
-                checkoutID(getCommit.getMyID(), fileName);
+                checkoutID(getCommit.bearcard(), fileName);
                 add(fileName);
             } else if (spFile != null && ccFile != null) {
                 if ((!Utils.readContentsAsString(gcFile)
                         .equals(Utils.readContentsAsString(spFile))
-                        || getCommit.getMyParentCommit()
-                        .getMyUntrackedFiles().contains(fileName))
+                        || getCommit.estadodefamlista()
+                        .agarrarelpasado().contains(fileName))
                         && Utils.readContentsAsString(ccFile)
                         .equals(Utils.readContentsAsString(spFile))) {
-                    if (getCommit.getMyParentCommit()
-                            .getMyUntrackedFiles().contains(fileName)) {
+                    if (getCommit.estadodefamlista()
+                            .agarrarelpasado().contains(fileName)) {
                         Utils.restrictedDelete(
-                                currCommit.processStringRev(fileName));
+                                currCommit.anticambiandochars(fileName));
                     } else {
-                        checkoutID(getCommit.getMyID(), fileName);
+                        checkoutID(getCommit.bearcard(), fileName);
                         add(fileName);
                     }
                 } else if (!Utils.readContentsAsString(gcFile)
@@ -718,11 +718,11 @@ public class Main implements Serializable {
                                  Branch currBranch, boolean mergeConflict) {
         commit("Merged " + gottenBranch.agarrar()
                 + " into " + currBranch.agarrar() + ".");
-        directory.agarrandorama().agarralider().setMeToMergeCommit();
+        directory.agarrandorama().agarralider().estadodegit();
         Commit thisCommit = directory.agarrandorama().agarralider();
-        thisCommit.getAllMyParents().add(gottenBranch.liderdefila());
+        thisCommit.famlista().add(gottenBranch.liderdefila());
         Utils.writeObject(new File(objectRepo
-                + thisCommit.getMyID()), thisCommit);
+                + thisCommit.bearcard()), thisCommit);
         if (mergeConflict) {
             System.out.println("Encountered a merge conflict.");
         }

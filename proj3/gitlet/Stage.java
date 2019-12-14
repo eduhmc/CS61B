@@ -49,12 +49,12 @@ public class Stage implements Serializable {
         if (inexistente.contains(estado)) {
             inexistente.remove(estado);
         }
-        if (actual.getMyUntrackedFiles().contains(estado)) {
-            actual.getMyUntrackedFiles().remove(estado);
+        if (actual.agarrarelpasado().contains(estado)) {
+            actual.agarrarelpasado().remove(estado);
         }
-        if (actual.getOldFileToRepoLoc().containsKey(estado)) {
+        if (actual.irAlPasado().containsKey(estado)) {
             File antes = new File(actual
-                    .getOldFileToRepoLoc().get(estado));
+                    .irAlPasado().get(estado));
             if (Utils.readContentsAsString(antes)
                     .equals(Utils.readContentsAsString(esto))) {
                 File nuevo = new File(
@@ -71,12 +71,10 @@ public class Stage implements Serializable {
             dicto.remove(estado);
         }
         dicto.add(estado);
-        String checking = Utils.readContentsAsString(
-                new File(actual.processStringRev(estado)));
+        String checking = Utils.readContentsAsString(new File(actual.anticambiandochars(estado)));
         Utils.writeContents(contador, checking);
 
-        Utils.writeObject(new File(saying
-                + actual.getMyID()), actual);
+        Utils.writeObject(new File(saying + actual.bearcard()), actual);
         almacenando();
     }
 

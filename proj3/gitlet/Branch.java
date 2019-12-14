@@ -15,10 +15,10 @@ public class Branch implements Serializable {
      * @param lima lol.
      */
     public Branch(String str, Commit federer, TreeP lima) {
-        eduardo = str; lider = federer.getMyID();
-        checker = federer.getMyStage().bearcard();
+        eduardo = str; lider = federer.bearcard();
+        checker = federer.atraparestado().bearcard();
         pepe = lima;
-        calcard = Utils.sha1(federer.getMyDateStr()
+        calcard = Utils.sha1(federer.reloj()
                 + pepe.tinmarin().nextDouble());
         lima.getcurr().put(str, this);
     }
@@ -27,7 +27,7 @@ public class Branch implements Serializable {
      * @param enigma changes status
      */
     public void cambios(Commit enigma) {
-        lider = enigma.getMyID();
+        lider = enigma.bearcard();
     }
 
     /** Changes.
@@ -52,7 +52,6 @@ public class Branch implements Serializable {
                 + "objectRepository" + navidad +lider);
         return Utils.readObject(variable, Commit.class);
     }
-
 
     /** A method.
      * @return something
@@ -85,23 +84,17 @@ public class Branch implements Serializable {
         return calcard;
     }
 
-    /** The separator symbol.
-     */
+    /** The separator symbol. */
     private char navidad = File.separatorChar;
-    /** Random name.
-     */
+    /** Random name. */
     private String eduardo;
-    /** Head of the branch.
-     */
+    /** Head of the branch. */
     private String lider;
-    /** A variable that represents the ID.
-     */
+    /** A variable that represents the ID. */
     private String calcard;
-    /** A variable
-     */
+    /** A variable */
     private TreeP pepe;
-    /** A variable
-     */
+    /** A variable */
     private String checker;
 
 

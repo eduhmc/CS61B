@@ -40,7 +40,6 @@ public class Main implements Serializable {
         if (directory == null) {
             return;
         }
-
         try {
             File f = new File(".gitlet" + separator + "repo" + separator);
             ObjectOutputStream dirStream =
@@ -50,7 +49,6 @@ public class Main implements Serializable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     /** Loads a previously saved directory state.
@@ -112,10 +110,10 @@ public class Main implements Serializable {
         Commit initCommit = new Commit("initial commit", initialCommitDate, directory, initStage, null);
 
         initCommit.addCommit();
-        initStage.setMyCommit(initCommit);
+        initStage.guardando(initCommit);
 
         Stage nextCommitsStage = new Stage(directory, new Date());
-        nextCommitsStage.setMyCommit(initCommit);
+        nextCommitsStage.guardando(initCommit);
 
         Branch newBranch = new Branch("master", initCommit, directory);
 
@@ -158,7 +156,7 @@ public class Main implements Serializable {
         if (message.equals("")) {
             System.out.println("Please enter a commit message.");
             return;
-        } else if (curBranch.fixing().getStagedFileNames().size() == 0) {
+        } else if (curBranch.fixing().getdicto().size() == 0) {
             try {
                 Commit parentCommit = currCommit.getMyParentCommit();
                 boolean newRemovedFile = false;
@@ -190,7 +188,7 @@ public class Main implements Serializable {
         curBranch.cambios(newCommit);
         directory.getcommiteando().add(newCommit.getMyID());
         curBranch.mascambios(newStage);
-        newStage.setMyCommit(newCommit);
+        newStage.guardando(newCommit);
     }
 
     /** Checkout method, where we retrieve only the file
@@ -340,7 +338,7 @@ public class Main implements Serializable {
         Commit currCommit = currBranch.agarralider();
         String processedFileName = currCommit.processString(fileName);
         Stage currStage = currBranch.fixing();
-        String myStageRepo = stageRepo + currStage.getMyID() + separator;
+        String myStageRepo = stageRepo + currStage.bearcard() + separator;
 
         if (!currCommit.getOldFileToRepoLoc().containsKey(processedFileName)
                 && !Utils.plainFilenamesIn(myStageRepo)
@@ -357,9 +355,9 @@ public class Main implements Serializable {
             File theFile = new File(myStageRepo + processedFileName);
             theFile.delete();
         }
-        currStage.getStagedFileNames().remove(processedFileName);
-        currStage.getRemovedFiles().add(fileName);
-        currStage.saveStage();
+        currStage.getdicto().remove(processedFileName);
+        currStage.traerback().add(fileName);
+        currStage.almacenando();
 
         if (currCommit.getOldFileToRepoLoc().containsKey(processedFileName)) {
             String oldFilDir = currCommit
@@ -438,7 +436,7 @@ public class Main implements Serializable {
         System.out.println("=== Staged Files ===");
         Stage currStage = directory.agarrandorama().fixing();
         Commit currCommit = directory.agarrandorama().agarralider();
-        for (String stagedFiles: currStage.getStagedFileNames()) {
+        for (String stagedFiles: currStage.getdicto()) {
             filesToPrint.add(currCommit.processStringRev(stagedFiles));
         }
         Collections.sort(filesToPrint);
@@ -451,7 +449,7 @@ public class Main implements Serializable {
 
         System.out.println("=== Removed Files ===");
         filesToPrint.addAll(directory.agarrandorama().agarralider()
-                .getMyStage().getRemovedFiles());
+                .getMyStage().traerback());
         Collections.sort(filesToPrint);
         for (String files: filesToPrint) {
             System.out.println(files);
@@ -491,7 +489,7 @@ public class Main implements Serializable {
                 directory.agarrandorama().agarralider(), directory);
 
         Stage newBranchStage = new Stage(directory, new Date());
-        newBranchStage.setMyCommit(directory.agarrandorama().agarralider());
+        newBranchStage.guardando(directory.agarrandorama().agarralider());
 
         directory.getcurr().put(newBranch.agarrar(), newBranch);
         newBranch.mascambios(newBranchStage);
@@ -613,7 +611,7 @@ public class Main implements Serializable {
         }
 
         if (!Utils.plainFilenamesIn(currBranch
-                .fixing().getMyFolder()).isEmpty()) {
+                .fixing().agarracommits()).isEmpty()) {
             System.out.println("You have uncommitted changes.");
             return;
         }

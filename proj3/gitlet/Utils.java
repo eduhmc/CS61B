@@ -23,7 +23,7 @@ import java.util.Random;
 /** Assorted utilities.
  *  @author P. N. Hilfinger
  */
-class Utils implements Serializable {
+public class Utils implements Serializable {
 
     public static Random RandomGen = new Random(1);
 
@@ -35,7 +35,7 @@ class Utils implements Serializable {
 
     /** Returns the SHA-1 hash of the concatenation of VALS, which may
      *  be any mixture of byte arrays and Strings. */
-    static String sha1(Object... vals) {
+    public static String sha1(Object... vals) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             for (Object val : vals) {
@@ -59,7 +59,7 @@ class Utils implements Serializable {
 
     /** Returns the SHA-1 hash of the concatenation of the strings in
      *  VALS. */
-    static String sha1(List<Object> vals) {
+    public static String sha1(List<Object> vals) {
         return sha1(vals.toArray(new Object[vals.size()]));
     }
 
@@ -93,7 +93,7 @@ class Utils implements Serializable {
     /** Return the entire contents of FILE as a byte array.  FILE must
      *  be a normal file.  Throws IllegalArgumentException
      *  in case of problems. */
-    static byte[] readContents(File file) {
+    public static byte[] readContents(File file) {
         if (!file.isFile()) {
             throw new IllegalArgumentException("must be a normal file");
         }

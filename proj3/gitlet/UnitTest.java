@@ -18,6 +18,8 @@ public class UnitTest {
     /** A dummy test to avoid complaint. */
     @Test
     public void placeholderTest() {
+        int edu = 3;
+        assertEquals(3, edu);
     }
 
 }

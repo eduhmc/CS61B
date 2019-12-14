@@ -13,7 +13,7 @@ import java.util.HashMap;
 /** This class represents a singular commit object with info such as
  * a log message, a blob reference, commit date (and author), a
  * reference to a tree, and a reference to a parent commit.
- * @author Definitely-not-Nick
+ * @author eduhmc
  */
 
 public class Commit implements Serializable {
@@ -37,7 +37,7 @@ public class Commit implements Serializable {
         myUntrackedFiles = new HashSet<>();
         allMyParents = new ArrayList<>();
         myStage = stage;
-        myID = "commit" + stage.getMyID();
+        myID = "commit" + stage.bearcard();
         myParent = null;
         setMyParent(parent);
         Utils.writeObject(new File(objectRepo + myID), this);
@@ -92,10 +92,10 @@ public class Commit implements Serializable {
                     + myParent), Commit.class);
 
             String stageDirectory = ".gitlet" + separator
-                    + "stages" + separator + myStage.getMyID() + separator;
+                    + "stages" + separator + myStage.bearcard() + separator;
 
             for (String fileName: Utils.plainFilenamesIn(stageDirectory)) {
-                if (myStage.getStagedFileNames().contains(fileName)
+                if (myStage.getdicto().contains(fileName)
                         && !myUntrackedFiles.contains(
                         processStringRev(fileName))) {
 

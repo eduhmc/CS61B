@@ -16,7 +16,7 @@ public class Branch implements Serializable {
      */
     public Branch(String str, Commit federer, TreeP lima) {
         eduardo = str; lider = federer.getMyID();
-        checker = federer.getMyStage().getMyID();
+        checker = federer.getMyStage().bearcard();
         pepe = lima;
         calcard = Utils.sha1(federer.getMyDateStr()
                 + pepe.tinmarin().nextDouble());
@@ -34,7 +34,7 @@ public class Branch implements Serializable {
      * @param animo changes animo.
      */
     public void mascambios(Stage animo) {
-        checker = animo.getMyID();
+        checker = animo.bearcard();
     }
 
     /** A method

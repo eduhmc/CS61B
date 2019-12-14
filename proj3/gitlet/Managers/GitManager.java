@@ -5,7 +5,7 @@ import gitlet.Managers.Models.Commit;
 import gitlet.Managers.Models.FileData;
 import gitlet.Managers.Models.FileSnapshot;
 import gitlet.Managers.Models.FileSnapshotContainer;
-import gitlet.Utils;
+//import gitlet.Utils;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -45,7 +45,7 @@ public class GitManager {
         newCommit.PreviousCommit = currentCommit;
         newCommit.Timestamp = new Timestamp(0);
         newCommit.CommitMessage = commitMessage;
-        newCommit.HashSignature = Utils.sha1(newCommit);
+        //newCommit.HashSignature = Utils.sha1(newCommit);
         addAllChanges(newCommit);
         this.writeCommitToFile(newCommit);
     }

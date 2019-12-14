@@ -1,28 +1,25 @@
 package gitlet;
 
-import gitlet.Managers.CommandManager;
-import gitlet.Managers.GitManager;
-
+import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Collections;
 
-/** Driver class for Gitlet, the tiny stupid version-control system.
- *  @author eduhmc00
- */
-public class Main {
 
-    /** Usage: java gitlet.Main ARGS, where ARGS contains
-     *  <COMMAND> <OPERAND> .... */
-    public static void main(String... args) throws IOException {
-        CommandManager commandManager = new CommandManager();
-        commandManager.HandlerCommandLine(args);
+public class Main implements Serializable {
+
+    public static void main(String... args) {
+        GitHandler GitHandler = new GitHandler();
+        GitHandler.handleCommands(args);
     }
 
 
 }
-
-

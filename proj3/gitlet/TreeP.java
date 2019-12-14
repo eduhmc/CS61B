@@ -8,20 +8,16 @@ import java.util.Map;
 import java.util.Random;
 
 
-/** This class of a portion of the directory structure which
- * is the backbone of the gitlet project. Note that there should
- * only be a single TreeP object, as it represents the
- * entire repository.
- * @author Definitely-Not-Nick
+/** Gitlet commit class
+ * @author eduhmc
  */
 public class TreeP implements Serializable {
 
-    /** Constructor method for the TreeP object. Note that
-     * there should only be one.
+    /** Constructor method 
      */
     public TreeP() {
-        myCommits = new HashSet<>();
-        myChildren = new HashMap<>();
+        commiteando= new HashSet<>();
+        curr = new HashMap<>();
     }
 
     /** Sets the current branch we're at to this branch.
@@ -33,22 +29,22 @@ public class TreeP implements Serializable {
 
     /** Hashset containing the string ID of all the commits.
      */
-    private HashSet<String> myCommits;
+    private HashSet<String> commiteando;
     /** Get method for my commitments as a parent of 0.
      * @return SYK I HAVE NONE MUHAHAHAHAHAHAHAH.
      */
-    public HashSet<String> getMyCommits() {
-        return myCommits;
+    public HashSet<String> getcommiteando() {
+        return commiteando;
     }
 
     /** Mapping of all the children branches' names to them.
      */
-    private Map<String, Branch> myChildren;
+    private Map<String, Branch> curr;
     /** Get method for those kids next door.
      * @return Because they are definitely my kids I swear.
      */
-    public Map<String, Branch> getMyChildren() {
-        return myChildren;
+    public Map<String, Branch> getcurr() {
+        return curr;
     }
 
     /** The random generator object to ensure each sha1 is unique.
@@ -72,7 +68,7 @@ public class TreeP implements Serializable {
         return curBranch;
     }
 
-    /** The separator symbol.
+    /** a letter
      */
-    private char separator = File.separatorChar;
+    private char boli = File.separatorChar;
 }

@@ -14,27 +14,23 @@ import java.util.Arrays;
 import java.util.Collections;
 
 
-/** Main class for gitlet project
+/** Main class for gitlet project.
  *  @author eduhmc
  */
 public class Main implements Serializable {
 
-    /** Helper function to get name of all files in the working
-     * directory that does not include the original git functions.
-     * @return List of all the fileNames.
+    /** A method that works as an temporary list.
+     * @return An arrayist
      */
     private static ArrayList<String> workingDirFiles() {
-        ArrayList<String> tempList = new ArrayList<>();
-        tempList.addAll(Utils.plainFilenamesIn(
-                FileSystems.getDefault().getPath(".").toString()));
-        tempList.remove(".gitignore");
-        tempList.remove("Makefile");
-        tempList.remove("proj3.iml");
-        return tempList;
+        ArrayList<String> porahora = new ArrayList<>();
+        porahora.addAll(Utils.plainFilenamesIn(FileSystems.getDefault().getPath(".").toString()));
+        porahora.remove(".gitignore"); porahora.remove("Makefile");
+        porahora.remove("proj3.iml");
+        return porahora;
     }
 
-    /** Saves the current directory state in order to pull it
-     * back out upon the next call.
+    /** A method that doesn't return anything.
      */
     static void saveDirectory() {
         if (directory == null) {
@@ -51,127 +47,104 @@ public class Main implements Serializable {
         }
     }
 
-    /** Loads a previously saved directory state.
-     * @return The TreeP structure representing the former directory.
+    /** A method from the class TreeP
+     * @return depends on the statement
      */
     static TreeP loadDirectory() {
-        File f = new File(".gitlet" + separator + "repo" + separator);
+        File nuevo = new File(".gitlet" + separator + "repo" + separator);
         try {
-            TreeP retTree = Utils.readObject(f, TreeP.class);
+            TreeP retTree = Utils.readObject(nuevo, TreeP.class);
             return retTree;
         } catch (IllegalArgumentException e) {
             return null;
         }
     }
 
-    /** For testing with the staff gitlet, deletes the exisitng ".gitlet"
-     * repository.
-     * @param directoryToBeDeleted the directory to be deleted.
-     * @return boolean value denoting whether something was deleted.
+    /** A method that checks
+     * @param sera works as the checker
+     * @return True or False
      */
-    private static boolean deleteRepository(File directoryToBeDeleted) {
-        if (!directoryToBeDeleted.exists()) {
-            System.out.println("there ain't nothin' to delete");
+    private static boolean deleteRepository(File sera) {
+        if (!sera.exists()) {
+            System.out.println("all good");
             return false;
         }
-        File[] allContents = directoryToBeDeleted.listFiles();
-        if (allContents != null) {
-            for (File file : allContents) {
+        File[] lst = sera.listFiles();
+        if (lst != null) {
+            for (File file : lst) {
                 deleteRepository(file);
             }
         }
-        return directoryToBeDeleted.delete();
+        return sera.delete();
     }
 
 
-    /** Method run by the "init" command. It aims to initialize a .gitlet
-     * repository if ones does not already exist. And it creates a
-     * Stage -> Commit -> Branch -> TreeP.
+    /** The method that works with the init command
      */
     static void init() {
-        File initialDirectory = new File(".gitlet" + separator);
-        File stageFolder = new File(".gitlet" + separator + "stages");
-        File objectRepository = new File(
-                ".gitlet" + separator + "objectRepository");
+        File iniciando = new File(".gitlet" + separator);
+        File este = new File(".gitlet" + separator + "stages");
+        File caja = new File(".gitlet" + separator + "objectRepository");
 
-        if (initialDirectory.exists()) {
-            System.out.println(" A Gitlet version-control system "
-                    + "already exists in the current directory.");
+        if (iniciando.exists()) {
+            System.out.println(" A Gitlet version-control system already exists in the current directory.");
             return;
         }
-        initialDirectory.mkdirs();
-        stageFolder.mkdirs();
-        objectRepository.mkdirs();
-
+        iniciando.mkdirs(); este.mkdirs(); caja.mkdirs();
         directory = new TreeP();
-        Date initialCommitDate = new Date();
-        initialCommitDate.setTime(0);
-        Stage initStage = new Stage(directory, initialCommitDate);
-        Commit initCommit = new Commit("initial commit", initialCommitDate, directory, initStage, null);
-
+        Date actual = new Date();
+        actual.setTime(0);
+        Stage estadodeam= new Stage(directory, actual);
+        Commit initCommit = new Commit("initial commit", actual, directory, estadodeam, null);
         initCommit.añadir();
-        initStage.guardando(initCommit);
-
-        Stage nextCommitsStage = new Stage(directory, new Date());
-        nextCommitsStage.guardando(initCommit);
-
-        Branch newBranch = new Branch("master", initCommit, directory);
-
-        directory.getcurr().put(newBranch.agarrar(), newBranch);
-        directory.obteniendorama(newBranch);
-        newBranch.cambios(initCommit);
-        newBranch.mascambios(nextCommitsStage);
+        estadodeam.guardando(initCommit);
+        Stage prox = new Stage(directory, new Date());
+        prox.guardando(initCommit);
+        Branch nuevoperro = new Branch("master", initCommit, directory);
+        directory.getcurr().put(nuevoperro.agarrar(), nuevoperro);
+        directory.obteniendorama(nuevoperro);
+        nuevoperro.cambios(initCommit);
+        nuevoperro.mascambios(prox);
     }
 
-    /** Method run by the "add" command. It will add the input
-     * fileName onto the stage. If the file has been marked for
-     * removal, it removes the mark. If the file is contained
-     * within the previous commit and is the same version, then
-     * it is not staged and the method terminates. If it had
-     * already been staged previously, the current version is
-     * deleted and the updated version is staged instead.
-     * @param fileName the name of the file to be staged from
-     *                 within the working directory.
+    /** Method add, which simulates the add command.
+     * @param estado lol
      */
-    static void add(String fileName) {
+    static void add(String estado) {
         Commit headCommit = directory.agarrandorama().agarralider();
-        directory.agarrandorama().fixing().add(fileName);
-        if (headCommit.agarrarelpasado().contains(fileName)) {
-            headCommit.agarrarelpasado().remove(fileName);
+        directory.agarrandorama().fixing().add(estado);
+        if (headCommit.agarrarelpasado().contains(estado)) {
+            headCommit.agarrarelpasado().remove(estado);
         }
         headCommit.salvando();
     }
 
-    /** Method run by the "commit" command.
-     * @param message the message that comes with this commit.
+    /** A function that helps with the commit keyword
+     * @param impreso refers to a line of text
      */
-    static void commit(String message) {
-        Date tempCommitDate = new Date();
-        Branch curBranch = directory.agarrandorama();
-        Stage newStage = new Stage(directory, tempCommitDate);
+    static void commit(String impreso) {
+        Date aqui = new Date(); Branch alla = directory.agarrandorama();
+        Stage atras = new Stage(directory, aqui);
+        Stage actual = alla.fixing();
+        Commit corriente = alla.agarralider();
 
-        Stage currStage = curBranch.fixing();
-        Commit currCommit = curBranch.agarralider();
-
-        if (message.equals("")) {
+        if (impreso.equals("")) {
             System.out.println("Please enter a commit message.");
             return;
-        } else if (curBranch.fixing().getdicto().size() == 0) {
+        } else if (alla.fixing().getdicto().size() == 0) {
             try {
-                Commit parentCommit = currCommit.estadodefamlista();
-                boolean newRemovedFile = false;
-                if (parentCommit.agarrarelpasado().size()
-                        != currCommit.agarrarelpasado().size()) {
-                    newRemovedFile = true;
+                Commit coneplonyo = corriente.estadodefamlista();
+                boolean brand = false;
+                if (coneplonyo.agarrarelpasado().size() != corriente.agarrarelpasado().size()) {
+                    brand = true;
                 } else {
-                    for (String fileName: parentCommit.agarrarelpasado()) {
-                        if (!currCommit.agarrarelpasado()
-                                .contains(fileName)) {
-                            newRemovedFile = true;
+                    for (String fileName: coneplonyo.agarrarelpasado()) {
+                        if (!corriente.agarrarelpasado().contains(fileName)) {
+                            brand = true;
                         }
                     }
                 }
-                if (!newRemovedFile) {
+                if (!brand) {
                     System.out.println("No changes added to the commit.");
                     return;
                 }
@@ -180,41 +153,31 @@ public class Main implements Serializable {
                 return;
             }
         }
-        Commit newCommit = new Commit(message, tempCommitDate,
-                directory, currStage, currCommit.bearcard());
+        Commit deal = new Commit(impreso, aqui,
+                directory, actual, corriente.bearcard());
 
-        newCommit.añadir();
-
-        curBranch.cambios(newCommit);
-        directory.getcommiteando().add(newCommit.bearcard());
-        curBranch.mascambios(newStage);
-        newStage.guardando(newCommit);
+        deal.añadir();
+        alla.cambios(deal);
+        directory.getcommiteando().add(deal.bearcard());
+        alla.mascambios(atras);
+        atras.guardando(deal);
     }
 
-    /** Checkout method, where we retrieve only the file
-     * with the name specified from the current headCommit
-     * folder.
-     * @param headCommit the commit we want to perform the
-     *                   checkout upon
-     * @param fileName the name of the file we want.
+    /** A method that helps with the commit class.
+     * @param master parameter of the function
+     * @param edu parameter of the function
      */
-    private static void checkoutName(String fileName, Commit headCommit) {
-        fileName = headCommit.cambiandochars(fileName);
-
-        if (headCommit.irAlPasado() == null
-                || !headCommit.irAlPasado().containsKey(fileName)
-                || (headCommit.estadodefamlista()
-                .agarrarelpasado().contains(fileName))
-                && !headCommit.irAlPasado().containsKey(fileName)) {
+    private static void checkoutName(String edu, Commit master) {
+        edu = master.cambiandochars(edu);
+        if (master.irAlPasado() == null || !master.irAlPasado().containsKey(edu)
+                || (master.estadodefamlista().agarrarelpasado().contains(edu)) && !master.irAlPasado().containsKey(edu)) {
             System.out.println("File does not exist in that commit.");
             return;
         }
-        File oldVersion = new File(headCommit
-                .irAlPasado().get(fileName));
+        File oldVersion = new File(master.irAlPasado().get(edu));
 
-        fileName = headCommit.anticambiandochars(fileName);
-        Utils.writeContents(new File(fileName),
-                Utils.readContentsAsString(oldVersion));
+        edu = master.anticambiandochars(edu);
+        Utils.writeContents(new File(edu), Utils.readContentsAsString(oldVersion));
     }
 
 

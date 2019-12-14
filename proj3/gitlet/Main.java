@@ -37,7 +37,7 @@ public class Main implements Serializable {
             return;
         }
         try {
-            File f = new File(".gitlet" + separator + "repo" + separator);
+            File f = new File(".gitlet" + espacio + "repo" + espacio);
             ObjectOutputStream dirStream =
                     new ObjectOutputStream(new FileOutputStream(f));
             dirStream.writeObject(directory);
@@ -51,7 +51,7 @@ public class Main implements Serializable {
      * @return depends on the statement
      */
     static TreeP loadDirectory() {
-        File nuevo = new File(".gitlet" + separator + "repo" + separator);
+        File nuevo = new File(".gitlet" + espacio + "repo" + espacio);
         try {
             TreeP retTree = Utils.readObject(nuevo, TreeP.class);
             return retTree;
@@ -82,9 +82,9 @@ public class Main implements Serializable {
     /** The method that works with the init command
      */
     static void init() {
-        File iniciando = new File(".gitlet" + separator);
-        File este = new File(".gitlet" + separator + "stages");
-        File caja = new File(".gitlet" + separator + "objectRepository");
+        File iniciando = new File(".gitlet" + espacio);
+        File este = new File(".gitlet" + espacio + "stages");
+        File caja = new File(".gitlet" + espacio + "objectRepository");
 
         if (iniciando.exists()) {
             System.out.println(" A Gitlet version-control system already exists in the current directory.");
@@ -269,7 +269,7 @@ public class Main implements Serializable {
         Commit presente= actual.agarralider();
         String esteno = presente.cambiandochars(s);
         Stage corriente = actual.fixing();
-        String rubik = stageRepo + corriente.bearcard() + separator;
+        String rubik = stageRepo + corriente.bearcard() + espacio;
 
         if (!presente.irAlPasado().containsKey(esteno) && !Utils.plainFilenamesIn(rubik).contains(esteno)) {
             System.out.println("No reason to remove the file.");
@@ -530,43 +530,41 @@ public class Main implements Serializable {
      */
     private static void mergePt2(Branch roger, Branch rafa, Commit nole, Commit tipsa, Commit andy) {
         boolean check = false;
-        for (String fileName: nole.irAlPasado().keySet()) {
-            File gcFile = new File(nole.irAlPasado().get(fileName));
-            File ccFile, spFile;
+        for (String x: nole.irAlPasado().keySet()) {
+            File csm = new File(nole.irAlPasado().get(x));
+            File crj, ptm;
             try {
-                ccFile = new File(tipsa.irAlPasado().get(fileName));
+                crj = new File(tipsa.irAlPasado().get(x));
             } catch (NullPointerException ignored) {
-                ccFile = null;
+                crj = null;
             }
             try {
-                spFile = new File(andy.irAlPasado().get(fileName));
+                ptm = new File(andy.irAlPasado().get(x));
             } catch (NullPointerException ignored) {
-                spFile = null;
+                ptm = null;
             }
-            fileName = tipsa.anticambiandochars(fileName);
-            if (spFile == null && ccFile == null) {
-                checkoutID(nole.bearcard(), fileName);
-                add(fileName);
-            } else if (spFile != null && ccFile != null) {
-                if ((!Utils.readContentsAsString(gcFile).equals(Utils.readContentsAsString(spFile)) || nole.estadodefamlista().agarrarelpasado().contains(fileName)) && Utils.readContentsAsString(ccFile).equals(Utils.readContentsAsString(spFile))) {
+            x = tipsa.anticambiandochars(x);
+            if (ptm == null && crj == null) {
+                checkoutID(nole.bearcard(), x);
+                add(x);
+            } else if (ptm != null && crj != null) {
+                if ((!Utils.readContentsAsString(csm).equals(Utils.readContentsAsString(ptm)) || nole.estadodefamlista().agarrarelpasado().contains(x)) && Utils.readContentsAsString(crj).equals(Utils.readContentsAsString(ptm))) {
                     if (nole.estadodefamlista()
-                            .agarrarelpasado().contains(fileName)) {
+                            .agarrarelpasado().contains(x)) {
                         Utils.restrictedDelete(
-                                tipsa.anticambiandochars(fileName));
+                                tipsa.anticambiandochars(x));
                     } else {
-                        checkoutID(nole.bearcard(), fileName);
-                        add(fileName);
+                        checkoutID(nole.bearcard(), x);
+                        add(x);
                     }
-                } else if (!Utils.readContentsAsString(gcFile)
-                        .equals(Utils.readContentsAsString(ccFile))) {
+                } else if (!Utils.readContentsAsString(csm)
+                        .equals(Utils.readContentsAsString(crj))) {
                     String concatFiles = "<<<<<<< HEAD\n";
-                    concatFiles = concatFiles
-                            + Utils.readContentsAsString(ccFile);
+                    concatFiles = concatFiles + Utils.readContentsAsString(crj);
                     concatFiles = concatFiles + "=======\n";
-                    concatFiles = concatFiles
-                            + Utils.readContentsAsString(gcFile);
+                    concatFiles = concatFiles + Utils.readContentsAsString(csm);
                     concatFiles = concatFiles + ">>>>>>>";
-                    Utils.writeContents(new File(fileName), concatFiles);
+                    Utils.writeContents(new File(x), concatFiles);
                     check = true;
                 }
             }
@@ -574,124 +572,113 @@ public class Main implements Serializable {
         mergePt3(rafa, roger, check);
     }
 
-    /** Basically, part 3 of the "merge" command to make the
-     * style checker happy...
-     * @param gottenBranch I
-     * @param currBranch Like
-     * @param mergeConflict Pies
+    /** Void method
+     * @param messi args
+     * @param cr7 args
+     * @param ney args
      */
-    private static void mergePt3(Branch gottenBranch,
-                                 Branch currBranch, boolean mergeConflict) {
-        commit("Merged " + gottenBranch.agarrar()
-                + " into " + currBranch.agarrar() + ".");
+    private static void mergePt3(Branch messi, Branch cr7, boolean ney) {
+        commit("Merged " + messi.agarrar() + " into " + cr7.agarrar() + ".");
         directory.agarrandorama().agarralider().estadodegit();
-        Commit thisCommit = directory.agarrandorama().agarralider();
-        thisCommit.famlista().add(gottenBranch.liderdefila());
-        Utils.writeObject(new File(objectRepo
-                + thisCommit.bearcard()), thisCommit);
-        if (mergeConflict) {
+        Commit este = directory.agarrandorama().agarralider();
+        este.famlista().add(messi.liderdefila());
+        Utils.writeObject(new File(objectRepo + este.bearcard()), este);
+        if (ney) {
             System.out.println("Encountered a merge conflict.");
         }
     }
 
 
     /** Usage: java gitlet.Main ARGS, where ARGS contains
-     *  <COMMAND> <OPERAND> .... */
+     *  <COMMAND> <dormir> .... */
     public static void main(String... args) {
-        String command = args[0];
-        String[] operands = null;
+        String quiero = args[0]; String[] dormirs = null;
         directory = loadDirectory();
         try {
-            operands = Arrays.copyOfRange(args, 1, args.length);
+            dormirs = Arrays.copyOfRange(args, 1, args.length);
         } catch (IndexOutOfBoundsException ignored) {
-            operands = operands;
+            dormirs = dormirs;
         }
         try {
-            if (command.equals("init")) {
+            if (quiero.equals("init")) {
                 init();
-            } else if (command.equals("add")) {
-                add(operands[0]);
-            } else if (command.equals("commit")) {
-                commit(operands[0]);
-            } else if (command.equals("checkout")) {
-                List<String> operandList;
+            } else if (quiero.equals("add")) {
+                add(dormirs[0]);
+            } else if (quiero.equals("commit")) {
+                commit(dormirs[0]);
+            } else if (quiero.equals("checkout")) {
+                List<String> dormirList;
                 try {
-                    operandList = Arrays.asList(operands);
+                    dormirList = Arrays.asList(dormirs);
                 } catch (NullPointerException e) {
                     throw new IndexOutOfBoundsException();
                 }
-                if (!operandList.contains("--") && operandList.size() == 1) {
-                    checkoutBranchName(operands[0]);
-                } else if (operands[0].equals("--")) {
-                    checkoutName(operands[1],
+                if (!dormirList.contains("--") && dormirList.size() == 1) {
+                    checkoutBranchName(dormirs[0]);
+                } else if (dormirs[0].equals("--")) {
+                    checkoutName(dormirs[1],
                             directory.agarrandorama().agarralider());
-                } else if (operands[1].equals("--")) {
-                    checkoutID(operands[0], operands[2]);
+                } else if (dormirs[1].equals("--")) {
+                    checkoutID(dormirs[0], dormirs[2]);
                 } else {
                     throw new IndexOutOfBoundsException();
                 }
-            } else if (command.equals("log")) {
+            } else if (quiero.equals("log")) {
                 log();
-            } else if (command.equals("rm")) {
-                rm(operands[0]);
-            } else if (command.equals("global-log")) {
+            } else if (quiero.equals("rm")) {
+                rm(dormirs[0]);
+            } else if (quiero.equals("global-log")) {
                 globalLog();
-            } else if (command.equals("find")) {
-                find(operands[0]);
-            } else if (command.equals("status")) {
+            } else if (quiero.equals("find")) {
+                find(dormirs[0]);
+            } else if (quiero.equals("status")) {
                 status();
-            } else if (command.equals("branch")) {
-                branch(operands[0]);
-            } else if (command.equals("rm-branch")) {
-                removeBranch(operands[0]);
-            } else if (command.equals("reset")) {
-                reset(operands[0]);
-            } else if (command.equals("merge")) {
-                merge(operands[0]);
+            } else if (quiero.equals("branch")) {
+                branch(dormirs[0]);
+            } else if (quiero.equals("rm-branch")) {
+                removeBranch(dormirs[0]);
+            } else if (quiero.equals("reset")) {
+                reset(dormirs[0]);
+            } else if (quiero.equals("merge")) {
+                merge(dormirs[0]);
             }
         } catch (NullPointerException e) {
             System.out.println("Not in an initialized Gitlet directory.");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect operands.");
+            System.out.println("Incorrect operand.");
         }
         saveDirectory();
     }
 
-    /** Just a method allowing me to play around with the main method :D.
+    /** Void method
      */
     public static void trialMethod() {
-        System.out.println("The council calls for your trial");
+        System.out.println("yes");
     }
 
-    /** Just another method that allows me to play around, except this
-     * one allows for arguments.
-     * @param name the operand, in this case it's a name because the
-     *             message is retarded lmao.
+    /** Void method
+     * @param edu args
      */
-    public static void trialMethod(String name) {
-        System.out.println("The council calls for your execution " + name);
+    public static void trialMethod(String edu) {
+        System.out.println("trying" + edu);
     }
 
-    /** The separator character for my OS. It should be a "/".
-     */
-    private static String separator = File.separator;
+    /** variable */
+    private static String espacio = File.separator;
 
-    /** The directory to the object repository.
-     */
-    private static String objectRepo = ".gitlet" + separator + "objectRepository" + separator;
+    /** variable */
+    private static String objectRepo = ".gitlet" + espacio + "objectRepository" + espacio;
 
-    /** The directory to the stage repository.
-     */
-    private static String stageRepo = ".gitlet" + separator + "stages" + separator;
+    /** variable */
+    private static String stageRepo = ".gitlet" + espacio + "stages" + espacio;
 
-    /** The overarching TreeP which represents me entire repository.
-     */
+    /** variable */
     private static TreeP directory = null;
-    /** Get method for the TreeP. Mostly for use in my UnitTests.
-     * @return the directory.
+    /** Treep method
+     * @return something
      */
     public static TreeP getDirectory() {
-        File directoryFile = new File(".gitlet" + separator + "repo");
-        return Utils.readObject(directoryFile, TreeP.class);
+        File nuevo = new File(".gitlet" + espacio + "repo");
+        return Utils.readObject(nuevo, TreeP.class);
     }
 }

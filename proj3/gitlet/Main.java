@@ -120,7 +120,7 @@ public class Main implements Serializable {
         Branch newBranch = new Branch("master", initCommit, directory);
 
         directory.getcurr().put(newBranch.agarrar(), newBranch);
-        directory.setCurBranch(newBranch);
+        directory.obteniendorama(newBranch);
         newBranch.cambios(initCommit);
         newBranch.mascambios(nextCommitsStage);
     }
@@ -136,8 +136,8 @@ public class Main implements Serializable {
      *                 within the working directory.
      */
     static void add(String fileName) {
-        Commit headCommit = directory.getCurBranch().agarralider();
-        directory.getCurBranch().fixing().add(fileName);
+        Commit headCommit = directory.agarrandorama().agarralider();
+        directory.agarrandorama().fixing().add(fileName);
         if (headCommit.getMyUntrackedFiles().contains(fileName)) {
             headCommit.getMyUntrackedFiles().remove(fileName);
         }
@@ -149,7 +149,7 @@ public class Main implements Serializable {
      */
     static void commit(String message) {
         Date tempCommitDate = new Date();
-        Branch curBranch = directory.getCurBranch();
+        Branch curBranch = directory.agarrandorama();
         Stage newStage = new Stage(directory, tempCommitDate);
 
         Stage currStage = curBranch.fixing();
@@ -264,12 +264,12 @@ public class Main implements Serializable {
         if (!directory.getcurr().keySet().contains(branchName)) {
             System.out.println("No such branch exists.");
             return;
-        } else if (directory.getCurBranch().agarrar().equals(branchName)) {
+        } else if (directory.agarrandorama().agarrar().equals(branchName)) {
             System.out.println("No need to checkout the current branch.");
             return;
         }
         Branch checkoutBranch = directory.getcurr().get(branchName);
-        Branch currBranch = directory.getCurBranch();
+        Branch currBranch = directory.agarrandorama();
 
         for (String fileName: checkoutBranch
                 .agarralider().getOldFileToRepoLoc().keySet()) {
@@ -316,14 +316,14 @@ public class Main implements Serializable {
             checkoutName(fileName, checkoutBranch.agarralider());
         }
 
-        directory.setCurBranch(checkoutBranch);
+        directory.obteniendorama(checkoutBranch);
     }
 
     /** Prints out a log of all the commits starting with the
      * current branch head, trailing backwards to the init commit.
      */
     private static void log() {
-        Commit currCommit = directory.getCurBranch().agarralider();
+        Commit currCommit = directory.agarrandorama().agarralider();
         while (currCommit != null) {
             System.out.println(currCommit.toString());
             currCommit = currCommit.getMyParentCommit();
@@ -336,7 +336,7 @@ public class Main implements Serializable {
      * @param fileName the name of the file we want to remove.
      */
     private static void rm(String fileName) {
-        Branch currBranch = directory.getCurBranch();
+        Branch currBranch = directory.agarrandorama();
         Commit currCommit = currBranch.agarralider();
         String processedFileName = currCommit.processString(fileName);
         Stage currStage = currBranch.fixing();
@@ -420,7 +420,7 @@ public class Main implements Serializable {
 
         System.out.println("=== Branches ===");
         for (Branch branches: directory.getcurr().values()) {
-            if (branches == directory.getCurBranch()) {
+            if (branches == directory.agarrandorama()) {
                 fileName = "*" + fileName;
             }
             fileName = fileName + branches.agarrar();
@@ -436,8 +436,8 @@ public class Main implements Serializable {
         filesToPrint.clear();
 
         System.out.println("=== Staged Files ===");
-        Stage currStage = directory.getCurBranch().fixing();
-        Commit currCommit = directory.getCurBranch().agarralider();
+        Stage currStage = directory.agarrandorama().fixing();
+        Commit currCommit = directory.agarrandorama().agarralider();
         for (String stagedFiles: currStage.getStagedFileNames()) {
             filesToPrint.add(currCommit.processStringRev(stagedFiles));
         }
@@ -450,7 +450,7 @@ public class Main implements Serializable {
         filesToPrint.clear();
 
         System.out.println("=== Removed Files ===");
-        filesToPrint.addAll(directory.getCurBranch().agarralider()
+        filesToPrint.addAll(directory.agarrandorama().agarralider()
                 .getMyStage().getRemovedFiles());
         Collections.sort(filesToPrint);
         for (String files: filesToPrint) {
@@ -488,10 +488,10 @@ public class Main implements Serializable {
             return;
         }
         Branch newBranch = new Branch(name,
-                directory.getCurBranch().agarralider(), directory);
+                directory.agarrandorama().agarralider(), directory);
 
         Stage newBranchStage = new Stage(directory, new Date());
-        newBranchStage.setMyCommit(directory.getCurBranch().agarralider());
+        newBranchStage.setMyCommit(directory.agarrandorama().agarralider());
 
         directory.getcurr().put(newBranch.agarrar(), newBranch);
         newBranch.mascambios(newBranchStage);
@@ -506,7 +506,7 @@ public class Main implements Serializable {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        if (directory.getCurBranch().agarrar().equals(branchName)) {
+        if (directory.agarrandorama().agarrar().equals(branchName)) {
             System.out.println("Cannot remove the current branch.");
             return;
         }
@@ -523,7 +523,7 @@ public class Main implements Serializable {
             return;
         }
 
-        Branch currBranch = directory.getCurBranch();
+        Branch currBranch = directory.agarrandorama();
         Commit currCommit = currBranch.agarralider();
         Stage currStage = currBranch.fixing();
 
@@ -592,7 +592,7 @@ public class Main implements Serializable {
             System.out.println("A branch with that name does not exist.");
             return;
         }
-        Branch currBranch = directory.getCurBranch();
+        Branch currBranch = directory.agarrandorama();
         Branch gottenBranch = directory.getcurr().get(branchName);
         Commit currCommit = currBranch.agarralider();
         Commit getCommit = gottenBranch.agarralider();
@@ -607,7 +607,7 @@ public class Main implements Serializable {
             return;
         } else if (splitPoint.getMyID()
                 .equals(gottenBranch.liderdefila())) {
-            directory.setCurBranch(gottenBranch);
+            directory.obteniendorama(gottenBranch);
             System.out.println("Current branch fast-forwarded.");
             return;
         }
@@ -720,8 +720,8 @@ public class Main implements Serializable {
                                  Branch currBranch, boolean mergeConflict) {
         commit("Merged " + gottenBranch.agarrar()
                 + " into " + currBranch.agarrar() + ".");
-        directory.getCurBranch().agarralider().setMeToMergeCommit();
-        Commit thisCommit = directory.getCurBranch().agarralider();
+        directory.agarrandorama().agarralider().setMeToMergeCommit();
+        Commit thisCommit = directory.agarrandorama().agarralider();
         thisCommit.getAllMyParents().add(gottenBranch.liderdefila());
         Utils.writeObject(new File(objectRepo
                 + thisCommit.getMyID()), thisCommit);
@@ -760,7 +760,7 @@ public class Main implements Serializable {
                     checkoutBranchName(operands[0]);
                 } else if (operands[0].equals("--")) {
                     checkoutName(operands[1],
-                            directory.getCurBranch().agarralider());
+                            directory.agarrandorama().agarralider());
                 } else if (operands[1].equals("--")) {
                     checkoutID(operands[0], operands[2]);
                 } else {

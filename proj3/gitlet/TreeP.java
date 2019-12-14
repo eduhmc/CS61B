@@ -16,59 +16,56 @@ public class TreeP implements Serializable {
     /** Constructor method 
      */
     public TreeP() {
-        commiteando= new HashSet<>();
-        curr = new HashMap<>();
+        commiteando= new HashSet<>(); curr = new HashMap<>();
     }
 
-    /** Sets the current branch we're at to this branch.
-     * @param b the branch we're gonna set our current branch to.
+    /** A method that grabs a commit and set it
+     * @param x is the parameter for the function.
      */
-    public void setCurBranch(Branch b) {
-        curBranch = b;
+    public void obteniendorama(Branch x) {
+        ahorita  = x;
     }
 
-    /** Hashset containing the string ID of all the commits.
+    /** A method that grabs a commit and set it
+     * @return where we are at.
      */
-    private HashSet<String> commiteando;
-    /** Get method for my commitments as a parent of 0.
-     * @return SYK I HAVE NONE MUHAHAHAHAHAHAHAH.
+    public Branch agarrandorama() {
+        return ahorita;
+    }
+
+    /** A method that grabs a commit and set it.
+     * @return a number..
+     */
+    public Random tinmarin() {
+        return alazar;
+    }
+
+    /** A method that grabs a commit and set it.
+     * @return something.
      */
     public HashSet<String> getcommiteando() {
         return commiteando;
     }
 
-    /** Mapping of all the children branches' names to them.
-     */
-    private Map<String, Branch> curr;
-    /** Get method for those kids next door.
-     * @return Because they are definitely my kids I swear.
+    /** A method that grabs a commit and set it.
+     * @return something cool.
      */
     public Map<String, Branch> getcurr() {
         return curr;
     }
 
-    /** The random generator object to ensure each sha1 is unique.
-     */
-    private static Random randomGen = new Random(1);
-    /** Get method for a random number generator.
-     * @return the random number generator.
-     */
-    public Random getRandomGen() {
-        return randomGen;
-    }
+    /** A dictonary. */
+    private Map<String, Branch> curr;
 
-    /** The current branch we are working with.
-     */
-    private Branch curBranch;
+    /** random numbersss. */
+    private static Random alazar = new Random(1);
 
-    /** Get method for the current branch we're at.
-     * @return the current branch.
-     */
-    public Branch getCurBranch() {
-        return curBranch;
-    }
+    /** a variable. */
+    private Branch ahorita;
 
-    /** a letter
-     */
-    private char boli = File.separatorChar;
+    /** Commiteando acts like a dictionary. */
+    private HashSet<String> commiteando;
+
+    /** a letter. */
+    private char edu = File.separatorChar;
 }

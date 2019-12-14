@@ -20,7 +20,7 @@ public class Stage implements Serializable {
     public Stage(TreeP tree, Date date) {
         stagedFileNames = new HashSet<>();
         removedFiles = new ArrayList<String>();
-        myID = Utils.sha1(date.toString() + tree.getRandomGen().nextDouble());
+        myID = Utils.sha1(date.toString() + tree.tinmarin().nextDouble());
         myFolder = new File(".gitlet"
                 + separator + "stages" + separator + myID);
         myFolder.mkdirs();

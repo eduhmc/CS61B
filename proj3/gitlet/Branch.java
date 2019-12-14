@@ -15,12 +15,11 @@ public class Branch implements Serializable {
      * @param lima lol.
      */
     public Branch(String str, Commit federer, TreeP lima) {
-        eduardo = str;
-        lider = federer.getMyID();
+        eduardo = str; lider = federer.getMyID();
         checker = federer.getMyStage().getMyID();
         pepe = lima;
         calcard = Utils.sha1(federer.getMyDateStr()
-                + pepe.getRandomGen().nextDouble());
+                + pepe.tinmarin().nextDouble());
         lima.getcurr().put(str, this);
     }
 
@@ -37,14 +36,6 @@ public class Branch implements Serializable {
     public void mascambios(Stage animo) {
         checker = animo.getMyID();
     }
-
-    /** Function
-     * @return name
-     */
-    public String agarrar() {
-        return eduardo;
-    }
-
 
     /** A method
      * @return something.
@@ -67,15 +58,22 @@ public class Branch implements Serializable {
      * @return something
      */
     public Stage fixing() {
-        File mgone = new File(".gitlet" + navidad + "stages" + navidad + "stage" + checker);
+        File mgone = new File(".gitlet" + navidad
+                + "stages" + navidad + "stage" + checker);
 
         return Utils.readObject(mgone, Stage.class);
+    }
+    /** Function
+     * @return name
+     */
+    public String agarrar() {
+        return eduardo;
     }
 
     /** A method.
      * @return the TreeP
      */
-    public TreeP getMyParent() {
+    public TreeP obtengo() {
         return pepe;
     }
 
@@ -83,6 +81,7 @@ public class Branch implements Serializable {
      * @return something
      */
     public String bearcard() {
+
         return calcard;
     }
 

@@ -3,118 +3,132 @@ package gitlet;
 import java.io.File;
 import java.io.Serializable;
 
-/** This is the branch class for the gitlet project
- * @author eduhmc
+/** This class represents one long chain of unbranching (hon hon,
+ * the irony of that) commits, a name, and a stage copy.
+ * @author Definitely-not-Nick
  */
 
 public class Branch implements Serializable {
 
-    /** Constructor
-     * @param str lol.
-     * @param federer lol.
-     * @param lima lol.
+    /** Each branch object has a name, a pointer to a following branch,
+     * and a pointer to a staging area.
+     * @param name the name of this branch.
+     * @param head the current head commit.
+     * @param parent the TreeP.
      */
-    public Branch(String str, Commit federer, TreeP lima) {
-        eduardo = str; lider = federer.bearcard();
-        checker = federer.atraparestado().bearcard();
-        pepe = lima;
-        calcard = Utils.sha1(federer.reloj()
-                + pepe.tinmarin().nextDouble());
-        lima.getcurr().put(str, this);
+    public Branch(String name, Commit head, TreeP parent) {
+        myName = name;
+        headCommit = head.getMyID();
+        myStage = head.getMyStage().getMyID();
+        myParent = parent;
+        myID = Utils.sha1(head.getMyDateStr()
+                + myParent.getRandomGen().nextDouble());
+        parent.getMyChildren().put(name, this);
     }
 
-    /** changes
-     * @param enigma changes status
+    /** Updates the head commit to this commit.
+     * @param commit the commit that will become the new head commit.
      */
-    public void cambios(Commit enigma) {
-        lider = enigma.bearcard();
+    public void updateHead(Commit commit) {
+        headCommit = commit.getMyID();
     }
 
-    /** Changes.
-     * @param animo changes animo.
+    /** Updates the stage to this new stage.
+     * @param stage the stage update my stage to.
      */
-    public void mascambios(Stage animo) {
-        checker = animo.bearcard();
+    public void updateStage(Stage stage) {
+        myStage = stage.getMyID();
     }
 
-    /** A method
-     * @return something.
-     */
-    public String liderdefila() {
-        return lider;
-    }
-
-    /** Another method
-     * @return something.
-     */
-    public Commit agarralider() {
-        File variable = new File(".gitlet" + navidad
-                + "objectRepository" + navidad +lider);
-        return Utils.readObject(variable, Commit.class);
-    }
-
-    /** A method.
-     * @return something
-     */
-    public Stage fixing() {
-        File mgone = new File(".gitlet" + navidad
-                + "stages" + navidad + "stage" + checker);
-
-        return Utils.readObject(mgone, Stage.class);
-    }
-    /** Function
-     * @return name
-     */
-    public String agarrar() {
-        return eduardo;
-    }
-
-    /** A method.
-     * @return the TreeP
-     */
-    public TreeP obtengo() {
-        return pepe;
-    }
-
-    /** A method.
-     * @return something
-     */
-    public String bearcard() {
-
-        return calcard;
-    }
-
-    /** The separator symbol. */
-    private char navidad = File.separatorChar;
-    /** Random name. */
-    private String eduardo;
-    /** Head of the branch. */
-    private String lider;
-    /** A variable that represents the ID. */
-    private String calcard;
-    /** A variable */
-    private TreeP pepe;
-    /** A variable */
-    private String checker;
-
-
-    /** Method for strings
-     * @return something
+    /** the toString() structure of a single branch, I don't think
+     * this is ever actually needed by any of the methods so I'm just
+     * making it visually appealing :D.
+     * @return a String representing this branch.
      */
     @Override
     public String toString() {
         StringBuilder myStringRepr = new StringBuilder();
         myStringRepr.append("----- MY NAME ----- \n");
-        myStringRepr.append(eduardo + "\n");
+        myStringRepr.append(myName + "\n");
         myStringRepr.append("----- MY ID ----- \n");
-        myStringRepr.append(calcard + "\n");
+        myStringRepr.append(myID + "\n");
         myStringRepr.append("----- MY STAGE ----- \n");
-        myStringRepr.append(checker.toString());
+        myStringRepr.append(myStage.toString());
         myStringRepr.append("\n");
         myStringRepr.append("----- HEAD COMMIT ----- \n");
-        myStringRepr.append(lider.toString() + "\n");
+        myStringRepr.append(headCommit.toString() + "\n");
         myStringRepr.append("\n");
         return myStringRepr.toString();
     }
+
+    /** Name of the branch.
+     */
+    private String myName;
+    /** Get method for my name.
+     * @return pineapple lumps :D WTF DO YOU THINK THIS RETURNS???
+     */
+    public String getMyName() {
+        return myName;
+    }
+
+    /** Head of the branch.
+     */
+    private String headCommit;
+
+    /** Get method for the head commit ID of this branch.
+     * @return that.
+     */
+    public String getHeadCommitID() {
+        return headCommit;
+    }
+
+    /** Get method for the head commit of this branch.
+     * @return my head commit
+     */
+    public Commit getHeadCommit() {
+        File parentFile = new File(".gitlet" + separator
+                + "objectRepository" + separator + headCommit);
+        return Utils.readObject(parentFile, Commit.class);
+    }
+
+    /** Picture of the current staging area.
+     */
+    private String myStage;
+    /** get method for myStage.
+     * @return my Stage
+     */
+    public Stage getMyStage() {
+        File myFile = new File(".gitlet"
+                + separator + "stages" + separator + "stage" + myStage);
+
+        return Utils.readObject(myFile, Stage.class);
+    }
+
+    /** The TreeP of which I branched off from.
+     */
+    private TreeP myParent;
+    /** get method for the TreeP.
+     * @return the TreeP
+     */
+    public TreeP getMyParent() {
+        return myParent;
+    }
+
+    /** A (hopefully) unique ID generated from the string representation
+     * of the head commit at the moment of branch creation, plus a random
+     * double generated by TreeP's random seed.
+     */
+    private String myID;
+    /** get method for my commit ID.
+     * @return my commit ID
+     */
+    public String getMyID() {
+        return myID;
+    }
+
+    /** The separator symbol.
+     */
+    private char separator = File.separatorChar;
 }
+
 

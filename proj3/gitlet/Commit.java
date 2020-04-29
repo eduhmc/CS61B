@@ -10,273 +10,356 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-/** his is the commit class for the Gitlet project.
- * @author eduhmc
+/** This class represents a singular commit object with info such as
+ * a log message, a blob reference, commit date (and author), a
+ * reference to a tree, and a reference to a parent commit.
+ * @author Eduardo Huerta Mercado
  */
 
 public class Commit implements Serializable {
     /** Constructor method for the commit class.
-     * @param ya is a parameter of the function.
-     * @param quiero is a parameter of the function. 
-     * @param que is a parameter of the function.
-     * @param termine is a parameter of the function.
-     * @param esto is a parameter of the function.
+     * @param m the commit message.
+     * @param t the commit time.
+     * @param tree the TreeP.
+     * @param stage the stage I was created from.
+     * @param parent my parents.
      */
-    public Commit(String ya, Date quiero, TreeP que,
-                  Stage termine, String esto) {
-        imprenta = ya; horacio = quiero;
-        calcaterra = quiero.toString().substring(0, numa) + quiero.toString().substring(numb) + " -0800";
-        personal = que; diccionario = new HashMap<>(); antiguodictc = new HashMap<>();
-        perdidos = new HashSet<>();
-        papas = new ArrayList<>(); estado = termine;
-        calcard = "commit" + termine.bearcard(); plonyo = null;
-        decidir(esto);
-        Utils.writeObject(new File(casita + calcard), this);
+    public Commit(String m, Date t, TreeP tree,
+                  Stage stage, String parent) {
+
+        myMessage = m;
+        myDate = t;
+        myDateStr = t.toString().substring(0, GETRIDOFTIME1)
+                + t.toString().substring(GETRIDOFTIME2) + " -0800";
+        myTree = tree;
+        myFilePointers = new HashMap<>();
+        oldFileToRepoLoc = new HashMap<>();
+        myUntrackedFiles = new HashSet<>();
+        allMyParents = new ArrayList<>();
+        myStage = stage;
+        myID = "commit" + stage.getMyID();
+        myParent = null;
+        setMyParent(parent);
+        Utils.writeObject(new File(objectRepo + myID), this);
     }
 
-    /** Saves changes made to this commit. */
-    public void salvando() {
-        Utils.writeObject(new File(casita + calcard), this);
+    /** Saves changes made to this commit.
+     */
+    public void saveCommit() {
+        Utils.writeObject(new File(objectRepo + myID), this);
     }
 
     /** Sets my parent commit to this commit.
-     * @param dni the previous commit leading ot this one.
+     * @param parentID the previous commit leading ot this one.
      */
-    public void decidir(String dni) {
-        if (dni == null) {
-            plonyo = null;
+    public void setMyParent(String parentID) {
+        if (parentID == null) {
+            myParent = null;
             return;
         }
-        Commit iva = Utils.readObject(new File( casita + dni), Commit.class);
-        plonyo = iva.bearcard();
-        for (String keys: iva.antiguodictc.keySet()) {  antiguodictc.put(keys, iva.antiguodictc.get(keys));
+
+        Commit commit = Utils.readObject(new File(
+                objectRepo + parentID), Commit.class);
+
+        myParent = commit.getMyID();
+        for (String keys: commit.oldFileToRepoLoc.keySet()) {
+            if (!myTree.getCurBranch().getMyStage()
+                    .getRemovedFiles().contains(keys)) {
+                oldFileToRepoLoc.put(keys, commit.oldFileToRepoLoc.get(keys));
+            }
         }
-        for (String keys: iva.atrapararchivo().keySet()) {
-            iva.cambiandochars(keys);
-            diccionario.put(keys, iva.atrapararchivo().get(keys));
+        for (String keys: commit.getMyFilePointers().keySet()) {
+            commit.processString(keys);
+            if (!commit.getMyUntrackedFiles().contains(keys)) {
+                myFilePointers.put(keys, commit.getMyFilePointers().get(keys));
+            }
         }
-        perdidos.addAll(iva.agarrarelpasado());
-        papas.add(dni);
+        myUntrackedFiles.addAll(commit.getMyUntrackedFiles());
+        allMyParents.add(parentID);
     }
 
-    /** A method that Initiliazes the repository.*/
-    public void añadir() {
-        File directorio = new File(casita + "folder" + calcard + espacio);
-        directorio.mkdirs(); File lugar = new File(casita + calcard);
-        if (plonyo == null) {
-            Utils.writeObject(lugar, this);
+    /** Creates a commit folder in .gitlet\objectRepository. If this is
+     * called by init()then it also creates the objectRepository.
+     * Otherwise, it will go through the files within it's stage and
+     * write into the commit folder. If the object is the same as it
+     * used to be (checked by sha1(readContentsAsString(f))) then it
+     * will do nothing.
+     */
+    public void addCommit() {
+        File myCommitFolder = new File(objectRepo
+                + "folder" + myID + separator);
+        myCommitFolder.mkdirs();
+        File commitFile = new File(objectRepo + myID);
+        if (myParent == null) {
+            Utils.writeObject(commitFile, this);
         } else {
-            Commit hola = Utils.readObject(new File(casita + plonyo), Commit.class);
-            String esto = ".gitlet" + espacio + "stages" + espacio + estado.bearcard() + espacio;
+            Commit myParentCommit = Utils.readObject(new File(objectRepo
+                    + myParent), Commit.class);
 
-            for (String fileName: Utils.plainFilenamesIn(esto)) {
-                if (estado.getdicto().contains(fileName) && !perdidos.contains(anticambiandochars(fileName))) {
-                    String ahorita = Utils.readContentsAsString(
-                            new File(esto + fileName));
+            String stageDirectory = ".gitlet" + separator
+                    + "stages" + separator + myStage.getMyID() + separator;
 
-                    if (hola.irAlPasado().containsKey(fileName)) {
-                        File antiguo = new File(hola.irAlPasado().get(fileName));
-                        String predecesor = Utils.readContentsAsString(antiguo);
+            for (String fileName: Utils.plainFilenamesIn(stageDirectory)) {
+                if (myStage.getStagedFileNames().contains(fileName)
+                        && !myUntrackedFiles.contains(
+                        processStringRev(fileName))) {
 
-                        if (!ahorita.equals(predecesor)) {
-                            antiguodictc.replace(fileName, directorio.getPath() + espacio + fileName);
-                            File este = new File(anticambiandochars(fileName)); String actual = Utils.readContentsAsString(este);
-                            diccionario.replace(fileName, Utils.sha1(esto + fileName));
-                            Utils.writeContents(new File(directorio.getPath() + espacio + fileName), actual);
+                    String currContents = Utils.readContentsAsString(
+                            new File(stageDirectory + fileName));
+
+                    if (myParentCommit.getOldFileToRepoLoc()
+                            .containsKey(fileName)) {
+                        File oldFile = new File(myParentCommit
+                                .getOldFileToRepoLoc().get(fileName));
+                        String prevContents =
+                                Utils.readContentsAsString(oldFile);
+
+                        if (!currContents.equals(prevContents)) {
+                            oldFileToRepoLoc.replace(fileName,
+                                    myCommitFolder.getPath()
+                                            + separator + fileName);
+                            File theFile =
+                                    new File(processStringRev(fileName));
+                            String contentString =
+                                    Utils.readContentsAsString(theFile);
+                            myFilePointers.replace(fileName,
+                                    Utils.sha1(stageDirectory + fileName));
+                            Utils.writeContents(new File(
+                                    myCommitFolder.getPath() + separator
+                                            + fileName), contentString);
                         }
                     } else {
-                        antiguodictc.put(fileName, directorio.getPath() + espacio + fileName);
-                        File aquel = new File(esto + fileName); String contenido = Utils.readContentsAsString(aquel);
-                        diccionario.put(fileName, Utils.sha1(esto + fileName));
-                        Utils.writeContents(new File(directorio.getPath() + espacio + fileName), contenido);
+                        oldFileToRepoLoc.put(fileName, myCommitFolder.getPath()
+                                + separator + fileName);
+                        File writeFile = new File(stageDirectory + fileName);
+                        String contentString =
+                                Utils.readContentsAsString(writeFile);
+                        myFilePointers.put(fileName,
+                                Utils.sha1(stageDirectory + fileName));
+                        Utils.writeContents(new File(myCommitFolder.getPath()
+                                + separator + fileName), contentString);
                     }
                 }
             }
-            Utils.writeObject(lugar, this);
+            Utils.writeObject(commitFile, this);
         }
     }
 
-    /** This is a method that helps with the characters
-     * @param x is the parameter
-     * @return the new parameter x.
+    /** Changes the "\" character into a "@" for the provided
+     * string. Intended for acquiring files which are within
+     * another directory. Note that this is ONLY DONE for the
+     * file creation process. The original name is still used
+     * for all the map structures.
+     * @param name the name we want to process.
+     * @return the new file name.
      */
-    public String cambiandochars(String x) {
-        if (x.contains("\\")) {
-            x = x.replace("\\", "@");
+    public String processString(String name) {
+        if (name.contains("\\")) {
+            name = name.replace("\\", "@");
         }
-        return x;
+        return name;
     }
 
-    /** This is a method that helps with the characters.
-     * @param y is the parameter
-     * @return the new parameter y.
+    /** Basically processString() but in reverse :P.
+     * @param name the name we want to process back.
+     * @return the original file name.
      */
-    public String anticambiandochars(String y) {
-        if (y.contains("@")) {
-            y = y.replace("@", "\\");
+    public String processStringRev(String name) {
+        if (name.contains("@")) {
+            name = name.replace("@", "\\");
         }
-        return y;
-    }
-    /** A function that gives you a hashset.
-     * @return a hashset of files that are lost
-     */
-    public HashSet<String> agarrarelpasado() {
-        return perdidos;
+        return name;
     }
 
-    /** A method that helps with commit.
-     * @return a dictonary.
+    /** The toString structure of each commit. Note that this is formatted
+     * to the exact format specified by what log requires. Note that the
+     * supposed "commitID" has ALREADY BEEN processed.
+     * @return String of what log should print.
      */
-    public Map<String, String> irAlPasado() {
-        return antiguodictc;
-    }
-    /** Get method for my commit ID. Should be in the format:
-     * "commit[sha1 of stage at the moment of my creation]"
-     * @return a number.
-     */
-    public String bearcard() {
-        return calcard;
-    }
-
-    /** A function that return a message
-     * @return stated above
-     */
-    public String imprimiendo() {
-        return imprenta;
-    }
-    /** A method that works as a calendar
-     * @return a date based as a string
-     */
-    public Date rolex() {
-        return horacio;
+    @Override
+    public String toString() {
+        StringBuilder myStringRepr = new StringBuilder();
+        myStringRepr.append("===\n");
+        myStringRepr.append("commit " + myID.substring(6) + "\n");
+        if (mergeCommit) {
+            myStringRepr.append("Merge:");
+            for (String parents: allMyParents) {
+                myStringRepr.append(" " + parents.substring(7, 14));
+            }
+            myStringRepr.append("\n");
+        }
+        myStringRepr.append("Date: " + myDateStr + "\n");
+        myStringRepr.append(myMessage + "\n");
+        return myStringRepr.toString();
     }
 
-    /** A method that reports a string
-     * @return something.
+
+    /** The message that came with this commit.
      */
-    public String devolverpapa() {
-        return plonyo;
+    private String myMessage;
+    /** Get method for my prayer to the CS gods.
+     * @return heathens and blasphemers instead.
+     */
+    public String getMyMessage() {
+        return myMessage;
     }
-    /** A method that works as part of the commit class
-     * @return depends on the statemtent.
+
+    /** The time this commit was made.
      */
-    public Commit estadodefamlista() {
-        File coneplonyo = new File(casita + plonyo);
+    private Date myDate;
+    /** Get method for my nonexistant Date... EMILY WHY!!!!
+     * @return I cri.
+     */
+    public Date getMyDate() {
+        return myDate;
+    }
+
+    /** The parent's (the commit leading to this one) commit ID.
+     */
+    private String myParent;
+
+    /** "I am lost. Please help me" - some kid in a mall probably
+     * @return the non-gender-associated-guardian-of-the-small-creature.
+     */
+    public String getMyParent() {
+        return myParent;
+    }
+    /** Get method for my Parent commit but resurrecting him/her/it
+     * from the graveyard we know as "objectRepository".
+     * @return Necromancy.
+     */
+    public Commit getMyParentCommit() {
+        File parentFile = new File(objectRepo + myParent);
         try {
-            Commit retCommit = Utils.readObject(coneplonyo, Commit.class);
+            Commit retCommit = Utils.readObject(parentFile, Commit.class);
             return retCommit;
         } catch (IllegalArgumentException e) {
             return null;
         }
     }
 
-    /** A method that Updates. */
-    public void estadodegit() {
-        checker = true;
-        Utils.writeObject(new File(casita + calcard), this);
-    }
-
-    /** A method that carries a variable as an arraylist.
-     * @return a list
+    /** Sets the current commit to a merge commit.
      */
-    public ArrayList<String> famlista() {
-        return papas;
+    public void setMeToMergeCommit() {
+        mergeCommit = true;
+        Utils.writeObject(new File(objectRepo + myID), this);
     }
 
-    /** A method thar works as a calendar.
-     * @return number as a string.
+    /** variable checking whether I am a merge commit.
      */
-    public String reloj() {
-        return calcaterra;
-    }
+    private boolean mergeCommit = false;
 
-    /** A method associated with the class TreeP
-     * @return a tree
+    /** HashSet of all my parent's commit IDs.
      */
-    public TreeP devuelveme() {
-        return personal;
-    }
-
-    /** A method thar reports where I am.
-     * @return something
+    private ArrayList<String> allMyParents;
+    /** Get method for the ArrayList containing all my parent's
+     * commit IDs.
+     * @return the Arraylist containing all my parent's commit IDs.
      */
-    public Stage atraparestado() {
-        return estado;
+    public ArrayList<String> getAllMyParents() {
+        return allMyParents;
     }
 
-    /** A method that return a dictonary
-     * @return stated above.
+    /** The time this commit was made, in string, and with the UTC offset.
      */
-    public Map<String, String> atrapararchivo() {
-        return diccionario;
-    }
-
-    /** A number. */
-    private String calcard;
-
-    /** Variable to help with spaces */
-    private String espacio = File.separator;
-
-    /** The place where it lives */
-    private String casita = ".gitlet" + espacio + "objectRepository" + espacio;
-
-    /** A variable that works as a dictonary. */
-    private Map<String, String> antiguodictc;
-
-    /** A variable that works as a dictonary with unique items. */
-    private HashSet<String> perdidos;
-
-    /** A variable that works as a dictonary */
-    private Map<String, String> diccionario;
-
-    /** A number. */
-    private static final int numa = 19;
-
-    /** A number */
-    private static final int numb = 23;
-
-    /** A variable that works as a checker. */
-    private boolean checker = false;
-
-    /** A variable that works as a list */
-    private ArrayList<String> papas;
-    
-    /** A variable that is a String. */
-    private String calcaterra;
-    
-    /** A variable that works as a Tree. */
-    private TreeP personal;
-
-    /** A variable that is a string. */
-    private String imprenta;
-
-    /** A variable that indicates the date. */
-    private Date horacio;
-
-    /** A variable that is a String. */
-    private String plonyo;
-
-    /** A variable that indicates where I am.  */
-    private Stage estado;
-    
-
-    /** Overriding the method toString
-     * @return something to report.
+    private String myDateStr;
+    /** Get method for my Date.
+     * @return the date of my inception.
      */
-    @Override
-    public String toString() {
-        StringBuilder myStringRepr = new StringBuilder();
-        myStringRepr.append("===\n");
-        myStringRepr.append("commit " + calcard.substring(6) + "\n");
-        if (checker) {
-            myStringRepr.append("Merge:");
-            for (String parents: papas) {
-                myStringRepr.append(" " + parents.substring(7, 14));
-            }
-            myStringRepr.append("\n");
-        }
-        myStringRepr.append("Date: " + calcaterra + "\n");
-        myStringRepr.append(imprenta + "\n");
-        return myStringRepr.toString();
+    public String getMyDateStr() {
+        return myDateStr;
     }
+
+    /** The tree that this particular commit belongs to.
+     */
+    private TreeP myTree;
+    /** Get method for my lumberjack.
+     * @return and his pet russel terrier.
+     */
+    public TreeP getMyTree() {
+        return myTree;
+    }
+
+    /** The stage that I had when I made this commit.
+     */
+    private Stage myStage;
+    /** Get method for my stage.
+     * @return stages
+     */
+    public Stage getMyStage() {
+        return myStage;
+    }
+
+    /** Map from the file NAME to the file's OWN SHA1 ID.
+     * Inherits from parent and updates iff file is different
+     * from parent commit's version.
+     */
+    private Map<String, String> myFilePointers;
+    /** Get method for my File pointers. I never really had
+     * a use for this guy other than checking whether something
+     * was in something else. Could probs have done that with
+     * oldFileToRepoLoc, but don't fix what's not broken amarite?
+     * @return that thing.
+     */
+    public Map<String, String> getMyFilePointers() {
+        return myFilePointers;
+    }
+
+    /** A (hopefully) unique commit ID. Created from the Date and
+     * a random integer generated by the Random class belonging to
+     * the TreeP. Should be in the format "commit[sha1]"
+     */
+    private String myID;
+    /** Get method for my commit ID. Should be in the format:
+     * "commit[sha1 of stage at the moment of my creation]"
+     * @return my ID.
+     */
+    public String getMyID() {
+        return myID;
+    }
+
+    /** The separator symbol.
+     */
+    private String separator = File.separator;
+
+    /** The directory of the objectRepository.
+     */
+    private String objectRepo = ".gitlet" + separator
+            + "objectRepository" + separator;
+
+    /** Map of the old fileName (which is also it's directory in it's
+     * working directory) to the copy of the file located in the
+     * object repository.
+     * NOTE that both the keys and the values are the processed versions
+     * of the filenames.
+     */
+    private Map<String, String> oldFileToRepoLoc;
+    /** Get method for my penis.
+     * @return I'm just kidding, it's for this mapping of
+     * filenames to repository locations.
+     */
+    public Map<String, String> getOldFileToRepoLoc() {
+        return oldFileToRepoLoc;
+    }
+
+    /** Hashset of untracked files for this particular commit.
+     * NOTE THAT the names of the files are UNPROCESSED as they
+     * are in the working directory.
+     */
+    private HashSet<String> myUntrackedFiles;
+    /** Get method for my untracked files hashset. Note that
+     * the filenames contained are PROCESSED versions.
+     * @return exactly what I stated above
+     */
+    public HashSet<String> getMyUntrackedFiles() {
+        return myUntrackedFiles;
+    }
+
+    /** a magic number for wizards knowledge only.
+     */
+    private static final int GETRIDOFTIME1 = 19;
+
+    /** a magic number for witches knowledge only.
+     */
+    private static final int GETRIDOFTIME2 = 23;
 }

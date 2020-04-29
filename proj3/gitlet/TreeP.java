@@ -9,63 +9,66 @@ import java.util.Random;
 
 
 /** Gitlet commit class
- * @author eduhmc
+ * @author Eduardo Huerta Mercado
  */
 public class TreeP implements Serializable {
 
     /** Constructor method 
      */
     public TreeP() {
-        commiteando= new HashSet<>(); curr = new HashMap<>();
+        myCommits = new HashSet<>();
+        myChildren = new HashMap<>();
     }
 
-    /** A method that grabs a commit and set it
-     * @param x is the parameter for the function.
+    /** Sets the current branch we're at to this branch.
+     * @param b the branch we're gonna set our current branch to.
      */
-    public void obteniendorama(Branch x) {
-        ahorita  = x;
+    public void setCurBranch(Branch b) {
+        curBranch = b;
     }
 
-    /** A method that grabs a commit and set it
-     * @return where we are at.
+    /** Hashset containing the string ID of all the commits.
      */
-    public Branch agarrandorama() {
-        return ahorita;
-    }
-
-    /** A method that grabs a commit and set it.
-     * @return a number..
+    private HashSet<String> myCommits;
+    /** Get method for my commitments as a parent of 0.
+     * @return SYK I HAVE NONE MUHAHAHAHAHAHAHAH.
      */
-    public Random tinmarin() {
-        return alazar;
+    public HashSet<String> getMyCommits() {
+        return myCommits;
     }
 
-    /** A method that grabs a commit and set it.
-     * @return something.
+    /** Mapping of all the children branches' names to them.
      */
-    public HashSet<String> getcommiteando() {
-        return commiteando;
-    }
-
-    /** A method that grabs a commit and set it.
-     * @return something cool.
+    private Map<String, Branch> myChildren;
+    /** Get method for those kids next door.
+     * @return Because they are definitely my kids I swear.
      */
-    public Map<String, Branch> getcurr() {
-        return curr;
+    public Map<String, Branch> getMyChildren() {
+        return myChildren;
     }
 
-    /** A dictonary. */
-    private Map<String, Branch> curr;
+    /** The random generator object to ensure each sha1 is unique.
+     */
+    private static Random randomGen = new Random(1);
+    /** Get method for a random number generator.
+     * @return the random number generator.
+     */
+    public Random getRandomGen() {
+        return randomGen;
+    }
 
-    /** random numbersss. */
-    private static Random alazar = new Random(1);
+    /** The current branch we are working with.
+     */
+    private Branch curBranch;
 
-    /** a variable. */
-    private Branch ahorita;
+    /** Get method for the current branch we're at.
+     * @return the current branch.
+     */
+    public Branch getCurBranch() {
+        return curBranch;
+    }
 
-    /** Commiteando acts like a dictionary. */
-    private HashSet<String> commiteando;
-
-    /** a letter. */
-    private char edu = File.separatorChar;
+    /** The separator symbol.
+     */
+    private char separator = File.separatorChar;
 }
